@@ -1,0 +1,21 @@
+﻿@model BookSubCategoriesViewModel
+
+<ul>
+    @foreach (var item in Model.TreeViewCategories)
+    {
+        <li>
+            @if (Model.Categories is not null && Model.Categories.Contains(item.id))
+            {
+                <input type="checkbox" name="CategoryID" value="@item.id" checked /> @item.title
+            }
+            else
+            {
+                <input type="checkbox" name="CategoryID" value="@item.id" /> @item.title
+            }
+            @{
+                Model.TreeViewCategories = item.subs;
+            }
+            @await Html.PartialAsync("_CategoryPartial",Model)
+        </li>
+    }
+</ul>

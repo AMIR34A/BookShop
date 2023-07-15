@@ -1,0 +1,7 @@
+﻿@model EntityFrameworkCore.Models.Translator
+<h2>Do you want to delete @Model.FirstName @Model.LastName from translators list?</h2>
+<form asp-action="Deleted">
+	<input type="hidden" value="@Model.TranslatorId" name="id"/>
+	<input type="submit" value="Yes" class="btn btn-danger"/>
+	<a asp-action="Index" class="btn btn-secondary">No</a>
+</form>

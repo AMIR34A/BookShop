@@ -1,0 +1,23 @@
+﻿@using EntityFrameworkCore.Models
+@model Translator
+
+<div class="row">
+	<div class="col-md-4">
+		<form asp-action="Edit">
+			<input type="hidden" asp-for="TranslatorId" />
+			<div class="">
+				<label asp-for="FirstName"></label>
+				<input type="text" class="form-control" asp-for="FirstName" />
+				<span asp-validation-for="FirstName" class="text-danger"></span>
+			</div>
+			<div class="">
+				<label asp-for="LastName"></label>
+				<input type="text" class="form-control" asp-for="LastName" />
+				<span asp-validation-for="LastName" class="text-danger"></span>
+			</div>
+			<div >
+				<input type="submit" value="Save" class="btn btn-success"/>
+			</div>
+		</form>
+	</div>
+</div>

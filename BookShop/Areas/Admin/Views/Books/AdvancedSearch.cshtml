@@ -1,0 +1,107 @@
+﻿@using System.Globalization;
+@model IEnumerable<BooksIndexViewModel>
+@inject PersianCalendar date
+@{
+    ViewData["Title"] = "AdvancedSearch";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-light">
+                نتایج جستجو
+            </div>
+            <div class="card-body">
+                <form>
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <div class="input-group">
+                                <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> جستجو</button>
+                                </span>
+                                <input id="input-group-1" name="Title" class="form-control" placeholder="عنوان کتاب را واردکنید ..." type="text">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="row form-group">
+                                <label class="ml-2">تعداد ردیف</label>
+                                <div class="col-md-4 padding-0px">
+                                    <select class="select2" name="row" asp-items="@ViewBag.RowId"></select>
+                                </div>
+                                <div class="col-md-3 padding-0px">
+                                    <input type="submit" value="نمایش" class="btn btn-primary float-left" />
+                                </div>
+                            </div>
+                        </div>
+                        @if (ViewBag.Search != "")
+                        {
+                            <div class="col-md-4">
+                                <a href="/Admin/Books/Index" class="float-left"><i class="fa fa-arrow-circle-left"></i>برگشت به لیست کتابها</a>
+                            </div>
+                        }
+                    </div>
+                </form>
+
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>ردیف</th>
+                                <th>عنوان</th>
+                                <th>نویسنده</th>
+                                <th>شابک</th>
+                                <th>تعداد</th>
+                                <th>ناشر</th>
+                                <th class="text-center">قیمت</th>
+                                <th class="text-center">تاریخ انتشار</th>
+                                <th style="width:25px;">وضعیت</th>
+                                <th>عملیات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                int i = 1;
+                            }
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td class="text-center">@i</td>
+                                    <td class="text-nowrap">@item.Title</td>
+                                    <td>@item.Authors</td>
+                                    <td>@item.ISBN</td>
+                                    <td>@item.Stock</td>
+                                    <td>@item.PublisherName</td>
+                                    <td class="text-center">@item.Price</td>
+                                    @{
+                                        var dateTime = item.PublishDate.HasValue ? date.GetYear(item.PublishDate.Value) : 0;
+                                    }
+                                    <td class="text-center">@dateTime</td>
+                                    <td class="text-center">
+                                        @{
+                                            if (item.IsPublish.Value)
+                                            {
+                                                <label class="badge badge-success btn-block">منتشر شده</label>
+                                            }
+                                            else
+                                            {
+                                                <label class="badge badge-info btn-block">پیش نویس</label>
+                                            }
+                                        }
+                                    </td>
+                                    <td class="text-center">
+                                        <a class="btn btn-info btn-icon"><i class="fa fa-eye text-white"></i></a>
+                                        <a class="btn btn-success btn-icon"><i class="fa fa-edit text-white"></i></a>
+                                        <a class="btn btn-danger btn-icon"><i class="fa fa-trash text-white"></i></a>
+                                    </td>
+                                </tr>
+                                i++;
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

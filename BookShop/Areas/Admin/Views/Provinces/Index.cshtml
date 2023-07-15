@@ -1,0 +1,51 @@
+﻿@using EntityFrameworkCore.Models
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@model IEnumerable<Province>
+@{
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class=bg-light card-header">
+                استان ها
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(p=>p.ProvinceName)
+                            </th>
+                            <th>
+                                شهرهای استان
+                            </th>
+                            <th>
+                                عملیات
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var province in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @province.ProvinceName
+                                </td>
+                                <td>
+                                    <a href="/Admin/Cities/@province.ProvinceId" class="btn btn-sm btn-info">مشاهده شهرها</a>
+                                </td>
+                                <td>
+                                    <a href="/Admin/Provinces/Details/@province.ProvinceId" class="btn btn-info btn-icon"><i class="fa fa-eye text-white"></i></a>
+                                    <a href="/Admin/Provinces/Edit/@province.ProvinceId" class="btn btn-success btn-icon"><i class="fa fa-edit text-white"></i></a>
+                                    <a href="/Admin/Provinces/Delete/@province.ProvinceId" class="btn btn-danger btn-icon"><i class="fa fa-trash text-white"></i></a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
