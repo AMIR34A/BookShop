@@ -1,44 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using BookShop.Models;
+﻿using BookShop.Models.Repository;
 using EntityFrameworkCore.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookShop.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class AuthorsController : Controller
     {
-        private readonly BookShopContext _context;
+        private readonly IUnitOfWork unitOfWork;
 
-        public AuthorsController(BookShopContext context)
+        public AuthorsController(IUnitOfWork unitOfWork)
         {
-            _context = context;
+            this.unitOfWork = unitOfWork;
         }
 
         // GET: Admin/Authors
         public async Task<IActionResult> Index()
         {
-              return _context.Authors != null ? 
-                          View(await _context.Authors.ToListAsync()) :
-                          Problem("Entity set 'BookShopContext.Authors'  is null.");
+            var authors = await unitOfWork.RepositoryBase<Author>().GetAllAsync();
+            return View(authors);
         }
 
         // GET: Admin/Authors/Details/5
         public async Task<IActionResult> Details(int? id)
+
         {
-            if (id == null || _context.Authors == null)
+            if (id is null)
             {
                 return NotFound();
             }
 
-            var author = await _context.Authors
-                .FirstOrDefaultAsync(m => m.AuthorId == id);
-            if (author == null)
+            var author = await unitOfWork.RepositoryBase<Author>().FindByIdAsync(id);
+            if (author is null)
             {
                 return NotFound();
             }
@@ -59,10 +53,10 @@ namespace BookShop.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("AuthorId,FirstName,LastName")] Author author)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                _context.Add(author);
-                await _context.SaveChangesAsync();
+                await unitOfWork.RepositoryBase<Author>().CreateAsync(author);
+                await unitOfWork.SaveAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(author);
@@ -71,12 +65,12 @@ namespace BookShop.Areas.Admin.Controllers
         // GET: Admin/Authors/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Authors == null)
+            if (id is null)
             {
                 return NotFound();
             }
 
-            var author = await _context.Authors.FindAsync(id);
+            var author = await unitOfWork.RepositoryBase<Author>().FindByIdAsync(id);
             if (author == null)
             {
                 return NotFound();
@@ -100,12 +94,12 @@ namespace BookShop.Areas.Admin.Controllers
             {
                 try
                 {
-                    _context.Update(author);
-                    await _context.SaveChangesAsync();
+                    unitOfWork.RepositoryBase<Author>().Update(author);
+                    await unitOfWork.SaveAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AuthorExists(author.AuthorId))
+                    if (!await AuthorExists(author.AuthorId))
                     {
                         return NotFound();
                     }
@@ -122,14 +116,14 @@ namespace BookShop.Areas.Admin.Controllers
         // GET: Admin/Authors/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Authors == null)
+            if (id is null)
             {
                 return NotFound();
             }
 
-            var author = await _context.Authors
-                .FirstOrDefaultAsync(m => m.AuthorId == id);
-            if (author == null)
+            var author = await unitOfWork.RepositoryBase<Author>().FindByIdAsync(id);
+
+            if (author is null)
             {
                 return NotFound();
             }
@@ -142,28 +136,24 @@ namespace BookShop.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Authors == null)
-            {
-                return Problem("Entity set 'BookShopContext.Authors'  is null.");
-            }
-            var author = await _context.Authors.FindAsync(id);
+            var author = await unitOfWork.RepositoryBase<Author>().FindByIdAsync(id);
             if (author != null)
             {
-                _context.Authors.Remove(author);
+                unitOfWork.RepositoryBase<Author>().Delete(author);
             }
-            
-            await _context.SaveChangesAsync();
+
+            await unitOfWork.SaveAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool AuthorExists(int id)
+        private async Task<bool> AuthorExists(int id)
         {
-          return (_context.Authors?.Any(e => e.AuthorId == id)).GetValueOrDefault();
+            return await unitOfWork.RepositoryBase<Author>().FindByIdAsync(id) is not null ? true : false;
         }
 
         public async Task<IActionResult> AuthorBooks(int id)
         {
-            var authors = await _context.Authors.Where(a => a.AuthorId == id).FirstOrDefaultAsync();
+            var authors = await unitOfWork.RepositoryBase<Author>().FindByIdAsync(id);
 
             if (authors is null)
                 return NotFound();

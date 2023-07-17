@@ -1,6 +1,17 @@
-﻿namespace BookShop.Models.Repository
+﻿using System.Linq.Expressions;
+
+namespace BookShop.Models.Repository;
+
+public interface IRepositoryBase<TEntity>
 {
-    public interface IRepositoryBase
-    {
-    }
+    Task<IEnumerable<TEntity>> GetAllAsync();
+    Task<TEntity> FindByIdAsync(object id);
+    Task<IEnumerable<TEntity>> FindByConditionAsync(Expression<Func<TEntity, bool>> filter, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy, params Expression<Func<TEntity, bool>>[] includes);
+    Task CreateAsync(TEntity entity);
+    void Update(TEntity entity);
+    void Delete(TEntity entity);
+    Task CreateRangeAsync(IEnumerable<TEntity> entities);
+    void UpdateRange(IEnumerable<TEntity> entities);
+    void DeleteRange(IEnumerable<TEntity> entities);
+    void Dispose();
 }

@@ -3,10 +3,12 @@ using System.Linq.Expressions;
 
 namespace BookShop.Models.Repository;
 
-public class RepositoryBase<TEntity, TContext> : IRepositoryBase<TEntity> where TContext : DbContext where TEntity : class
+public class RepositoryBase<TEntity, TContext> : IRepositoryBase<TEntity>,IDisposable where TContext : DbContext where TEntity : class
 {
     protected TContext _context;
     private DbSet<TEntity> _dbSet;
+    private bool disposedValue;
+
     public RepositoryBase(TContext context)
     {
         _context = context;
@@ -60,4 +62,22 @@ public class RepositoryBase<TEntity, TContext> : IRepositoryBase<TEntity> where 
     public void Update(TEntity entity) => _dbSet.Update(entity);
 
     public void UpdateRange(IEnumerable<TEntity> entities) => _dbSet.UpdateRange(entities);
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!disposedValue)
+        {
+            if (disposing)
+            {
+                _context.Dispose();
+            }
+            disposedValue = true;
+        }
+    }
+
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
 }

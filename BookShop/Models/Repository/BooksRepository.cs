@@ -4,7 +4,7 @@ using static BookShop.Models.ViewModels.CategoryViewModel;
 
 namespace BookShop.Models.Repository
 {
-    public class BooksRepository
+    public class BooksRepository : IBooksRepository
     {
         private readonly BookShopContext _context;
 
