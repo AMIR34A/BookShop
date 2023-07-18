@@ -9,7 +9,6 @@ namespace BookShop.Areas.Admin.Controllers
     public class AuthorsController : Controller
     {
         private readonly IUnitOfWork unitOfWork;
-
         public AuthorsController(IUnitOfWork unitOfWork)
         {
             this.unitOfWork = unitOfWork;

@@ -1,24 +1,23 @@
-﻿using BookShop.Models;
+﻿using BookShop.Models.Repository;
+using EntityFrameworkCore.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Data.Entity;
 
-namespace BookShop.Areas.Admin.Controllers
+namespace BookShop.Areas.Admin.Controllers;
+
+[Area("Admin")]
+public class CitiesController : Controller
 {
-    [Area("Admin")]
-    public class CitiesController : Controller
+    IUnitOfWork unitOfWork;
+
+    public CitiesController(IUnitOfWork unitOfWork)
     {
-        BookShopContext _context;
+        this.unitOfWork = unitOfWork;
+    }
 
-        public CitiesController(BookShopContext bookShopContext)
-        {
-            _context = bookShopContext;
-        }
-
-        public async Task<IActionResult> Index(int? id)
-        {
-            var province =  _context.Provinces.Single(p => p.ProvinceId == id.Value);
-            await _context.Entry(province).Collection(p=>p.Cities).LoadAsync();
-            return View(province);
-        }
+    public async Task<IActionResult> Index(int? id)
+    {
+        var province = await unitOfWork.RepositoryBase<Province>().FindByIdAsync(id.Value);
+        await unitOfWork.BookShopContext.Entry(province).Collection(p => p.Cities).LoadAsync();
+        return View(province);
     }
 }

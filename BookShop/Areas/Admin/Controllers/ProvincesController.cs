@@ -1,22 +1,21 @@
-﻿using BookShop.Models;
+﻿using BookShop.Models.Repository;
+using EntityFrameworkCore.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Data.Entity;
 
-namespace BookShop.Areas.Admin.Controllers
+namespace BookShop.Areas.Admin.Controllers;
+
+[Area("Admin")]
+public class ProvincesController : Controller
 {
-    [Area("Admin")]
-    public class ProvincesController : Controller
+    IUnitOfWork unitOfWork;
+    public ProvincesController(IUnitOfWork unitOfWork)
     {
-        BookShopContext _context;
-        public ProvincesController(BookShopContext bookShopContext)
-        {
-            _context = bookShopContext;
-        }
+        this.unitOfWork = unitOfWork;
+    }
 
-        public async Task<IActionResult> Index()
-        {
-            var provinces =  _context.Provinces.AsAsyncEnumerable();
-            return View(provinces);
-        }
+    public async Task<IActionResult> Index()
+    {
+        var provinces = await unitOfWork.RepositoryBase<Province>().GetAllAsync();
+        return View(provinces);
     }
 }
