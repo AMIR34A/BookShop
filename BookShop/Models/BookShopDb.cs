@@ -213,6 +213,8 @@ namespace EntityFrameworkCore.Models
     public class Publisher
     {
         public int PublisherId { get; set; }
+        [Display(Name ="ناشر")]
+        [Required(ErrorMessage ="فیلد {0} باید پر شود")]
         public string PublisherName { get; set; }
 
         public List<Book> Books { get; set; }

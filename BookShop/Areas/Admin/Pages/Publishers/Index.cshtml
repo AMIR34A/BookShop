@@ -1,0 +1,46 @@
+﻿@page
+@model BookShop.Areas.Admin.Pages.Publishers.IndexModel
+@{
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-light">
+                ناشرین کتاب
+            </div>
+            <div class="card-body">
+                <p>
+                    <a asp-page="./Create" class="btn btn-primary">افزودن ناشر جدید</a>
+                </p>
+                <form method="post">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>نام ناشر</th>
+                                <th>عملیات ها</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var publisher in Model.Publishers)
+                            {
+                                <tr>
+                                    <td>@publisher.PublisherName</td>
+                                    <td class="text-center">
+                                        <a asp-page="./Edit" asp-route-id="@publisher.PublisherId" class="btn btn-success btn-icon">
+                                            <i class="fa fa-edit"></i>
+                                        </a>
+                                        <button type="submit" class="btn btn-danger btn-icon" asp-route-id="@publisher.PublisherId" asp-page-handler="Delete">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

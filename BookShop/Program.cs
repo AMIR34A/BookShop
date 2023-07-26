@@ -28,6 +28,7 @@ builder.Services.AddPaging(option =>
     option.HtmlIndicatorUp = "<i class='fa fa-sort-amount-up'></i>";
 });
 
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -50,6 +51,7 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+app.MapRazorPages();
 
 
 
