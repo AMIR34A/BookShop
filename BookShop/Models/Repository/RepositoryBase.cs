@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 
 namespace BookShop.Models.Repository;
 
-public class RepositoryBase<TEntity, TContext> : IRepositoryBase<TEntity>,IDisposable where TContext : DbContext where TEntity : class
+public class RepositoryBase<TEntity, TContext> : IRepositoryBase<TEntity>, IDisposable where TContext : DbContext where TEntity : class
 {
     protected TContext _context;
     private DbSet<TEntity> _dbSet;
@@ -62,6 +62,14 @@ public class RepositoryBase<TEntity, TContext> : IRepositoryBase<TEntity>,IDispo
     public void Update(TEntity entity) => _dbSet.Update(entity);
 
     public void UpdateRange(IEnumerable<TEntity> entities) => _dbSet.UpdateRange(entities);
+
+    public async Task<List<TEntity>> GetPaginateResaultAsync(int currentPage, int pageSize)
+    {
+        var entities = await GetAllAsync();
+        return _dbSet.Skip((currentPage - 1) * pageSize).Take(pageSize).ToList();
+    }
+
+    public async Task<int> CountAsync() => await _dbSet.CountAsync();
 
     protected virtual void Dispose(bool disposing)
     {

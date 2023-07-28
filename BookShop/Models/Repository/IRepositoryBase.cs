@@ -13,5 +13,7 @@ public interface IRepositoryBase<TEntity>
     Task CreateRangeAsync(IEnumerable<TEntity> entities);
     void UpdateRange(IEnumerable<TEntity> entities);
     void DeleteRange(IEnumerable<TEntity> entities);
+    Task<List<TEntity>> GetPaginateResaultAsync(int currentPage, int pageSize);
+    Task<int> CountAsync();
     void Dispose();
 }

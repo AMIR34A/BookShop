@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "{CurrentPage:int?}"
 @model BookShop.Areas.Admin.Pages.Publishers.IndexModel
 @{
     Layout = "~/Views/Shared/_Admin.cshtml";
@@ -39,6 +39,26 @@
                             }
                         </tbody>
                     </table>
+                    <ul class="pagination align-content-center">
+                        @if (Model.IsExistPreviousPage)
+                        {
+                            <li class="page-item">
+                                <a asp-page="./Index" asp-route-CurrentPage="@(Model.CurrentPage-1)" class="page-link">P</a>
+                            </li>
+                        }
+                        @for(int i=1;i<=Model.TotalPages;i++)
+                        {
+                            <li class="page-item @(Model.CurrentPage==i ? "active" : "")">
+                                <a asp-page="./Index" asp-route-CurrentPage="@i" class="page-link">@i</a>
+                            </li>
+                        }
+                        @if(Model.IsExistNextPage)
+                        {
+                            <li class="page-item">
+                                <a asp-page="./Index" asp-route-CurrentPage="@(Model.CurrentPage+1)" class="page-link">N</a>
+                            </li>
+                        }
+                    </ul>
                 </form>
             </div>
         </div>

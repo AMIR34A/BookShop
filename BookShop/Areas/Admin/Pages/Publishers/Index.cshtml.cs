@@ -15,10 +15,18 @@ public class IndexModel : PageModel
     }
 
     public IEnumerable<Publisher> Publishers { get; set; }
+    public int PageSize { get; set; } = 2;
+    [BindProperty(SupportsGet = true)]
+    public int CurrentPage { get; set; } = 1;
+    public int Count { get; set; }
+    public int TotalPages => (int)Math.Ceiling(decimal.Divide(Count, PageSize));
+    public bool IsExistPreviousPage { get => CurrentPage > 1; }
+    public bool IsExistNextPage { get => CurrentPage < TotalPages; }
 
     public async Task<IActionResult> OnGetAsync()
     {
-        Publishers = await unitOfWork.RepositoryBase<Publisher>().GetAllAsync();
+        Count = await unitOfWork.RepositoryBase<Publisher>().CountAsync();
+        Publishers = await unitOfWork.RepositoryBase<Publisher>().GetPaginateResaultAsync(CurrentPage, PageSize);
         return Page();
     }
 
