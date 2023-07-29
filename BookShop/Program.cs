@@ -1,10 +1,21 @@
-﻿using BookShop.Models;
+using BookShop.Models;
 using BookShop.Models.Repository;
 using Microsoft.Extensions.Localization;
 using ReflectionIT.Mvc.Paging;
 using System.Globalization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using BookShop.Data;
+using BookShop.Areas.Identity.Data;
 
 var builder = WebApplication.CreateBuilder(args);
+var connectionString = builder.Configuration.GetConnectionString("IdentityContextConnection") ?? throw new InvalidOperationException("Connection string 'IdentityContextConnection' not found.");
+
+builder.Services.AddDbContext<IdentityContext>(options =>
+    options.UseSqlServer(connectionString));
+
+builder.Services.AddDefaultIdentity<BookShopUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<IdentityContext>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -49,6 +60,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseAuthentication();;
 
 app.UseAuthorization();
 app.MapRazorPages();
