@@ -1,4 +1,5 @@
 ﻿using BookShop.Areas.Identity.Data;
+using EntityFrameworkCore.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 

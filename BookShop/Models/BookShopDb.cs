@@ -107,7 +107,7 @@ namespace EntityFrameworkCore.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
 
-        public List<Author_Book> Author_Books 
+        public List<Author_Book> Author_Books
         {
             get => _lazyLoader.Load(this, ref author_Books);
             set => author_Books = value;
@@ -130,7 +130,7 @@ namespace EntityFrameworkCore.Models
         public int BookId { get; set; }
         public int AuthorId { get; set; }
 
-        public Book Book 
+        public Book Book
         {
             get => _lazyLoader.Load(this, ref book);
             set => book = value;
@@ -142,11 +142,10 @@ namespace EntityFrameworkCore.Models
     {
         [Key]
         public string CustomerId { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public DateTime BirthDate { get; set; }
         public string FirstAddress { get; set; }
-        public string Mobile { get; set; }
+        public string SecondAddress { get; set; }
+        public string FirstPostalCode { get; set; }
+        public string SecondPostalCode { get; set; }
         public string Tellphone { get; set; }
         public string Image { get; set; }
 
@@ -161,7 +160,7 @@ namespace EntityFrameworkCore.Models
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int ProvinceId { get; set; }
-        [Display(Name ="استان")]
+        [Display(Name = "استان")]
         public string ProvinceName { get; set; }
 
         public List<City> Cities { get; set; }
@@ -213,8 +212,8 @@ namespace EntityFrameworkCore.Models
     public class Publisher
     {
         public int PublisherId { get; set; }
-        [Display(Name ="ناشر")]
-        [Required(ErrorMessage ="فیلد {0} باید پر شود")]
+        [Display(Name = "ناشر")]
+        [Required(ErrorMessage = "فیلد {0} باید پر شود")]
         public string PublisherName { get; set; }
 
         public List<Book> Books { get; set; }
