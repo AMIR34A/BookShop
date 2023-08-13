@@ -14,8 +14,12 @@ var connectionString = builder.Configuration.GetConnectionString("IdentityContex
 builder.Services.AddDbContext<IdentityContext>(options =>
     options.UseSqlServer(connectionString));
 
-builder.Services.AddDefaultIdentity<BookShopUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<IdentityContext>();
+//builder.Services.AddDefaultIdentity<BookShopUser>(options => options.SignIn.RequireConfirmedAccount = true)
+//    .AddEntityFrameworkStores<IdentityContext>();
+
+builder.Services.AddIdentity<BookShopUser, IdentityRole>()
+    .AddDefaultUI()
+    .AddDefaultTokenProviders();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
