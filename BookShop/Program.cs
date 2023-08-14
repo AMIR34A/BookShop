@@ -19,6 +19,7 @@ builder.Services.AddDbContext<IdentityContext>(options =>
 
 builder.Services.AddIdentity<BookShopUser, IdentityRole>()
     .AddDefaultUI()
+    .AddEntityFrameworkStores<IdentityContext>()
     .AddDefaultTokenProviders();
 
 // Add services to the container.

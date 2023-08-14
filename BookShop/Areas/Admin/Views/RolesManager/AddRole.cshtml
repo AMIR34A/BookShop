@@ -1,0 +1,47 @@
+﻿@model BookShop.Areas.Admin.Models.ViewModels.RolesViewModel
+@{
+    ViewData["Title"] = "AddRole";
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-light">
+                افزودن نقش جدید
+            </div>
+            @if (!string.IsNullOrEmpty(ViewBag.Error))
+            {
+                <div class="alert alert-danger alert-dismissable">
+                    @ViewBag.Error
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            }
+            <form asp-action="AddRole">
+                <div class="row card-body mb-3">
+                    <div class="col-md-4">
+                        <div class="row">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="col-md-3">
+                                <label asp-for="RoleName" class="control-label"></label>
+                            </div>
+                            <div class="col-md-9">
+                                <input asp-for="RoleName" class="form-control" />
+                                <span asp-validation-for="RoleName" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <button type="submit" class="btn btn-info float-right">افزودن نقش</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
