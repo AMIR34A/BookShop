@@ -19,10 +19,11 @@
             }
             <form asp-action="AddRole">
                 <div class="row card-body mb-3">
-                    <div class="col-md-4">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="col-md-7 form-group">
                         <div class="row">
-                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                            <div class="col-md-3">
+
+                            <div class="col-md-12">
                                 <label asp-for="RoleName" class="control-label"></label>
                             </div>
                             <div class="col-md-9">
@@ -31,8 +32,23 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3">
-                        <button type="submit" class="btn btn-info float-right">افزودن نقش</button>
+                    <div class="col-md-7 form-group">
+                        <div class="row">
+
+                            <div class="col-md-12">
+                                <label asp-for="Description" class="control-label"></label>
+                            </div>
+                            <div class="col-md-9">
+                                <textarea asp-for="Description" class="form-control"></textarea>
+                                <span asp-validation-for="Description" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-7">
+                        <div class="col-md-9">
+                            <button type="submit" class="btn btn-info float-left">افزودن نقش</button>
+                        </div>
+
                     </div>
                 </div>
             </form>

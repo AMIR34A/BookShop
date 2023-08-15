@@ -1,11 +1,10 @@
 ﻿using BookShop.Areas.Identity.Data;
-using EntityFrameworkCore.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookShop.Data;
 
-public class IdentityContext : IdentityDbContext<BookShopUser>
+public class IdentityContext : IdentityDbContext<BookShopUser, ApplicationRole, string>
 {
     public IdentityContext(DbContextOptions<IdentityContext> options)
         : base(options)
@@ -15,8 +14,6 @@ public class IdentityContext : IdentityDbContext<BookShopUser>
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
-        // Customize the ASP.NET Identity model and override the defaults if needed.
-        // For example, you can rename the ASP.NET Identity table names and more.
-        // Add your customizations after calling base.OnModelCreating(builder);
+        builder.Entity<ApplicationRole>().ToTable("AspNetRoles").ToTable("AppRoles");
     }
 }
