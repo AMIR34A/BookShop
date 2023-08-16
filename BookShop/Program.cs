@@ -1,12 +1,12 @@
+using BookShop.Areas.Identity.Data;
+using BookShop.Data;
 using BookShop.Models;
 using BookShop.Models.Repository;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using ReflectionIT.Mvc.Paging;
 using System.Globalization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using BookShop.Data;
-using BookShop.Areas.Identity.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("IdentityContextConnection") ?? throw new InvalidOperationException("Connection string 'IdentityContextConnection' not found.");
@@ -28,6 +28,7 @@ builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 builder.Services.AddTransient<BookShopContext>();
 builder.Services.AddTransient<BooksRepository>();
 builder.Services.AddTransient<PersianCalendar>();
+builder.Services.AddScoped<IApplicationRoleManager, ApplicationRoleManager>();
 
 builder.Services.AddLocalization(option => option.ResourcesPath = "Resources");
 builder.Services.AddMvc(setup =>
@@ -65,7 +66,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-app.UseAuthentication();;
+app.UseAuthentication(); ;
 
 app.UseAuthorization();
 app.MapRazorPages();
@@ -73,9 +74,9 @@ app.MapRazorPages();
 
 
 app.MapAreaControllerRoute(
-name:"AdminArea",
-areaName:"Admin",
-pattern:"Admin/{controller}/{action=Index}/{id?}");
+name: "AdminArea",
+areaName: "Admin",
+pattern: "Admin/{controller}/{action=Index}/{id?}");
 
 app.MapControllerRoute(
     name: "default",

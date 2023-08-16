@@ -1,23 +1,22 @@
 ﻿using BookShop.Areas.Admin.Models.ViewModels;
 using BookShop.Areas.Identity.Data;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ReflectionIT.Mvc.Paging;
 
 namespace BookShop.Areas.Admin.Controllers;
 
 [Area("Admin")]
-public class RolesManager : Controller
+public class RolesManagerController : Controller
 {
-    RoleManager<ApplicationRole> roleManager;
-    public RolesManager(RoleManager<ApplicationRole> roleManager) => this.roleManager = roleManager;
+    IApplicationRoleManager roleManager;
+    public RolesManagerController(IApplicationRoleManager roleManager) => this.roleManager = roleManager;
 
 
     public IActionResult Index(string message, int page = 1, int row = 10)
     {
         if (!string.IsNullOrEmpty(message))
             TempData["Message"] = message;
-        var roles = roleManager.Roles.Select(role => new RolesViewModel { RoleId = role.Id, RoleName = role.Name, Description = role.Description });
+        var roles = roleManager.GetAllRolesAndUsersCount();
         var pagingModel = PagingList.Create(roles, row, page);
         pagingModel.RouteValue = new RouteValueDictionary()
         {
@@ -37,7 +36,7 @@ public class RolesManager : Controller
     public async Task<IActionResult> AddRole(RolesViewModel rolesViewModel)
     {
         bool isExist = await roleManager.RoleExistsAsync(rolesViewModel.RoleName);
-        if(isExist)
+        if (isExist)
         {
             ViewBag.Error = "این نقش در سیستم وجود دارد";
             return View(rolesViewModel);
@@ -72,7 +71,7 @@ public class RolesManager : Controller
         if (role is null)
             return NotFound();
         bool isExist = await roleManager.RoleExistsAsync(rolesViewModel.RoleName);
-        if(isExist)
+        if (isExist)
         {
             ViewBag.Message = "این نقش در سیستم وجود دارد";
             return View(rolesViewModel);
