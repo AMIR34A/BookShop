@@ -58,6 +58,7 @@ public class RolesManagerController : Controller
         {
             RoleId = role.Id,
             RoleName = role.Name,
+            RecentRoleName = role.Name,
             Description = role.Description
         };
         return View(rolesViewModel);
@@ -71,7 +72,7 @@ public class RolesManagerController : Controller
         if (role is null)
             return NotFound();
         bool isExist = await roleManager.RoleExistsAsync(rolesViewModel.RoleName);
-        if (isExist)
+        if (isExist && rolesViewModel.RoleName != rolesViewModel.RecentRoleName)
         {
             ViewBag.Message = "این نقش در سیستم وجود دارد";
             return View(rolesViewModel);
