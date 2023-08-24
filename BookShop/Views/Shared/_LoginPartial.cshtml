@@ -1,8 +1,8 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using BookShop.Areas.Identity.Data
 
-@inject SignInManager<BookShopUser> SignInManager
-@inject UserManager<BookShopUser> UserManager
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
 
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))

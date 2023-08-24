@@ -17,7 +17,7 @@ builder.Services.AddDbContext<IdentityContext>(options =>
 //builder.Services.AddDefaultIdentity<BookShopUser>(options => options.SignIn.RequireConfirmedAccount = true)
 //    .AddEntityFrameworkStores<IdentityContext>();
 
-builder.Services.AddIdentity<BookShopUser, ApplicationRole>()
+builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
     .AddDefaultUI()
     .AddEntityFrameworkStores<IdentityContext>()
     .AddDefaultTokenProviders();
