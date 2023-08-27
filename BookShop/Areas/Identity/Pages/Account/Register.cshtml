@@ -30,8 +30,8 @@
                 </div>
 
                 <div class="col-md-9">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="row">
-                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <div class="form-group col-md-6">
                             <label asp-for="Input.Username"></label>
                             <input asp-for="Input.Username" class="form-control" autocomplete="username" aria-required="true" />
@@ -80,7 +80,7 @@
                                 @foreach (var role in Model.Roles)
                                 {
                                     <li class="pl-1">
-                                        <input type="checkbox" value="@role.Id" name="UserRoles">
+                                        <input type="checkbox" value="@role.Name" name="UserRoles">
                                         @role.Name
                                     </li>
                                 }

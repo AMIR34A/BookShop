@@ -2,31 +2,18 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Text.Encodings.Web;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
 using BookShop.Areas.Identity.Data;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.Extensions.Logging;
+using System.ComponentModel.DataAnnotations;
 
 namespace BookShop.Areas.Identity.Pages.Account
 {
     public class RegisterModel : PageModel
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IUserStore<ApplicationUser> _userStore;
-        private readonly IUserEmailStore<ApplicationUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IApplicationRoleManager _roleManager;
         public RegisterModel(
@@ -38,8 +25,6 @@ namespace BookShop.Areas.Identity.Pages.Account
         {
             _roleManager = roleManager;
             _userManager = userManager;
-            _userStore = userStore;
-            _emailStore = GetEmailStore();
             _logger = logger;
         }
 
@@ -55,8 +40,8 @@ namespace BookShop.Areas.Identity.Pages.Account
         public class InputModel
         {
 
-            [Required(ErrorMessage ="وارد نمودن {0} الزامی است")]
-            [EmailAddress(ErrorMessage ="ایمیل شما معتبر نیست")]
+            [Required(ErrorMessage = "وارد نمودن {0} الزامی است")]
+            [EmailAddress(ErrorMessage = "ایمیل شما معتبر نیست")]
             [Display(Name = "ایمیل")]
             public string Email { get; set; }
 
@@ -72,7 +57,7 @@ namespace BookShop.Areas.Identity.Pages.Account
             [Compare("Password", ErrorMessage = "با کلمه عبور مطابقت ندراد")]
             public string ConfirmPassword { get; set; }
 
-            [Display(Name ="نام")]
+            [Display(Name = "نام")]
             [Required(ErrorMessage = "وارد نمودن {0} الزامی است")]
             public string FirstName { get; set; }
 
@@ -107,23 +92,24 @@ namespace BookShop.Areas.Identity.Pages.Account
             returnUrl ??= Url.Content("~/");
             if (ModelState.IsValid)
             {
-                var user = CreateUser();
+                var user = new ApplicationUser
+                {
+                    FirstName = Input.FirstName,
+                    LastName = Input.LastName,
+                    UserName = Input.Username,
+                    Email = Input.Email,
+                    PhoneNumber = Input.PhoneNumber,
+                    BirthDate = DateTime.Parse(Input.BirthDate),
+                    IsActive = true
+                };
 
-                await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
-                await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
                 {
-                    if (_userManager.Options.SignIn.RequireConfirmedAccount)
-                    {
-                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
-                    }
-                    else
-                    {
-                        return LocalRedirect(returnUrl);
-                    }
+                    return LocalRedirect(returnUrl);
                 }
+
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
@@ -131,30 +117,8 @@ namespace BookShop.Areas.Identity.Pages.Account
             }
 
             // If we got this far, something failed, redisplay form
+            Roles = _roleManager.GetAllRoles();
             return Page();
-        }
-
-        private ApplicationUser CreateUser()
-        {
-            try
-            {
-                return Activator.CreateInstance<ApplicationUser>();
-            }
-            catch
-            {
-                throw new InvalidOperationException($"Can't create an instance of '{nameof(ApplicationUser)}'. " +
-                    $"Ensure that '{nameof(ApplicationUser)}' is not an abstract class and has a parameterless constructor, or alternatively " +
-                    $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
-            }
-        }
-
-        private IUserEmailStore<ApplicationUser> GetEmailStore()
-        {
-            if (!_userManager.SupportsUserEmail)
-            {
-                throw new NotSupportedException("The default UI requires a user store with email support.");
-            }
-            return (IUserEmailStore<ApplicationUser>)_userStore;
         }
     }
 }
