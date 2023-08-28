@@ -73,14 +73,14 @@
                             <span asp-validation-for="Input.BirthDate" class="text-danger"></span>
                         </div>
 
-                        <button class="btn btn-primary mb-3" type="button" data-toggle="collapse" data-target="#demo">افزودن نقش کاربر</button>
+                        <button class="btn btn-primary mb-3" type="button" data-toggle="collapse" data-target="#roles">افزودن نقش کاربر</button>
 
-                        <div id="demo" class="collapse">
+                        <div id="roles" class="collapse">
                             <ul class="list-unstyled">
                                 @foreach (var role in Model.Roles)
                                 {
                                     <li class="pl-1">
-                                        <input type="checkbox" value="@role.Name" name="UserRoles">
+                                        <input type="checkbox" value="@role.Name" name="Input.UserRoles">
                                         @role.Name
                                     </li>
                                 }
@@ -89,10 +89,11 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="card-footer clearfix">
+            <button type="submit" class="btn btn-primary float-left">ثبت</button>
+        </div>
     </form>
-    <div class="card-footer clearfix">
-        <button type="submit" class="btn btn-primary float-left">ثبت</button>
-    </div>
 </div>
 
 @section Scripts {

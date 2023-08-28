@@ -89,7 +89,7 @@ namespace BookShop.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            returnUrl ??= Url.Content("~/");
+            returnUrl ??= Url.Content("~/Admin/UsersManager/Index?message=success");
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser
@@ -107,6 +107,7 @@ namespace BookShop.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
+                    await _userManager.AddToRolesAsync(user, Input.UserRoles);
                     return LocalRedirect(returnUrl);
                 }
 
