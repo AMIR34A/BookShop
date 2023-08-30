@@ -45,7 +45,7 @@ namespace BookShop.Areas.Identity.Pages.Account
             [Display(Name = "ایمیل")]
             public string Email { get; set; }
 
-            [Required]
+            [Required(ErrorMessage = "وارد نمودن {0} الزامی است")]
             [StringLength(100, ErrorMessage = "{0} باید شمامل حداقل {1} و شامل {2} حرف و عدد باشد", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "کلمه عبور")]
@@ -54,6 +54,7 @@ namespace BookShop.Areas.Identity.Pages.Account
 
             [DataType(DataType.Password)]
             [Display(Name = "تکرار کلمه عبور")]
+            [Required(ErrorMessage = "وارد نمودن {0} الزامی است")]
             [Compare("Password", ErrorMessage = "با کلمه عبور مطابقت ندراد")]
             public string ConfirmPassword { get; set; }
 

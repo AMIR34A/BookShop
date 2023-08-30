@@ -20,7 +20,18 @@ builder.Services.AddDbContext<IdentityContext>(options =>
 builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
     .AddDefaultUI()
     .AddEntityFrameworkStores<IdentityContext>()
-    .AddDefaultTokenProviders();
+    .AddDefaultTokenProviders()
+    .AddErrorDescriber<ApplicationIdentityErrorDescriber>();
+
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    options.Password.RequireDigit = true;
+    options.Password.RequiredUniqueChars = 1;
+    options.Password.RequireLowercase = true;
+
+    options.User.RequireUniqueEmail = true;
+    options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$";
+});
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
