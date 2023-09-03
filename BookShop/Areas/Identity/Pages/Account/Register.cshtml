@@ -34,43 +34,50 @@
                     <div class="row">
                         <div class="form-group col-md-6">
                             <label asp-for="Input.Username"></label>
-                            <input asp-for="Input.Username" class="form-control" autocomplete="username" aria-required="true" />
+                            <input asp-for="Input.Username" class="form-control"/>
                             <span asp-validation-for="Input.Username" class="text-danger"></span>
                         </div>
                         <div class="form-group col-md-6">
                             <label asp-for="Input.Email"></label>
-                            <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" />
+                            <input asp-for="Input.Email" class="form-control"/>
                             <span asp-validation-for="Input.Email" class="text-danger"></span>
                         </div>
                         <div class="form-group col-md-6">
                             <label asp-for="Input.Password"></label>
-                            <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" />
+                            <input asp-for="Input.Password" class="form-control"/>
                             <span asp-validation-for="Input.Password" class="text-danger"></span>
                         </div>
                         <div class="form-group col-md-6">
                             <label asp-for="Input.ConfirmPassword"></label>
-                            <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" />
+                            <input asp-for="Input.ConfirmPassword" class="form-control"/>
                             <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
                         </div>
                         <div class="form-group col-md-6">
                             <label asp-for="Input.FirstName"></label>
-                            <input asp-for="Input.FirstName" class="form-control" autocomplete="new-password" aria-required="true" />
+                            <input asp-for="Input.FirstName" class="form-control"/>
                             <span asp-validation-for="Input.FirstName" class="text-danger"></span>
                         </div>
                         <div class="form-group col-md-6">
                             <label asp-for="Input.LastName"></label>
-                            <input asp-for="Input.LastName" class="form-control" autocomplete="new-password" aria-required="true" />
+                            <input asp-for="Input.LastName" class="form-control"/>
                             <span asp-validation-for="Input.LastName" class="text-danger"></span>
                         </div>
                         <div class="form-group col-md-6">
                             <label asp-for="Input.PhoneNumber"></label>
-                            <input asp-for="Input.PhoneNumber" class="form-control" autocomplete="new-password" aria-required="true" />
+                            <input asp-for="Input.PhoneNumber" class="form-control" />
                             <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
                         </div>
                         <div class="form-group col-md-6">
                             <label asp-for="Input.BirthDate"></label>
-                            <input asp-for="Input.BirthDate" class="form-control" autocomplete="new-password" aria-required="true" />
-                            <span asp-validation-for="Input.BirthDate" class="text-danger"></span>
+                            <div class="input-group">
+@*                                 <div class="input-group-prepend">
+                                    <span class="input-group-text cursor-pointer" id="dpt1">
+                                        <i class="fa fa-calendar"></i>
+                                    </span>
+                                </div> *@
+                                <input asp-for="Input.BirthDate" class="form-control" data-name="dpt1-text" id="dpt1-text" />
+                                <span asp-validation-for="Input.BirthDate" class="text-danger"></span>
+                            </div>
                         </div>
 
                         <button class="btn btn-primary mb-3" type="button" data-toggle="collapse" data-target="#roles">افزودن نقش کاربر</button>
@@ -99,3 +106,11 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
+
+<script>
+    new mds.MdsPersianDateTimePicker(document.querySelector('#dpt1-text'), {
+        targetTextSelector: '#dpt1-text',
+        targetDateSelector: '#dpt1-value',
+    });
+
+</script>
