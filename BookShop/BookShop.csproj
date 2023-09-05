@@ -8,10 +8,13 @@
 
   <ItemGroup>
     <Content Include="node_modules\.package-lock.json" />
-    <Content Include="node_modules\md.bootstrappersiandatetimepicker\dist\mds.bs.datetimepicker.style.css" />
+    <Content Include="node_modules\md.bootstrappersiandatetimepicker\demo\demo.css" />
+    <Content Include="node_modules\md.bootstrappersiandatetimepicker\demo\Samples1.html" />
+    <Content Include="node_modules\md.bootstrappersiandatetimepicker\dist\jquery.md.bootstrap.datetimepicker.style.css" />
     <Content Include="node_modules\md.bootstrappersiandatetimepicker\package.json" />
-    <Content Include="node_modules\md.bootstrappersiandatetimepicker\src\mds.bs.datetimepicker.style.css" />
-    <Content Include="node_modules\md.bootstrappersiandatetimepicker\tsconfig.json" />
+    <Content Include="node_modules\md.bootstrappersiandatetimepicker\src\jquery.md.bootstrap.datetimepicker.style.css" />
+    <Content Include="node_modules\md.bootstrappersiandatetimepicker\src\MdPersianDateTimePicker.jpg" />
+    <Content Include="node_modules\md.bootstrappersiandatetimepicker\src\template.html" />
     <Content Include="node_modules\select2\dist\css\select2.css" />
     <Content Include="node_modules\select2\dist\css\select2.min.css" />
     <Content Include="node_modules\select2\dist\js\i18n\build.txt" />
@@ -42,10 +45,11 @@
   <ItemGroup>
     <None Include="node_modules\md.bootstrappersiandatetimepicker\.gitattributes" />
     <None Include="node_modules\md.bootstrappersiandatetimepicker\.jshintrc" />
-    <None Include="node_modules\md.bootstrappersiandatetimepicker\dist\mds.bs.datetimepicker.js" />
-    <None Include="node_modules\md.bootstrappersiandatetimepicker\dist\mds.bs.datetimepicker.js.map" />
-    <None Include="node_modules\md.bootstrappersiandatetimepicker\dist\mds.bs.datetimepicker.style.css.map" />
+    <None Include="node_modules\md.bootstrappersiandatetimepicker\dist\jquery.md.bootstrap.datetimepicker.js" />
+    <None Include="node_modules\md.bootstrappersiandatetimepicker\dist\jquery.md.bootstrap.datetimepicker.js.map" />
+    <None Include="node_modules\md.bootstrappersiandatetimepicker\dist\jquery.md.bootstrap.datetimepicker.style.css.map" />
     <None Include="node_modules\md.bootstrappersiandatetimepicker\README.md" />
+    <None Include="node_modules\md.bootstrappersiandatetimepicker\src\jquery.md.bootstrap.datetimepicker.js" />
     <None Include="node_modules\md.bootstrappersiandatetimepicker\webpack.config.js" />
     <None Include="node_modules\select2\CHANGELOG.md" />
     <None Include="node_modules\select2\dist\js\i18n\af.js" />
@@ -237,10 +241,6 @@
     <None Include="node_modules\select2\src\scss\_multiple.scss" />
     <None Include="node_modules\select2\src\scss\_single.scss" />
     <None Include="wwwroot\js\site.js" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <TypeScriptCompile Include="node_modules\md.bootstrappersiandatetimepicker\src\mds.bs.datetimepicker.ts" />
   </ItemGroup>
 
 </Project>
