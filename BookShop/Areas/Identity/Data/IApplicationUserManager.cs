@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using BookShop.Models.ViewModels;
+using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 
 namespace BookShop.Areas.Identity.Data;
@@ -111,6 +112,6 @@ public interface IApplicationUserManager
 
     #region CustomMethod
     Task<List<ApplicationUser>> GetAllUsersAsync();
-    //Task<List<UsersViewModel>> GetAllUsersWithRolesAsync();
+    Task<List<UsersViewModel>> GetAllUsersWithRolesAsync();
     #endregion
 }
