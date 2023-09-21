@@ -40,6 +40,8 @@ builder.Services.AddTransient<BookShopContext>();
 builder.Services.AddTransient<BooksRepository>();
 builder.Services.AddTransient<PersianCalendar>();
 builder.Services.AddScoped<IApplicationRoleManager, ApplicationRoleManager>();
+builder.Services.AddScoped<IApplicationUserManager, ApplicationUserManager>();
+builder.Services.AddScoped<ApplicationIdentityErrorDescriber>();
 
 builder.Services.AddLocalization(option => option.ResourcesPath = "Resources");
 builder.Services.AddMvc(setup =>
