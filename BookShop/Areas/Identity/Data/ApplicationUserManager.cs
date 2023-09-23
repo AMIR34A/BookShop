@@ -44,7 +44,6 @@ public class ApplicationUserManager : UserManager<ApplicationUser>, IApplication
 
     public async Task<List<UsersViewModel>> GetAllUsersWithRolesAsync()
     {
-        var users = Users;
         return await Users.Select(user => new UsersViewModel
         {
             Id = user.Id,
@@ -60,6 +59,25 @@ public class ApplicationUserManager : UserManager<ApplicationUser>, IApplication
             Roles = user.Roles.Select(u => u.Role.Name),
 
         }).ToListAsync();
+    }
+
+    public async Task<UsersViewModel> GetUserWithRoleAsync(string id)
+    {
+        return await Users.Where(user => user.Id == id).Select(user => new UsersViewModel
+        {
+            Id = user.Id,
+            Email = user.Email,
+            UserName = user.UserName,
+            PhoneNumber = user.PhoneNumber,
+            FirstName = user.FirstName,
+            LastName = user.LastName,
+            BirthDate = user.BirthDate,
+            IsActive = user.IsActive,
+            Image = user.Image,
+            RegisterDate = user.RegisterDate,
+            Roles = user.Roles.Select(u => u.Role.Name),
+
+        }).FirstAsync();
     }
 
     public string NormalizeKey(string key)
