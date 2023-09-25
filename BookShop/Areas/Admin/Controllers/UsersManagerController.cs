@@ -23,4 +23,10 @@ public class UsersManagerController : Controller
         };
         return View(pagingModel);
     }
+
+    public async Task<IActionResult> Details(string id)
+    {
+        var user = await _userManager.FindUserWithRolesByIdAsync(id);
+        return View(user);
+    }
 }
