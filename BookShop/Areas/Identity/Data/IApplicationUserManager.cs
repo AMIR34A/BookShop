@@ -113,5 +113,6 @@ public interface IApplicationUserManager
     #region CustomMethod
     Task<List<ApplicationUser>> GetAllUsersAsync();
     Task<List<UsersViewModel>> GetAllUsersWithRolesAsync();
+    Task<UsersViewModel> GetUserWithRoleAsync(string id);
     #endregion
 }
