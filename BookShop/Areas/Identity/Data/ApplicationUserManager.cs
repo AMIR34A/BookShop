@@ -61,7 +61,7 @@ public class ApplicationUserManager : UserManager<ApplicationUser>, IApplication
         }).ToListAsync();
     }
 
-    public async Task<UsersViewModel> GetUserWithRoleAsync(string id)
+    public async Task<UsersViewModel> GetUserWithRolesByIdAsync(string id)
     {
         return await Users.Where(user => user.Id == id).Select(user => new UsersViewModel
         {
