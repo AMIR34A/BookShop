@@ -34,4 +34,16 @@ public class UsersManagerController : Controller
         var user = await _userManager.FindUserWithRolesByIdAsync(id);
         return View(user);
     }
+
+    [HttpGet]
+    public async Task<IActionResult> Edit(string id)
+    {
+        if (string.IsNullOrEmpty(id))
+            return NotFound();
+        var user = await _userManager.FindUserWithRolesByIdAsync(id);
+        if (user is null)
+            return NotFound();
+        ViewBag.Roles = _roleManager.GetAllRoles();
+        return View(user);
+    }
 }
