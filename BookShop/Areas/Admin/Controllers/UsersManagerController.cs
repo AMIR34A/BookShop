@@ -8,8 +8,13 @@ namespace BookShop.Areas.Admin.Controllers;
 public class UsersManagerController : Controller
 {
     private readonly IApplicationUserManager _userManager;
+    private readonly IApplicationRoleManager _roleManager;
 
-    public UsersManagerController(IApplicationUserManager userManager) => _userManager = userManager;
+    public UsersManagerController(IApplicationUserManager userManager, IApplicationRoleManager roleManager)
+    {
+        _userManager = userManager;
+        _roleManager = roleManager;
+    }
 
     public async Task<IActionResult> Index(string? message, int pageIndex = 1, int pageSize = 10)
     {
