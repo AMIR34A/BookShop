@@ -93,4 +93,16 @@ public class UsersManagerController : Controller
         ViewBag.Roles = _roleManager.GetAllRoles();
         return View(userViewModel);
     }
+
+    [HttpGet]
+    public async Task<IActionResult> Delete(string id)
+    {
+        if (string.IsNullOrEmpty(id))
+            return NotFound();
+
+        var user = await _userManager.FindByIdAsync(id);
+        if (user is null)
+            return NotFound();
+        return View(user);
+    }
 }
