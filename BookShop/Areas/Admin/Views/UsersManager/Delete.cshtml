@@ -1,0 +1,19 @@
+﻿@model UsersViewModel
+
+<div class="row w-75 m-auto">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-light">حذف اطلاعات</div>
+            <div class="card-body">
+                <p>آیا میخواهید کاربر @Model.FirstName @Model.LastName حذف شود؟</p>
+            </div>
+            <div class="card-footer bg-light text-right clearfix">
+                <form asp-action="Delete">
+                    <input type="hidden" value="@Model.Id" name="id" />
+                    <input type="submit" value="بله" class="btn btn-danger mr-2 float-left" />
+                    <a asp-action="Index" class="btn btn-info float-left">خیر</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
