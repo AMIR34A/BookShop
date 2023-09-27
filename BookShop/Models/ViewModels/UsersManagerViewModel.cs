@@ -25,7 +25,7 @@ public class UsersViewModel
     public DateTime BirthDate { get; set; }
 
     [Display(Name = "تصویر پروفایل")]
-    public string Image { get; set; }
+    public string? Image { get; set; }
 
     [Display(Name = "تاریخ عضویت")]
     public DateTime RegisterDate { get; set; }
