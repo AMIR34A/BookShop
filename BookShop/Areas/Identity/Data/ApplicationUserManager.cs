@@ -48,7 +48,7 @@ public class ApplicationUserManager : UserManager<ApplicationUser>, IApplication
         {
             Id = user.Id,
             Email = user.Email,
-            UserName = user.UserName,
+            Username = user.UserName,
             PhoneNumber = user.PhoneNumber,
             FirstName = user.FirstName,
             LastName = user.LastName,
@@ -67,7 +67,7 @@ public class ApplicationUserManager : UserManager<ApplicationUser>, IApplication
         {
             Id = user.Id,
             Email = user.Email,
-            UserName = user.UserName,
+            Username = user.UserName,
             PhoneNumber = user.PhoneNumber,
             FirstName = user.FirstName,
             LastName = user.LastName,
