@@ -63,7 +63,7 @@
                                         <i class="fa fa-calendar"></i>
                                     </span>
                                 </div>
-                                <input asp-for="BirthDate" class="form-control" id="InputBirthDate" />
+                                <input name="BirthDate" value="@Model.BirthDate.ToString("dd/MM/yyyy")" class="form-control" id="InputBirthDate" />
                                 <span asp-validation-for="BirthDate" class="text-danger"></span>
                             </div>
                         </div>
@@ -75,7 +75,7 @@
                                 @foreach (var role in ViewBag.Roles as List<ApplicationRole>)
                                 {
                                     <li class="pl-1">
-                                        <input type="checkbox" value="@role.Name" name="Input.UserRoles">
+                                        <input type="checkbox" value="@role.Name" name="Roles" @Model.Roles.Contains(role.Name) ? checked : "">
                                         @role.Name
                                     </li>
                                 }
