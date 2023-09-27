@@ -20,10 +20,14 @@ public class UsersManagerController : Controller
 
     public async Task<IActionResult> Index(string? message, int pageIndex = 1, int pageSize = 10)
     {
-        if (!string.IsNullOrEmpty(message) && message.Equals("success"))
-            ViewBag.Message = "کاربر با موفقیت اضافه شد.";
-        else if (!string.IsNullOrEmpty(message) && message.Equals("SucceededEdit"))
-            ViewBag.Message = "تغیرات با موفقیت ثبت شد.";
+        string mes = message switch
+        {
+            "success" when !string.IsNullOrEmpty(message) => "کاربر با موفقیت اضافه شد.",
+            "SucceededEdit"  when !string.IsNullOrEmpty(message) => "تغیرات با موفقیت ثبت شد.",
+            "SucceededDeleted" when !string.IsNullOrEmpty(message) => "کاربر با موفقیت حذف شد.",
+            _ => ""
+        };
+        ViewBag.Message = mes;
 
         var pagingModel = PagingList.Create(await _userManager.GetAllUsersWithRolesAsync(), pageSize, pageIndex);
         pagingModel.RouteValue = new RouteValueDictionary
@@ -81,10 +85,7 @@ public class UsersManagerController : Controller
                 }
                 identityResult = await _userManager.UpdateAsync(user);
                 if (identityResult.Succeeded)
-                {
-                    ViewBag.Message = "تغییرات با موفقیت اعمال شد.";
                     return RedirectToAction("Index", new { message = "SucceededEdit" });
-                }
             }
             if (identityResult is null)
                 foreach (var error in identityResult.Errors)
@@ -104,5 +105,19 @@ public class UsersManagerController : Controller
         if (user is null)
             return NotFound();
         return View(user);
+    }
+
+    [HttpPost]
+    [ActionName("Delete")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Deleted(string id)
+    {
+        var user = await _userManager.FindByIdAsync(id);
+        IdentityResult identityResult = await _userManager.DeleteAsync(user);
+        if (identityResult.Succeeded)
+            return RedirectToAction("Index", new { message = "SucceededDeelted" });
+        foreach (var error in identityResult.Errors)
+            ModelState.AddModelError(error.Code, error.Description);
+        return View();
     }
 }
