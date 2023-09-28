@@ -35,16 +35,12 @@ public class RolesManagerController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> AddRole(RolesViewModel rolesViewModel)
     {
-        bool isExist = await roleManager.RoleExistsAsync(rolesViewModel.RoleName);
-        if (isExist)
-        {
-            ViewBag.Error = "این نقش در سیستم وجود دارد";
-            return View(rolesViewModel);
-        }
         var result = await roleManager.CreateAsync(new ApplicationRole(rolesViewModel.RoleName, rolesViewModel.Description));
         if (result.Succeeded)
             return RedirectToAction("Index");
-        ViewBag.Error = "مشکلی در ثبت اطلاعات رخ داد";
+
+        foreach (var error in result.Errors)
+            ModelState.AddModelError("", error.Description);
         return View(rolesViewModel);
     }
 
@@ -58,7 +54,6 @@ public class RolesManagerController : Controller
         {
             RoleId = role.Id,
             RoleName = role.Name,
-            RecentRoleName = role.Name,
             Description = role.Description
         };
         return View(rolesViewModel);
@@ -71,12 +66,6 @@ public class RolesManagerController : Controller
         var role = await roleManager.FindByIdAsync(rolesViewModel.RoleId);
         if (role is null)
             return NotFound();
-        bool isExist = await roleManager.RoleExistsAsync(rolesViewModel.RoleName);
-        if (isExist && rolesViewModel.RoleName != rolesViewModel.RecentRoleName)
-        {
-            ViewBag.Message = "این نقش در سیستم وجود دارد";
-            return View(rolesViewModel);
-        }
         role.Name = rolesViewModel.RoleName;
         role.Description = rolesViewModel.Description;
 
@@ -84,7 +73,8 @@ public class RolesManagerController : Controller
         if (result.Succeeded)
             return RedirectToAction("Index", new { message = "عملیات با موفقیت انجام شد" });
 
-        ViewBag.Message = "در ذخیره اطلاعات مشکلی بوجود امده است";
+        foreach (var error in result.Errors)
+            ModelState.AddModelError("", error.Description);
         return View(rolesViewModel);
     }
 
@@ -112,7 +102,6 @@ public class RolesManagerController : Controller
         if (result.Succeeded)
             return RedirectToAction("Index", new { message = "عملیات با موفقیت انجام شد" });
 
-        ViewBag.Error = "در حذف اطلاعات مشکلی بوجود امد";
         var rolesViewModel = new RolesViewModel
         {
             RoleId = role.Id,

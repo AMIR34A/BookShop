@@ -8,23 +8,12 @@
             <div class="card-header bg-light">
                 ویرایش نقش 
             </div>
-            @if (!string.IsNullOrEmpty(ViewBag.Message))
-            {
-                <div class="alert alert-danger alert-dismissable">
-                    @ViewBag.Message
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            }
             <form asp-action="EditRole">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="row card-body mb-3">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <input type="hidden" asp-for="RoleId" />
-                    <input type="hidden" asp-for="RecentRoleName"/>
                     <div class="col-md-7 form-group">
                         <div class="row">
-
                             <div class="col-md-12">
                                 <label asp-for="RoleName" class="control-label"></label>
                             </div>
