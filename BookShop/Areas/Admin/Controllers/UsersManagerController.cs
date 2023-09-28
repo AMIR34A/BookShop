@@ -1,6 +1,7 @@
 ﻿using BookShop.Areas.Identity.Data;
 using BookShop.Models.ViewModels;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using ReflectionIT.Mvc.Paging;
 
@@ -11,11 +12,13 @@ public class UsersManagerController : Controller
 {
     private readonly IApplicationUserManager _userManager;
     private readonly IApplicationRoleManager _roleManager;
+    private readonly IEmailSender _emailSender;
 
-    public UsersManagerController(IApplicationUserManager userManager, IApplicationRoleManager roleManager)
+    public UsersManagerController(IApplicationUserManager userManager, IApplicationRoleManager roleManager,IEmailSender emailSender)
     {
         _userManager = userManager;
         _roleManager = roleManager;
+        _emailSender = emailSender;
     }
 
     public async Task<IActionResult> Index(string? message, int pageIndex = 1, int pageSize = 10)
@@ -23,7 +26,7 @@ public class UsersManagerController : Controller
         string mes = message switch
         {
             "success" when !string.IsNullOrEmpty(message) => "کاربر با موفقیت اضافه شد.",
-            "SucceededEdit"  when !string.IsNullOrEmpty(message) => "تغیرات با موفقیت ثبت شد.",
+            "SucceededEdit" when !string.IsNullOrEmpty(message) => "تغیرات با موفقیت ثبت شد.",
             "SucceededDeleted" when !string.IsNullOrEmpty(message) => "کاربر با موفقیت حذف شد.",
             _ => ""
         };
