@@ -4,6 +4,7 @@
   "private": true,
   "devDependencies": {
     "select2": "4.1.0-rc.0",
-    "md.bootstrappersiandatetimepicker": "3.3.5"
+    "md.bootstrappersiandatetimepicker": "3.3.5",
+    "summernote": "0.8.20"
   }
 }

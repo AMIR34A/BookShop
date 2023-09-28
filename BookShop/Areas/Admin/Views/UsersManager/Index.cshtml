@@ -1,6 +1,8 @@
 ﻿@using ReflectionIT.Mvc.Paging;
 @model ReflectionIT.Mvc.Paging.PagingList<UsersViewModel>
-
+<link href="~/lib/summernote/dist/summernote-bs5.css" rel="stylesheet" />
+<script src="~/lib/summernote/dist/summernote-bs5.js"></script>
+<script src="~/lib/summernote/dist/lang/summernote-fa-ir.js"></script>
 @if (!string.IsNullOrEmpty(ViewBag.Message))
 {
     <div class="alert alert-success alert-dismissable">
@@ -27,7 +29,7 @@
                     <div class="card card-body">
                         <form asp-action="SendEmail">
                             <input name="subject" type="text" class="form-control form-group" placeholder="تایتل ایمیل" />
-                            <textarea name="message" class="form-control form-group"> </textarea>
+                            <textarea name="message" class="form-control form-group summernote"> </textarea>
                             <input type="submit" value="ارسال ایمیل" class="btn btn-primary float-left" />
                         </form>
                     </div>
@@ -133,3 +135,13 @@
         </div>
     </div>
 </div>
+
+<script>
+    $(document).ready(function () 
+    {
+        $('.summernote').summernote({
+            height: 300,
+            lang : 'fa-IR'
+        });
+    });
+</script>

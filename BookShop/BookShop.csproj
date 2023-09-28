@@ -7,6 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\lib\summernote\dist\font\summernote.hash" />
+    <Content Remove="wwwroot\lib\summernote\dist\font\summernote.woff2" />
+    <Content Remove="wwwroot\lib\summernote\dist\lang\summernote-fa-IR.js" />
+    <Content Remove="wwwroot\lib\summernote\dist\lang\summernote-fa-IR.js.map" />
+    <Content Remove="wwwroot\lib\summernote\dist\lang\summernote-fa-IR.min.js" />
+    <Content Remove="wwwroot\lib\summernote\dist\summernote-bs5.css.map" />
+    <Content Remove="wwwroot\lib\summernote\dist\summernote-bs5.js" />
+    <Content Remove="wwwroot\lib\summernote\dist\summernote-bs5.js.map" />
+    <Content Remove="wwwroot\lib\summernote\dist\summernote-bs5.min.js" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="node_modules\.package-lock.json" />
     <Content Include="node_modules\md.bootstrappersiandatetimepicker\demo\demo.css" />
     <Content Include="node_modules\md.bootstrappersiandatetimepicker\demo\Samples1.html" />
@@ -19,6 +31,11 @@
     <Content Include="node_modules\select2\dist\css\select2.min.css" />
     <Content Include="node_modules\select2\dist\js\i18n\build.txt" />
     <Content Include="node_modules\select2\package.json" />
+    <Content Include="node_modules\summernote\dist\font\summernote.eot" />
+    <Content Include="node_modules\summernote\dist\font\summernote.ttf" />
+    <Content Include="node_modules\summernote\dist\font\summernote.woff" />
+    <Content Include="node_modules\summernote\dist\summernote-bs5.css" />
+    <Content Include="node_modules\summernote\dist\summernote-bs5.min.css" />
   </ItemGroup>
 
   <ItemGroup>
@@ -240,7 +257,25 @@
     <None Include="node_modules\select2\src\scss\_dropdown.scss" />
     <None Include="node_modules\select2\src\scss\_multiple.scss" />
     <None Include="node_modules\select2\src\scss\_single.scss" />
+    <None Include="node_modules\summernote\dist\font\summernote.hash" />
+    <None Include="node_modules\summernote\dist\font\summernote.woff2" />
+    <None Include="node_modules\summernote\dist\lang\summernote-fa-IR.js" />
+    <None Include="node_modules\summernote\dist\lang\summernote-fa-IR.js.map" />
+    <None Include="node_modules\summernote\dist\lang\summernote-fa-IR.min.js" />
+    <None Include="node_modules\summernote\dist\summernote-bs5.css.map" />
+    <None Include="node_modules\summernote\dist\summernote-bs5.js" />
+    <None Include="node_modules\summernote\dist\summernote-bs5.js.map" />
+    <None Include="node_modules\summernote\dist\summernote-bs5.min.js" />
     <None Include="wwwroot\js\site.js" />
+    <None Include="wwwroot\lib\summernote\dist\font\summernote.hash" />
+    <None Include="wwwroot\lib\summernote\dist\font\summernote.woff2" />
+    <None Include="wwwroot\lib\summernote\dist\lang\summernote-fa-IR.js" />
+    <None Include="wwwroot\lib\summernote\dist\lang\summernote-fa-IR.js.map" />
+    <None Include="wwwroot\lib\summernote\dist\lang\summernote-fa-IR.min.js" />
+    <None Include="wwwroot\lib\summernote\dist\summernote-bs5.css.map" />
+    <None Include="wwwroot\lib\summernote\dist\summernote-bs5.js" />
+    <None Include="wwwroot\lib\summernote\dist\summernote-bs5.js.map" />
+    <None Include="wwwroot\lib\summernote\dist\summernote-bs5.min.js" />
   </ItemGroup>
 
 </Project>
