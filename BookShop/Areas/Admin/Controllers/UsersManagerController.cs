@@ -89,7 +89,7 @@ public class UsersManagerController : Controller
             }
             if (identityResult is null)
                 foreach (var error in identityResult.Errors)
-                    ModelState.AddModelError(error.Code, error.Description);
+                    ModelState.AddModelError("", error.Description);
         }
         ViewBag.Roles = _roleManager.GetAllRoles();
         return View(userViewModel);
@@ -117,7 +117,7 @@ public class UsersManagerController : Controller
         if (identityResult.Succeeded)
             return RedirectToAction("Index", new { message = "SucceededDeelted" });
         foreach (var error in identityResult.Errors)
-            ModelState.AddModelError(error.Code, error.Description);
+            ModelState.AddModelError("", error.Description);
         return View();
     }
 }
