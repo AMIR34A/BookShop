@@ -11,4 +11,5 @@ public class ApplicationIdentityErrorDescriber : IdentityErrorDescriber
     public override IdentityError PasswordRequiresLower() => new IdentityError { Code = nameof(PasswordRequiresLower), Description = "پسورد باید شامل حداقل یک حرف کوچک (a-z) باشد." };
     public override IdentityError PasswordRequiresUpper() => new IdentityError { Code = nameof(PasswordRequiresUpper), Description = "پسورد باید شامل حداقل یک حرف بزرگ (A-Z) باشد." };
     public override IdentityError PasswordTooShort(int length) => new IdentityError { Code = nameof(PasswordTooShort), Description = $"پسورد باید حداقل شما {length} حروف،عدد و علامت باشد." };
+    public override IdentityError DuplicateRoleName(string role) => new IdentityError { Code = nameof(DuplicateRoleName), Description = $"نقش '{role}' وجود دارد" };
 }
