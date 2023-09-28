@@ -14,7 +14,7 @@ public class UsersManagerController : Controller
     private readonly IApplicationRoleManager _roleManager;
     private readonly IEmailSender _emailSender;
 
-    public UsersManagerController(IApplicationUserManager userManager, IApplicationRoleManager roleManager,IEmailSender emailSender)
+    public UsersManagerController(IApplicationUserManager userManager, IApplicationRoleManager roleManager, IEmailSender emailSender)
     {
         _userManager = userManager;
         _roleManager = roleManager;
@@ -25,9 +25,10 @@ public class UsersManagerController : Controller
     {
         string mes = message switch
         {
-            "success" when !string.IsNullOrEmpty(message) => "کاربر با موفقیت اضافه شد.",
-            "SucceededEdit" when !string.IsNullOrEmpty(message) => "تغیرات با موفقیت ثبت شد.",
-            "SucceededDeleted" when !string.IsNullOrEmpty(message) => "کاربر با موفقیت حذف شد.",
+            "success" => "کاربر با موفقیت اضافه شد.",
+            "SucceededEdit" => "تغیرات با موفقیت ثبت شد.",
+            "SucceededDeleted" => "کاربر با موفقیت حذف شد.",
+            "SucceededEmailSender" => "عملیات ارسال ایمیل با موفقیت انجام شد.",
             _ => ""
         };
         ViewBag.Message = mes;
@@ -122,5 +123,12 @@ public class UsersManagerController : Controller
         foreach (var error in identityResult.Errors)
             ModelState.AddModelError("", error.Description);
         return View();
+    }
+
+    public async Task<IActionResult> SendEmail(string[] emails, string subject, string message)
+    {
+        for (int i = 0; i < emails.Length; i++)
+            await _emailSender.SendEmailAsync(emails[i], subject, message);
+        return RedirectToAction("Index", new { message = "SucceededEmailSender" });
     }
 }
