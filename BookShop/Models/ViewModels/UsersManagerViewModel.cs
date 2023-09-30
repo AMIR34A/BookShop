@@ -22,7 +22,7 @@ public class UsersViewModel
     public string LastName { get; set; }
 
     [Display(Name = "تاریخ تولد")]
-    public DateTime BirthDate { get; set; }
+    public DateTime? BirthDate { get; set; }
 
     [Display(Name = "تصویر پروفایل")]
     public string? Image { get; set; }
