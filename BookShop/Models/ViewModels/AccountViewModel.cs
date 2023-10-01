@@ -20,6 +20,7 @@ public class AccountViewModel
 
     [DataType(DataType.Password)]
     [Display(Name = "تکرار کلمه عبور")]
+    [Required(ErrorMessage = "وارد نمودن {0} الزامی است.")]
     [Compare("Password", ErrorMessage = "کلمه عبور وارد شده با تکرار کلمه عبور مطابقت ندارد.")]
     public string ConfirmPassword { get; set; }
 

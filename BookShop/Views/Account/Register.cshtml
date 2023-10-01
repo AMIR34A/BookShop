@@ -11,6 +11,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>عضویت در فروشگاه کتاب</title>
     <link rel="stylesheet" href="/css/styles.css">
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
 </head>
 <body>
     <div class="page-wrapper flex-row align-items-center">
@@ -22,29 +23,34 @@
                             عضویت در فروشگاه کتاب
                         </div>
                         <hr />
-                        <div asp-validation-summary="ModelOnly">
+                        <div asp-validation-summary="ModelOnly" class="text-danger">
                         </div>
                         <form asp-action="Register">
                             <div class="card-body py-2">
                                 <div class="form-group">
                                     <label class="form-control-label" asp-for="Username"></label>
                                     <input type="text" class="form-control" asp-for="Username" placeholder="نام کاربری">
+                                    <span asp-validation-for="Username" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-control-label" asp-for="Email"></label>
                                     <input type="text" class="form-control" asp-for="Email" placeholder="ایمیل">
+                                    <span asp-validation-for="Email" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-control-label" asp-for="PhoneNumber"></label>
                                     <input type="text" class="form-control" asp-for="PhoneNumber" placeholder="شماره موبایل">
+                                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-control-label" asp-for="Password"></label>
                                     <input class="form-control" asp-for="Password" placeholder="کلمه عبور">
+                                    <span asp-validation-for="Password" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-control-label" asp-for="ConfirmPassword"></label>
                                     <input class="form-control" asp-for="ConfirmPassword" placeholder="تکرار کلمه عبور">
+                                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="card-footer">
@@ -56,6 +62,7 @@
             </div>
         </div>
     </div>
-    <script src="./vendor/jquery/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 </body>
 </html>
