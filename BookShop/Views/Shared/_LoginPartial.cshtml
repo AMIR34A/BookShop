@@ -1,28 +1,25 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using BookShop.Areas.Identity.Data
-
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
-<ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
 {
-    <li class="nav-item">
-        <a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
-    </li>
-    <li class="nav-item">
-        <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-            <button id="logout" type="submit" class="nav-link btn btn-link text-dark">Logout</button>
-        </form>
-    </li>
+    <form asp-action="SignOut" asp-controller="Account" method="post" id="logoutForm" class="navbar-right">
+        <ul class="navbar-nav mt-2 mt-lg-0">
+            <li class="nav-item">
+                <a title="Manage" class="nav-link text-white">سلام  @UserManager.GetUserName(User)!</a>
+            </li>
+            <li>
+                <button type="submit" class="btn btn-link navbar-btn navbar-link nav-link text-white">خروج</button>
+            </li>
+        </ul>
+    </form>
 }
 else
 {
-    <li class="nav-item">
-        <a class="nav-link text-dark" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link text-dark" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
-    </li>
+    <ul class="navbar-nav mt-2 mt-lg-0">
+        <li class="nav-item"><a asp-action="Register" asp-controller="Account" class="nav-link text-white">عضویت</a></li>
+        <li class="nav-item"><a asp-action="SignIn" asp-controller="Account" class="nav-link text-white">ورود به سایت</a></li>
+    </ul>
 }
-</ul>
