@@ -28,3 +28,18 @@ public class AccountViewModel
     [Required(ErrorMessage = "وارد نمودن {0} الزامی است.")]
     public string PhoneNumber { get; set; }
 }
+
+public class SignInViewModel
+{
+    [Display(Name = "نام کاربری")]
+    [Required(ErrorMessage = "وارد نمودن {0} الزامی است")]
+    public string Username { get; set; }
+
+    [Display(Name = "نام کاربری")]
+    [Required(ErrorMessage = "وارد نمودن {0} الزامی است")]
+    [DataType(DataType.Password)]
+    public string Password { get; set; }
+
+    [Display(Name = "مرا بخاطر بسپار")]
+    public bool RememberMe { get; set; }
+}

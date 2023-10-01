@@ -12,18 +12,17 @@ public class AccountController : Controller
     private readonly IApplicationUserManager _userManager;
     private readonly IApplicationRoleManager _roleManager;
     private readonly IEmailSender _emailSender;
-    public AccountController(IApplicationUserManager userManager, IApplicationRoleManager roleManager, IEmailSender emailSender)
+    private readonly SignInManager<ApplicationUser> _signInManager;
+    public AccountController(IApplicationUserManager userManager, IApplicationRoleManager roleManager, IEmailSender emailSender,SignInManager<ApplicationUser> signInManager)
     {
         _userManager = userManager;
         _roleManager = roleManager;
         _emailSender = emailSender;
+        _signInManager = signInManager;
     }
 
     [HttpGet]
-    public IActionResult Register()
-    {
-        return View();
-    }
+    public IActionResult Register() => View();
 
     [HttpPost]
     public async Task<IActionResult> Register(AccountViewModel accountViewModel)
@@ -49,7 +48,7 @@ public class AccountController : Controller
                 if (identityResult.Succeeded)
                 {
                     var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, token = token },Request.Scheme);
+                    var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, token = token }, Request.Scheme);
                     string message = @$"<div dir='rtl' style='font-familt:tahoma;font-s-ize:14px'>
                                              لطفا برای تایید ایمیل کاربری روی لینک زیر کلیک کنید:
                                              <a href='{callbackUrl}'>تایید ایمیل</a>
@@ -78,5 +77,22 @@ public class AccountController : Controller
         if (!identityResult.Succeeded)
             throw new InvalidOperationException($"Error confirming users's email with Id : '{userId}'");
         return View();
+    }
+
+    [HttpGet]
+    public IActionResult SignIn() => View();
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> SignIn(SignInViewModel signInViewModel)
+    {
+        if (ModelState.IsValid)
+        {
+            var signInResult = await _signInManager.PasswordSignInAsync(signInViewModel.Username, signInViewModel.Password, signInViewModel.RememberMe, false);
+            if (signInResult.Succeeded)
+                return RedirectToAction("Index", "Home");
+        }
+        ModelState.AddModelError(string.Empty, "پسورد یا نام کاربری وارد شده اشتباه میباشد");
+        return View(new SignInViewModel { Username = signInViewModel.Username });
     }
 }
