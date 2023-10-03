@@ -3,7 +3,6 @@ using BookShop.Models.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
-using System.Text.Encodings.Web;
 
 namespace BookShop.Controllers;
 
@@ -13,7 +12,7 @@ public class AccountController : Controller
     private readonly IApplicationRoleManager _roleManager;
     private readonly IEmailSender _emailSender;
     private readonly SignInManager<ApplicationUser> _signInManager;
-    public AccountController(IApplicationUserManager userManager, IApplicationRoleManager roleManager, IEmailSender emailSender,SignInManager<ApplicationUser> signInManager)
+    public AccountController(IApplicationUserManager userManager, IApplicationRoleManager roleManager, IEmailSender emailSender, SignInManager<ApplicationUser> signInManager)
     {
         _userManager = userManager;
         _roleManager = roleManager;
@@ -94,5 +93,13 @@ public class AccountController : Controller
         }
         ModelState.AddModelError(string.Empty, "پسورد یا نام کاربری وارد شده اشتباه میباشد");
         return View(new SignInViewModel { Username = signInViewModel.Username });
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> SignOut()
+    {
+        await _signInManager.SignOutAsync();
+        return RedirectToAction("Index", "Home");
     }
 }
