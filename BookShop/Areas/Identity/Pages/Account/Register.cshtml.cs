@@ -101,7 +101,8 @@ namespace BookShop.Areas.Identity.Pages.Account
                     Email = Input.Email,
                     PhoneNumber = Input.PhoneNumber,
                     BirthDate = DateTime.Parse(Input.BirthDate),
-                    IsActive = true
+                    IsActive = true,
+                    EmailConfirmed = true
                 };
 
                 var result = await _userManager.CreateAsync(user, Input.Password);

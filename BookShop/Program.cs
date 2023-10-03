@@ -33,6 +33,8 @@ builder.Services.Configure<IdentityOptions>(options =>
 
     options.User.RequireUniqueEmail = true;
     options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$";
+
+    options.SignIn.RequireConfirmedEmail = true;
 });
 
 // Add services to the container.
