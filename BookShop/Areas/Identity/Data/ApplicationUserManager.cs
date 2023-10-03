@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using System.Security.Claims;
 
 namespace BookShop.Areas.Identity.Data;
 
@@ -80,6 +81,11 @@ public class ApplicationUserManager : UserManager<ApplicationUser>, IApplication
         }).FirstAsync();
     }
 
+    public async Task<string> GetFullName(ClaimsPrincipal principal)
+    {
+        var userInfo = await GetUserAsync(principal);
+        return $"{userInfo.FirstName} {userInfo.LastName}";
+    }
     public string NormalizeKey(string key)
     {
         throw new NotImplementedException();

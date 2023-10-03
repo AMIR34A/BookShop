@@ -114,5 +114,6 @@ public interface IApplicationUserManager
     Task<List<ApplicationUser>> GetAllUsersAsync();
     Task<List<UsersViewModel>> GetAllUsersWithRolesAsync();
     Task<UsersViewModel> FindUserWithRolesByIdAsync(string id);
+    Task<string> GetFullName(ClaimsPrincipal principal);
     #endregion
 }
