@@ -63,7 +63,10 @@
                                         <i class="fa fa-calendar"></i>
                                     </span>
                                 </div>
-                                <input name="BirthDate" value="@Model.BirthDate.Value.ToString("dd/MM/yyyy")" class="form-control" id="InputBirthDate" />
+                                @{
+                                    string date = @Model.BirthDate.HasValue ? Model.BirthDate.Value.ToString("dd/MM/yyyy") : DateTime.Now.ToString("dd/MM/yyyy");
+                                }
+                                <input name="BirthDate" value="@date" class="form-control" id="InputBirthDate" />
                                 <span asp-validation-for="BirthDate" class="text-danger"></span>
                             </div>
                         </div>
