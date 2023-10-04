@@ -1,5 +1,6 @@
 ﻿using BookShop.Areas.Identity.Data;
 using BookShop.Models.ViewModels;
+using BookShop.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -101,5 +102,17 @@ public class AccountController : Controller
     {
         await _signInManager.SignOutAsync();
         return RedirectToAction("Index", "Home");
+    }
+
+    [Route("get-captcha-image")]
+    public IActionResult GetCaptchaImage()
+    {
+        int width = 100;
+        int height = 36;
+        var captchaCode = Captcha.GenerateCaptchaCode();
+        var result = Captcha.GenerateCaptchImage(width, height, captchaCode);
+        HttpContext.Session.SetString("CaptchaCode", captchaCode);
+        Stream stream = new MemoryStream(result.CaptchaByteData);
+        return new FileStreamResult(stream, "image/png");
     }
 }
