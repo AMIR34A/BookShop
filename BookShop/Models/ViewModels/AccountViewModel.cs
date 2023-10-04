@@ -32,14 +32,19 @@ public class AccountViewModel
 public class SignInViewModel
 {
     [Display(Name = "نام کاربری")]
-    [Required(ErrorMessage = "وارد نمودن {0} الزامی است")]
+    [Required(ErrorMessage = "وارد نمودن {0} الزامی است.")]
     public string Username { get; set; }
 
     [Display(Name = "نام کاربری")]
-    [Required(ErrorMessage = "وارد نمودن {0} الزامی است")]
+    [Required(ErrorMessage = "وارد نمودن {0} الزامی است.")]
     [DataType(DataType.Password)]
     public string Password { get; set; }
 
     [Display(Name = "مرا بخاطر بسپار")]
     public bool RememberMe { get; set; }
+
+    [Display(Name ="کد امنیتی")]
+    [Required(ErrorMessage = ".وارد نمودن {0} الزامی است")]
+    [StringLength(4, ErrorMessage = "کد امنیتی باید شامل 4 کاراکتر باشید.")]
+    public string CaptchaCode { get; set; }
 }
