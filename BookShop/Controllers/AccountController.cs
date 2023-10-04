@@ -86,6 +86,11 @@ public class AccountController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> SignIn(SignInViewModel signInViewModel)
     {
+        if (!Captcha.ValidateCaptchaCode(signInViewModel.CaptchaCode, HttpContext))
+        {
+            ModelState.AddModelError(string.Empty, "کد امینتی وارد شده اشتباه است");
+            return View(new SignInViewModel { Username = signInViewModel.Username, Password = signInViewModel.Password });
+        }
         if (ModelState.IsValid)
         {
             var signInResult = await _signInManager.PasswordSignInAsync(signInViewModel.Username, signInViewModel.Password, signInViewModel.RememberMe, false);
