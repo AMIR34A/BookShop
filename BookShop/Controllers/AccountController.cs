@@ -64,6 +64,7 @@ public class AccountController : Controller
         return View();
     }
 
+    [HttpPost]
     public async Task<IActionResult> ConfirmEmail(string userId, string token)
     {
         if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(token))
