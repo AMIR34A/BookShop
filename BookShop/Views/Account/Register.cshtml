@@ -1,4 +1,5 @@
-﻿@model BookShop.Models.ViewModels.AccountViewModel
+﻿@model BookShop.Models.ViewModels.RegisterViewModel
+@inject IConfiguration configuraton
 @{
     ViewData["Title"] = "Register";
     Layout = null;
@@ -12,6 +13,7 @@
     <title>عضویت در فروشگاه کتاب</title>
     <link rel="stylesheet" href="/css/styles.css">
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src='https://www.google.com/recaptcha/api.js?hl=fa'></script>
 </head>
 <body>
     <div class="page-wrapper flex-row align-items-center">
@@ -19,11 +21,11 @@
             <div class="row justify-content-center">
                 <div class="col-md-5">
                     <div class="card p-4">
-                        <div class="card-header text-center text-uppercase h4 font-weight-light">
+                        <div class="text-center text-uppercase h4 font-weight-light">
                             عضویت در فروشگاه کتاب
                         </div>
                         <hr />
-                        <div asp-validation-summary="ModelOnly" class="text-danger">
+                        <div asp-validation-summary="All" class="text-danger">
                         </div>
                         <form asp-action="Register">
                             <div class="card-body py-2">
@@ -51,6 +53,8 @@
                                     <label class="form-control-label" asp-for="ConfirmPassword"></label>
                                     <input class="form-control" asp-for="ConfirmPassword" placeholder="تکرار کلمه عبور">
                                     <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                                </div>
+                                <div class="g-recaptcha" data-sitekey="@(configuraton.GetValue<string>("GoogleRecaptcha:SiteKey"))">
                                 </div>
                             </div>
                             <div class="card-footer">
