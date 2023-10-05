@@ -25,18 +25,18 @@ public class AccountController : Controller
     public IActionResult Register() => View();
 
     [HttpPost]
-    public async Task<IActionResult> Register(AccountViewModel accountViewModel)
+    public async Task<IActionResult> Register(RegisterViewModel registerViewModel)
     {
         if (ModelState.IsValid)
         {
             ApplicationUser user = new ApplicationUser
             {
-                UserName = accountViewModel.Username,
-                Email = accountViewModel.Email,
-                PhoneNumber = accountViewModel.PhoneNumber,
+                UserName = registerViewModel.Username,
+                Email = registerViewModel.Email,
+                PhoneNumber = registerViewModel.PhoneNumber,
                 RegisterDate = DateTime.Now
             };
-            IdentityResult identityResult = await _userManager.CreateAsync(user, accountViewModel.Password);
+            IdentityResult identityResult = await _userManager.CreateAsync(user, registerViewModel.Password);
 
             if (identityResult.Succeeded)
             {
@@ -53,7 +53,7 @@ public class AccountController : Controller
                                              لطفا برای تایید ایمیل کاربری روی لینک زیر کلیک کنید:
                                              <a href='{callbackUrl}'>تایید ایمیل</a>
                                          </div>";
-                    await _emailSender.SendEmailAsync(accountViewModel.Email, "تایید ایمیل حساب کاربری - سایت کتاب", message);
+                    await _emailSender.SendEmailAsync(registerViewModel.Email, "تایید ایمیل حساب کاربری - سایت کتاب", message);
                     return RedirectToAction("Index", "Home", new { message = "SendingEmailSucceeded" });
                 }
 
