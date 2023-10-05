@@ -2,7 +2,7 @@
 
 namespace BookShop.Models.ViewModels;
 
-public class AccountViewModel
+public class RegisterViewModel : GoogleRecaptchaModelBase
 {
     [Display(Name ="نام کاربری")]
     [Required(ErrorMessage ="وارد نمودن {0} الزامی است")]
