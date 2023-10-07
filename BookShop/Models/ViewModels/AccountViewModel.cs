@@ -56,3 +56,21 @@ public class ForgetPasswordViewModel
     [EmailAddress(ErrorMessage = "ایمیل وارد شده معتبر نیست")]
     public string Email { get; set; }
 }
+
+public class ResetPasswordViewModel
+{
+    [Display(Name ="ایمیل")]
+    public string? Email { get; set; }
+
+    [Display(Name ="رمز عبور")]
+    [DataType(DataType.Password)]
+    [Required(ErrorMessage = "وارد نمودن {0} الزامی است.")]
+    [StringLength(100, ErrorMessage = "{0} باید دارای حداقل {2} کاراکتر و حداکثر دارای {1} کاراکتر باشد.", MinimumLength = 6)]
+    public string Password { get; set; }
+
+    [Display(Name = "تکرار رمز عبور")]
+    [Required(ErrorMessage = "وارد نمودن {0} الزامی است.")]
+    [Compare("Password",ErrorMessage ="تکرار کلمه عبور با کلمه عبور وارد شده مطابقت ندارد.")]
+    public string ConfirmPassword { get; set; }
+    public string Token { get; set; }
+}
