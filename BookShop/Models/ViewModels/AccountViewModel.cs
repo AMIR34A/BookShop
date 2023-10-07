@@ -60,7 +60,7 @@ public class ForgetPasswordViewModel
 public class ResetPasswordViewModel
 {
     [Display(Name ="ایمیل")]
-    public string? Email { get; set; }
+    public string Email { get; set; }
 
     [Display(Name ="رمز عبور")]
     [DataType(DataType.Password)]

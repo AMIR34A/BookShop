@@ -121,4 +121,68 @@ public class AccountController : Controller
         Stream stream = new MemoryStream(result.CaptchaByteData);
         return new FileStreamResult(stream, "image/png");
     }
+
+    [HttpGet]
+    public IActionResult ForgetPassword() => View();
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> ForgetPassword(ForgetPasswordViewModel forgetPasswordViewModel)
+    {
+        if (ModelState.IsValid)
+        {
+            var user = await _userManager.FindByEmailAsync(forgetPasswordViewModel.Email);
+            if (user is null)
+                ModelState.AddModelError(string.Empty, "ایمیل وارد شده در سامانه ثبت نشده است!!");
+            else
+            {
+                if (!await _userManager.IsEmailConfirmedAsync(user))
+                    ModelState.AddModelError(string.Empty, "ایمیل وارد شده تایید نشده است، ابتدا ایمیل خود را تایید کنید");
+                else
+                {
+                    var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                    string callback = Url.Action("ResetPassword", "Account", new { email = forgetPasswordViewModel.Email, token = token },Request.Scheme);
+                    string message = $"<p> برای بازنشانی کلمه عبور<a href='{callback}'>اینجا کلیک کنید</a> </p>";
+                    await _emailSender.SendEmailAsync(forgetPasswordViewModel.Email, "بازنشانی پسورد - فروشگاه کتاب", message);
+                    return RedirectToAction("ForgetPasswordConfirmation");
+                }
+            }
+        }
+        return View(forgetPasswordViewModel);
+    }
+
+    [HttpGet]
+    public IActionResult ForgetPasswordConfirmation() => View();
+
+    [HttpGet]
+    public IActionResult ResetPassword(string email, string token)
+    {
+        if (string.IsNullOrEmpty(token) || string.IsNullOrEmpty(email))
+            return NotFound();
+        var viewModel = new ResetPasswordViewModel
+        {
+            Email = email,
+            Token = token
+        };
+        return View(viewModel);
+    }
+
+    public async Task<IActionResult> ResetPassword(ResetPasswordViewModel resetPasswordViewModel)
+    {
+        if (ModelState.IsValid)
+        {
+            var user = await _userManager.FindByEmailAsync(resetPasswordViewModel.Email);
+            if (user is null)
+                ModelState.AddModelError(string.Empty, "ایمیل وارد شده اشتباه میباشد!!");
+            else
+            {
+               IdentityResult identityResult = await _userManager.ResetPasswordAsync(user, resetPasswordViewModel.Token, resetPasswordViewModel.Password);
+                if (identityResult.Succeeded)
+                    return View("ResetPasswordConfirmation");
+                foreach (var error in identityResult.Errors)
+                    ModelState.AddModelError(string.Empty, error.Description);
+            }
+        }
+        return View(resetPasswordViewModel);
+    }
 }
