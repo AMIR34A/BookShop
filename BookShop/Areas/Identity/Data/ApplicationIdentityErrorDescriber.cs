@@ -13,4 +13,5 @@ public class ApplicationIdentityErrorDescriber : IdentityErrorDescriber
     public override IdentityError PasswordTooShort(int length) => new IdentityError { Code = nameof(PasswordTooShort), Description = $"پسورد باید حداقل شما {length} حروف،عدد و علامت باشد." };
     public override IdentityError DuplicateRoleName(string role) => new IdentityError { Code = nameof(DuplicateRoleName), Description = $"نقش '{role}' وجود دارد" };
     public override IdentityError DuplicateEmail(string email) => new IdentityError { Code = nameof(DuplicateEmail), Description = $"ایمیل {email} قبلا در سیستم ثبت نام کرده است." };
+    public override IdentityError InvalidToken() => new IdentityError { Code = nameof(InvalidToken), Description = "توکن ساخته شده منقضی شده است، مجددا از اول اقدام کنید." };
 }
