@@ -48,3 +48,11 @@ public class SignInViewModel
     [StringLength(4, ErrorMessage = "کد امنیتی باید شامل 4 کاراکتر باشید.")]
     public string CaptchaCode { get; set; }
 }
+
+public class ForgetPasswordViewModel
+{
+    [Display(Name = "ایمیل")]
+    [Required(ErrorMessage = "وارد نمودن {0} الزامی است.")]
+    [EmailAddress(ErrorMessage = "ایمیل وارد شده معتبر نیست")]
+    public string Email { get; set; }
+}
