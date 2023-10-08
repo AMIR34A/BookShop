@@ -35,6 +35,9 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$";
 
     options.SignIn.RequireConfirmedEmail = true;
+
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromHours(20);
+    options.Lockout.MaxFailedAccessAttempts = 3;
 });
 
 builder.Services.AddSession(options =>

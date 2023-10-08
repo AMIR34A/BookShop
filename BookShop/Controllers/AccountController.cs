@@ -64,7 +64,7 @@ public class AccountController : Controller
         return View();
     }
 
-    [HttpPost]
+    [HttpGet]
     public async Task<IActionResult> ConfirmEmail(string userId, string token)
     {
         if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(token))
@@ -94,7 +94,12 @@ public class AccountController : Controller
         }
         if (ModelState.IsValid)
         {
-            var signInResult = await _signInManager.PasswordSignInAsync(signInViewModel.Username, signInViewModel.Password, signInViewModel.RememberMe, false);
+            var signInResult = await _signInManager.PasswordSignInAsync(signInViewModel.Username, signInViewModel.Password, signInViewModel.RememberMe, true);
+            if (signInResult.IsLockedOut)
+            {
+                ModelState.AddModelError(string.Empty, "به دلیل تلاشهای ناموفق بیش از حد، حساب کاربری شما به مدت 20 دقیقه قفل میباشد");
+                return View();
+            }
             if (signInResult.Succeeded)
                 return RedirectToAction("Index", "Home");
         }
@@ -141,7 +146,7 @@ public class AccountController : Controller
                 else
                 {
                     var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-                    string callback = Url.Action("ResetPassword", "Account", new { email = forgetPasswordViewModel.Email, token = token },Request.Scheme);
+                    string callback = Url.Action("ResetPassword", "Account", new { email = forgetPasswordViewModel.Email, token = token }, Request.Scheme);
                     string message = $"<p> برای بازنشانی کلمه عبور<a href='{callback}'>اینجا کلیک کنید</a> </p>";
                     await _emailSender.SendEmailAsync(forgetPasswordViewModel.Email, "بازنشانی پسورد - فروشگاه کتاب", message);
                     return RedirectToAction("ForgetPasswordConfirmation");
@@ -176,7 +181,7 @@ public class AccountController : Controller
                 ModelState.AddModelError(string.Empty, "ایمیل وارد شده اشتباه میباشد!!");
             else
             {
-               IdentityResult identityResult = await _userManager.ResetPasswordAsync(user, resetPasswordViewModel.Token, resetPasswordViewModel.Password);
+                IdentityResult identityResult = await _userManager.ResetPasswordAsync(user, resetPasswordViewModel.Token, resetPasswordViewModel.Password);
                 if (identityResult.Succeeded)
                     return View("ResetPasswordConfirmation");
                 foreach (var error in identityResult.Errors)
