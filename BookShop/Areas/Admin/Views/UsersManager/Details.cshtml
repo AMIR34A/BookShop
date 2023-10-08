@@ -99,7 +99,7 @@
                                             <label>تاریخ عضویت</label>
                                         </div>
                                         <div class="col-md-6">
-                                            <p>Model.RegisterDate</p>
+                                            <p>@Model.RegisterDate.ToString("MM/dd/yyyy")</p>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -146,8 +146,8 @@
                                                         وضعیت حساب کاربری
                                                     </td>
                                                     <td>
-                                                        <label class="badge @(Model.IsActive==true?"badge-success":"badge-danger")">
-                                                            @(Model.IsActive == true ? "فعال" : "غیرفعال")
+                                                        <label class="badge @(Model.IsActive ? "badge-success":"badge-danger")">
+                                                            @(Model.IsActive ? "فعال" : "غیرفعال")
                                                         </label>
                                                     </td>
                                                     <td>
@@ -159,8 +159,8 @@
                                                         وضعیت ایمیل
                                                     </td>
                                                     <td>
-                                                        <label class="badge @(Model.EmailConfirmed==true?"badge-success":"badge-danger")">
-                                                            @(Model.EmailConfirmed == true ? "تایید شده" : "تایید نشده")
+                                                        <label class="badge @(Model.EmailConfirmed ? "badge-success":"badge-danger")">
+                                                            @(Model.EmailConfirmed  ? "تایید شده" : "تایید نشده")
                                                         </label>
                                                     </td>
                                                     <td></td>
@@ -170,8 +170,8 @@
                                                         وضعیت شماره موبایل
                                                     </td>
                                                     <td>
-                                                        <label class="badge @(Model.PhoneNumberConfirmed==true?"badge-success":"badge-danger")">
-                                                            @(Model.PhoneNumberConfirmed == true ? "تایید شده" : "تایید نشده")
+                                                        <label class="badge @(Model.PhoneNumberConfirmed ? "badge-success":"badge-danger")">
+                                                            @(Model.PhoneNumberConfirmed  ? "تایید شده" : "تایید نشده")
                                                         </label>
                                                     </td>
                                                     <td></td>
@@ -181,8 +181,8 @@
                                                         امکان قفل شدن حساب کاربری
                                                     </td>
                                                     <td>
-                                                        <label class="badge @(Model.LockoutEnabled==true?"badge-success":"badge-danger")">
-                                                            @(Model.LockoutEnabled == true ? "فعال" : "غیرفعال")
+                                                        <label class="badge @(Model.LockoutEnabled ? "badge-success":"badge-danger")">
+                                                            @(Model.LockoutEnabled ? "فعال" : "غیرفعال")
                                                         </label>
                                                     </td>
                                                     <td>
@@ -194,8 +194,8 @@
                                                         اعتبارسنجی دو مرحله ای
                                                     </td>
                                                     <td>
-                                                        <label class="badge @(Model.TwoFactorEnabled==true?"badge-success":"badge-danger")">
-                                                            @(Model.TwoFactorEnabled == true ? "فعال" : "غیرفعال")
+                                                        <label class="badge @(Model.TwoFactorEnabled ? "badge-success":"badge-danger")">
+                                                            @(Model.TwoFactorEnabled ? "فعال" : "غیرفعال")
                                                         </label>
                                                     </td>
                                                     <td>
@@ -203,9 +203,25 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
+                                                    <td>وضعیت حساب کاربری</td>
+                                                    <td>
+                                                        <label class="badge @(DateTime.Compare(Model.LockoutEnd.Value.LocalDateTime,DateTime.Now) > 0 ? "badge-danger":"badge-success")">
+                                                            <i class="fa @(DateTime.Compare(Model.LockoutEnd.Value.LocalDateTime,DateTime.Now) > 0 ? "fa-lock":"fa-lock-open")"></i>
+                                                            @(DateTime.Compare(Model.LockoutEnd.Value.LocalDateTime, DateTime.Now) > 0 ? "قفل شده" : "قفل نشده")
+                                                        </label>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>تعداد تلاشهای ناموفق</td>
+                                                    <td>
+                                                        @Model.AccessFailedCount
+                                                    </td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
                                                     <td>زمان خروج از حالت قفل</td>
                                                     <td>
-                                                        @Model.LockoutEnd
+                                                        @(Model.LockoutEnd.HasValue ? Model.LockoutEnd.Value.ToLocalTime() : "-")
                                                     </td>
                                                     <td>
                                                     </td>
