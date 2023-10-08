@@ -36,7 +36,7 @@ builder.Services.Configure<IdentityOptions>(options =>
 
     options.SignIn.RequireConfirmedEmail = true;
 
-    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromHours(20);
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(20);
     options.Lockout.MaxFailedAccessAttempts = 3;
 });
 
