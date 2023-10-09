@@ -178,19 +178,6 @@
                                                 </tr>
                                                 <tr>
                                                     <td>
-                                                        امکان قفل شدن حساب کاربری
-                                                    </td>
-                                                    <td>
-                                                        <label class="badge @(Model.LockoutEnabled ? "badge-success":"badge-danger")">
-                                                            @(Model.LockoutEnabled ? "فعال" : "غیرفعال")
-                                                        </label>
-                                                    </td>
-                                                    <td>
-                                                        <button class="btn btn-success btn-sm">فعال شود</button>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
                                                         اعتبارسنجی دو مرحله ای
                                                     </td>
                                                     <td>
@@ -203,15 +190,42 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
+                                                    <td>
+                                                        امکان قفل شدن حساب کاربری
+                                                    </td>
+                                                    <td>
+                                                        <label class="badge @(Model.LockoutEnabled ? "badge-success":"badge-danger")">
+                                                            @(Model.LockoutEnabled ? "فعال" : "غیرفعال")
+                                                        </label>
+                                                    </td>
+                                                    <td>
+                                                        <form asp-action="ChangeLockOutEnabled" method="post">
+                                                            <input type="hidden" asp-for="Id" />
+                                                            <input type="hidden" value="@(Model.LockoutEnabled ? "false" : "true")" name="status" />
+                                                            <button class="btn @(Model.LockoutEnabled ? "btn-danger btn-sm" : "btn-success btn-sm")">
+                                                                @(Model.LockoutEnabled ? "غیرفعال شود" : "فعال شود")
+                                                            </button>
+                                                        </form>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    @{
+                                                        bool isLock = Model.LockoutEnd.HasValue ? DateTime.Compare(Model.LockoutEnd.Value.ToLocalTime().DateTime, DateTime.Now) > 0 : false;
+                                                    }
                                                     <td>وضعیت حساب کاربری</td>
                                                     <td>
-                                                        @{
-                                                            bool isLock = DateTime.Compare(Model.LockoutEnd.Value.ToLocalTime().DateTime, DateTime.Now) > 0;
-                                                        }
                                                         <label class="badge @(isLock ? "badge-danger":"badge-success")">
                                                             <i class="fa @(isLock ? "fa-lock":"fa-lock-open")"></i>
                                                             @(isLock ? "قفل شده" : "قفل نشده")
                                                         </label>
+                                                    </td>
+                                                    <td>
+                                                        <form asp-action="LockAndUnlockUserAccount">
+                                                            <input type="hidden" asp-for="Id" />
+                                                            <button class="btn @( isLock ?  "btn-success btn-sm" : "btn-danger btn-sm")">
+                                                                @(isLock ? "باز شود" : "قفل شود")
+                                                            </button>
+                                                        </form>
                                                     </td>
                                                 </tr>
                                                 <tr>
