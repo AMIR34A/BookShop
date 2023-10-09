@@ -77,6 +77,7 @@ public class ApplicationUserManager : UserManager<ApplicationUser>, IApplication
             IsActive = user.IsActive,
             Image = user.Image,
             RegisterDate = user.RegisterDate,
+            LockoutEnabled = user.LockoutEnabled,
             LockoutEnd = user.LockoutEnd,
             Roles = user.Roles.Select(u => u.Role.Name),
 
