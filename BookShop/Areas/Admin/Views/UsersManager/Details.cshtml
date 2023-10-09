@@ -160,7 +160,7 @@
                                                     </td>
                                                     <td>
                                                         <label class="badge @(Model.EmailConfirmed ? "badge-success":"badge-danger")">
-                                                            @(Model.EmailConfirmed  ? "تایید شده" : "تایید نشده")
+                                                            @(Model.EmailConfirmed ? "تایید شده" : "تایید نشده")
                                                         </label>
                                                     </td>
                                                     <td></td>
@@ -171,7 +171,7 @@
                                                     </td>
                                                     <td>
                                                         <label class="badge @(Model.PhoneNumberConfirmed ? "badge-success":"badge-danger")">
-                                                            @(Model.PhoneNumberConfirmed  ? "تایید شده" : "تایید نشده")
+                                                            @(Model.PhoneNumberConfirmed ? "تایید شده" : "تایید نشده")
                                                         </label>
                                                     </td>
                                                     <td></td>
@@ -205,9 +205,12 @@
                                                 <tr>
                                                     <td>وضعیت حساب کاربری</td>
                                                     <td>
-                                                        <label class="badge @(DateTime.Compare(Model.LockoutEnd.Value.LocalDateTime,DateTime.Now) > 0 ? "badge-danger":"badge-success")">
-                                                            <i class="fa @(DateTime.Compare(Model.LockoutEnd.Value.LocalDateTime,DateTime.Now) > 0 ? "fa-lock":"fa-lock-open")"></i>
-                                                            @(DateTime.Compare(Model.LockoutEnd.Value.LocalDateTime, DateTime.Now) > 0 ? "قفل شده" : "قفل نشده")
+                                                        @{
+                                                            bool isLock = DateTime.Compare(Model.LockoutEnd.Value.ToLocalTime().DateTime, DateTime.Now) > 0;
+                                                        }
+                                                        <label class="badge @(isLock ? "badge-danger":"badge-success")">
+                                                            <i class="fa @(isLock ? "fa-lock":"fa-lock-open")"></i>
+                                                            @(isLock ? "قفل شده" : "قفل نشده")
                                                         </label>
                                                     </td>
                                                 </tr>
@@ -221,7 +224,7 @@
                                                 <tr>
                                                     <td>زمان خروج از حالت قفل</td>
                                                     <td>
-                                                        @(Model.LockoutEnd.HasValue ? Model.LockoutEnd.Value.ToLocalTime() : "-")
+                                                        @(Model.LockoutEnd.HasValue ? Model.LockoutEnd.Value.ToLocalTime().ToString("MM/dd/yyyy - HH:mm:ss") : "-")
                                                     </td>
                                                     <td>
                                                     </td>
