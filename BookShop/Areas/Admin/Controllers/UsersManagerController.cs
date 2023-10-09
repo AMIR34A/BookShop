@@ -131,4 +131,27 @@ public class UsersManagerController : Controller
             await _emailSender.SendEmailAsync(emails[i], subject, message);
         return RedirectToAction("Index", new { message = "SucceededEmailSender" });
     }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> ChangeLockOutEnabled(string id, bool status)
+    {
+        var user = await _userManager.FindByIdAsync(id);
+        if (user is null)
+            return NotFound();
+        await _userManager.SetLockoutEnabledAsync(user, status);
+        return RedirectToAction("Details", new { id = id });
+    }
+
+    public async Task<IActionResult> LockAndUnLockUserAccount(string id)
+    {
+        var user = await _userManager.FindByIdAsync(id);
+        if (user is null)
+            return NotFound();
+        if (user.LockoutEnd.HasValue && DateTime.Compare(user.LockoutEnd.Value.ToLocalTime().DateTime, DateTime.Now) > 0)
+            await _userManager.SetLockoutEndDateAsync(user, null);
+        else
+            await _userManager.SetLockoutEndDateAsync(user, DateTimeOffset.UtcNow.AddMinutes(20));
+        return RedirectToAction("Details", new { id = id });
+    }
 }
