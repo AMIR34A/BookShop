@@ -57,6 +57,7 @@ public class ApplicationUserManager : UserManager<ApplicationUser>, IApplication
             IsActive = user.IsActive,
             Image = user.Image,
             RegisterDate = user.RegisterDate,
+            LockoutEnd = user.LockoutEnd,
             Roles = user.Roles.Select(u => u.Role.Name),
 
         }).ToListAsync();
@@ -76,6 +77,7 @@ public class ApplicationUserManager : UserManager<ApplicationUser>, IApplication
             IsActive = user.IsActive,
             Image = user.Image,
             RegisterDate = user.RegisterDate,
+            LockoutEnd = user.LockoutEnd,
             Roles = user.Roles.Select(u => u.Role.Name),
 
         }).FirstAsync();
