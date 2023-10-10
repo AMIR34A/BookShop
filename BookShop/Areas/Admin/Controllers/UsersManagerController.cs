@@ -29,6 +29,7 @@ public class UsersManagerController : Controller
             "SucceededEdit" => "تغیرات با موفقیت ثبت شد.",
             "SucceededDeleted" => "کاربر با موفقیت حذف شد.",
             "SucceededEmailSender" => "عملیات ارسال ایمیل با موفقیت انجام شد.",
+            "SucceededEditPassword" => "پسورد با موفقیت بازنشانی شد.",
             _ => ""
         };
         ViewBag.Message = mes;
@@ -168,5 +169,37 @@ public class UsersManagerController : Controller
         user.IsActive = !user.IsActive;
         await _userManager.UpdateAsync(user);
         return RedirectToAction("Details", new { id = id });
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> ResetPassword(string id)
+    {
+        var user = await _userManager.FindByIdAsync(id);
+        if (user is null)
+            return NotFound();
+        var viewModel = new ResetUserPasswordViewModel
+        {
+            Id = id,
+            Email = user.Email,
+            Username = user.UserName
+        };
+        return View(viewModel);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> ResetPassword(ResetUserPasswordViewModel resetUserPasswordViewModel)
+    {
+        if(ModelState.IsValid)
+        {
+            var user = await _userManager.FindByIdAsync(resetUserPasswordViewModel.Id);
+            await _userManager.RemovePasswordAsync(user);
+            IdentityResult identityResult = await _userManager.AddPasswordAsync(user, resetUserPasswordViewModel.NewPassword);
+            if (identityResult.Succeeded)
+                return RedirectToAction("Index", new { message = "SucceededEditPassword" });
+            resetUserPasswordViewModel.Email = user.Email;
+            resetUserPasswordViewModel.Username = user.UserName;
+        }
+        return View();
     }
 }
