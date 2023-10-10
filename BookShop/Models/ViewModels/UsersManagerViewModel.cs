@@ -48,10 +48,10 @@ public class ResetUserPasswordViewModel
     public string Id { get; set; }
 
     [Display(Name = "نام کاربری")]
-    public string Username { get; set; }
+    public string? Username { get; set; }
 
     [Display(Name = "ایمیل")]
-    public string Email { get; set; }
+    public string? Email { get; set; }
 
     [Display(Name = "کلمه عبور جدید")]
     [Required(ErrorMessage = "وارد نمودن {0} الزامی است.")]
