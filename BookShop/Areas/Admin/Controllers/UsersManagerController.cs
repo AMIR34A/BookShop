@@ -156,4 +156,17 @@ public class UsersManagerController : Controller
             await _userManager.SetLockoutEndDateAsync(user, DateTimeOffset.UtcNow.AddMinutes(20));
         return RedirectToAction("Details", new { id = id });
     }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> ActiveAndDeactiveUserAccount(string id)
+    {
+        var user = await _userManager.FindByIdAsync(id);
+        if (user is null)
+            return NotFound();
+
+        user.IsActive = !user.IsActive;
+        await _userManager.UpdateAsync(user);
+        return RedirectToAction("Details", new { id = id });
+    }
 }
