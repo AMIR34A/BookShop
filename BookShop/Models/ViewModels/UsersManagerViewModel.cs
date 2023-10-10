@@ -43,7 +43,7 @@ public class UsersViewModel
     public DateTimeOffset? LockoutEnd { get; set; }
 }
 
-public class ReseUsertPasswordViewModel
+public class ResetUserPasswordViewModel
 {
     public string Id { get; set; }
 
