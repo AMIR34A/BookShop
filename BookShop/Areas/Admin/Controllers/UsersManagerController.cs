@@ -143,6 +143,8 @@ public class UsersManagerController : Controller
         return RedirectToAction("Details", new { id = id });
     }
 
+    [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> LockAndUnLockUserAccount(string id)
     {
         var user = await _userManager.FindByIdAsync(id);
