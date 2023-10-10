@@ -19,8 +19,8 @@
                     }
                 </div>
                 <div class="col-md-12 col-sm-12 col-xs-12 user-detail-section1 text-center">
-                    <button class="btn btn-success btn-block follow">ویرایش اطلاعات کاربر </button>
-                    <button class="btn btn-warning btn-block mb-2">تنظیم مجدد رمز عبور</button>
+                    <a href="/Admin/UsersManager/Details/@Model.Id" class="btn btn-success btn-block follow">ویرایش اطلاعات کاربر </a>
+                    <a href="/Admin/UsersManager/ResetPassword/@Model.Id" class="btn btn-warning btn-block mb-2">تنظیم مجدد رمز عبور</a>
                 </div>
             </div>
         </div>
@@ -138,7 +138,7 @@
                                                         @Model.Username
                                                     </td>
                                                     <td>
-                                                        <button class="btn btn-info btn-sm">ویراش اطلاعات کاربر</button>
+                                                        <a href="/Admin/UsersManager/Details/@Model.Id" class="btn btn-info btn-sm">ویراش اطلاعات کاربر</a>
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -151,7 +151,12 @@
                                                         </label>
                                                     </td>
                                                     <td>
-                                                        <button class="btn btn-danger btn-sm">غیرفعال شود</button>
+                                                        <form action="ResetPassword">
+                                                            <input type="hidden" asp-for="Id" />
+                                                            <button class="btn @(Model.IsActive ? "btn-danger" : "btn-success") btn-sm">
+                                                                @(Model.IsActive ? "غیرفعال شود" : "فعال شود")
+                                                            </button>
+                                                        </form>
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -186,7 +191,12 @@
                                                         </label>
                                                     </td>
                                                     <td>
-                                                        <button class="btn btn-success btn-sm">فعال شود</button>
+                                                        <form action="">
+                                                            <input type="hidden" asp-for="Id" />
+                                                            <button class="btn @(Model.TwoFactorEnabled ? "btn-danger" : "btn-success") btn-sm">
+                                                                @(Model.TwoFactorEnabled ? "غیرفعال شود" : "فعال شود")
+                                                            </button>
+                                                        </form>
                                                     </td>
                                                 </tr>
                                                 <tr>
