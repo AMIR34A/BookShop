@@ -13,12 +13,18 @@ public class AccountController : Controller
     private readonly IApplicationRoleManager _roleManager;
     private readonly IEmailSender _emailSender;
     private readonly SignInManager<ApplicationUser> _signInManager;
-    public AccountController(IApplicationUserManager userManager, IApplicationRoleManager roleManager, IEmailSender emailSender, SignInManager<ApplicationUser> signInManager)
+    private readonly ISMSSenderService _senderService;
+    public AccountController(IApplicationUserManager userManager, 
+        IApplicationRoleManager roleManager, 
+        IEmailSender emailSender, 
+        SignInManager<ApplicationUser> signInManager,
+        ISMSSenderService senderService)
     {
         _userManager = userManager;
         _roleManager = roleManager;
         _emailSender = emailSender;
         _signInManager = signInManager;
+        _senderService = senderService;
     }
 
     [HttpGet]
@@ -189,5 +195,11 @@ public class AccountController : Controller
             }
         }
         return View(resetPasswordViewModel);
+    }
+
+    public async Task<IActionResult> SendSMS()
+    {
+        await _senderService.SendSMS("3439", "09152663439");
+        return View("Index");
     }
 }

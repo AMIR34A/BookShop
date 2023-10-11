@@ -3,6 +3,7 @@ using BookShop.Areas.Identity.Data;
 using BookShop.Data;
 using BookShop.Models;
 using BookShop.Models.Repository;
+using BookShop.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
@@ -57,6 +58,7 @@ builder.Services.AddScoped<IApplicationRoleManager, ApplicationRoleManager>();
 builder.Services.AddScoped<IApplicationUserManager, ApplicationUserManager>();
 builder.Services.AddScoped<ApplicationIdentityErrorDescriber>();
 builder.Services.AddScoped<IEmailSender, EmailSenderService>();
+builder.Services.AddScoped<ISMSSenderService, SMSSenderService>();
 
 builder.Services.AddLocalization(option => option.ResourcesPath = "Resources");
 builder.Services.AddMvc(setup =>
