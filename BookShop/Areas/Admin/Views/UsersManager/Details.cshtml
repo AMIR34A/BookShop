@@ -151,7 +151,7 @@
                                                         </label>
                                                     </td>
                                                     <td>
-                                                        <form asp-action="ActiveAndDeactiveUserAccount"  method="post">
+                                                        <form asp-action="ActiveAndDeactiveUserAccount" method="post">
                                                             <input type="hidden" asp-for="Id" />
                                                             <button type="submit" class="btn @(Model.IsActive ? "btn-danger" : "btn-success") btn-sm">
                                                                 @(Model.IsActive ? "غیرفعال شود" : "فعال شود")
@@ -168,7 +168,14 @@
                                                             @(Model.EmailConfirmed ? "تایید شده" : "تایید نشده")
                                                         </label>
                                                     </td>
-                                                    <td></td>
+                                                    <td>
+                                                        <form asp-action="ChangeEmailConfirmed">
+                                                            <input type="hidden" asp-for="Id" />
+                                                            <button class="btn @(Model.EmailConfirmed ? "btn-danger" : "btn-success") btn-sm">
+                                                                @(Model.EmailConfirmed ? "غیرفعال شود" : "فعال شود")
+                                                            </button>
+                                                        </form>
+                                                    </td>
                                                 </tr>
                                                 <tr>
                                                     <td>
