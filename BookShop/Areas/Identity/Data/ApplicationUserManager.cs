@@ -58,6 +58,7 @@ public class ApplicationUserManager : UserManager<ApplicationUser>, IApplication
             Image = user.Image,
             RegisterDate = user.RegisterDate,
             LockoutEnd = user.LockoutEnd,
+            TwoFactorEnabled = user.TwoFactorEnabled,
             Roles = user.Roles.Select(u => u.Role.Name),
 
         }).ToListAsync();
@@ -79,8 +80,8 @@ public class ApplicationUserManager : UserManager<ApplicationUser>, IApplication
             RegisterDate = user.RegisterDate,
             LockoutEnabled = user.LockoutEnabled,
             LockoutEnd = user.LockoutEnd,
+            TwoFactorEnabled = user.TwoFactorEnabled,
             Roles = user.Roles.Select(u => u.Role.Name),
-
         }).FirstAsync();
     }
 
