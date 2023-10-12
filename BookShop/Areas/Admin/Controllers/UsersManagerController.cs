@@ -230,4 +230,16 @@ public class UsersManagerController : Controller
             ModelState.AddModelError(string.Empty, "مشکلی رخ داد!!!");
         return RedirectToAction("Details", new { id = id });
     }
+
+    public async Task<IActionResult> ChangePhoneNumberConfirmed(string id)
+    {
+        var user = await _userManager.FindByIdAsync(id);
+        if (user is null)
+            return NotFound();
+        user.PhoneNumberConfirmed = !user.PhoneNumberConfirmed;
+        IdentityResult identityResult = await _userManager.UpdateAsync(user);
+        if (!identityResult.Succeeded)
+            ModelState.AddModelError(string.Empty, "مشکلی رخ داد!!!");
+        return RedirectToAction("Details", new { id = id });
+    }
 }

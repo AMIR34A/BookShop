@@ -186,7 +186,14 @@
                                                             @(Model.PhoneNumberConfirmed ? "تایید شده" : "تایید نشده")
                                                         </label>
                                                     </td>
-                                                    <td></td>
+                                                    <td>
+                                                        <form asp-action="ChangePhoneNumberConfirmed">
+                                                            <input type="hidden" asp-for="Id" />
+                                                            <button class="btn @(Model.PhoneNumberConfirmed ? "btn-danger" : "btn-success") btn-sm">
+                                                                @(Model.PhoneNumberConfirmed ? "غیرفعال شود" : "فعال شود")
+                                                            </button>
+                                                        </form>
+                                                    </td>
                                                 </tr>
                                                 <tr>
                                                     <td>
