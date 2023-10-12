@@ -191,7 +191,7 @@
                                                         </label>
                                                     </td>
                                                     <td>
-                                                        <form action="">
+                                                        <form action="ChangeTwoFactorEnabled">
                                                             <input type="hidden" asp-for="Id" />
                                                             <button class="btn @(Model.TwoFactorEnabled ? "btn-danger" : "btn-success") btn-sm">
                                                                 @(Model.TwoFactorEnabled ? "غیرفعال شود" : "فعال شود")
@@ -209,7 +209,7 @@
                                                         </label>
                                                     </td>
                                                     <td>
-                                                        <form asp-action="ChangeLockOutEnabled" method="post">
+                                                        <form asp-action="ChangeTwoFactorEnabled" method="post">
                                                             <input type="hidden" asp-for="Id" />
                                                             <input type="hidden" value="@(Model.LockoutEnabled ? "false" : "true")" name="status" />
                                                             <button class="btn @(Model.LockoutEnabled ? "btn-danger btn-sm" : "btn-success btn-sm")">

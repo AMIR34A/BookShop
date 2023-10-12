@@ -190,7 +190,7 @@ public class UsersManagerController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> ResetPassword(ResetUserPasswordViewModel resetUserPasswordViewModel)
     {
-        if(ModelState.IsValid)
+        if (ModelState.IsValid)
         {
             var user = await _userManager.FindByIdAsync(resetUserPasswordViewModel.Id);
             await _userManager.RemovePasswordAsync(user);
@@ -201,5 +201,18 @@ public class UsersManagerController : Controller
             resetUserPasswordViewModel.Username = user.UserName;
         }
         return View();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> ChangeTwoFactorEnabled(string id)
+    {
+        var user = await _userManager.FindByIdAsync(id);
+        if (user is null)
+            return NotFound();
+        user.TwoFactorEnabled = !user.TwoFactorEnabled;
+        IdentityResult identityResult = await _userManager.UpdateAsync(user);
+        if (!identityResult.Succeeded)
+            ModelState.AddModelError(string.Empty, "مشکلی رخ داد!!!");
+        return RedirectToAction("Details", new { id = id });
     }
 }
