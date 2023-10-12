@@ -204,6 +204,7 @@ public class UsersManagerController : Controller
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> ChangeTwoFactorEnabled(string id)
     {
         var user = await _userManager.FindByIdAsync(id);
