@@ -14,9 +14,9 @@ public class AccountController : Controller
     private readonly IEmailSender _emailSender;
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly ISMSSenderService _senderService;
-    public AccountController(IApplicationUserManager userManager, 
-        IApplicationRoleManager roleManager, 
-        IEmailSender emailSender, 
+    public AccountController(IApplicationUserManager userManager,
+        IApplicationRoleManager roleManager,
+        IEmailSender emailSender,
         SignInManager<ApplicationUser> signInManager,
         ISMSSenderService senderService)
     {
@@ -106,6 +106,8 @@ public class AccountController : Controller
                 ModelState.AddModelError(string.Empty, "به دلیل تلاشهای ناموفق بیش از حد، حساب کاربری شما به مدت 20 دقیقه قفل میباشد");
                 return View();
             }
+            if (signInResult.RequiresTwoFactor)
+                return RedirectToAction("SendCode", new { rememberMe = signInViewModel.RememberMe });
             if (signInResult.Succeeded)
                 return RedirectToAction("Index", "Home");
         }
@@ -195,11 +197,5 @@ public class AccountController : Controller
             }
         }
         return View(resetPasswordViewModel);
-    }
-
-    public async Task<IActionResult> SendSMS()
-    {
-        await _senderService.SendSMS("3439", "09152663439");
-        return View("Index");
     }
 }
