@@ -4,6 +4,7 @@ using BookShop.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BookShop.Controllers;
 
@@ -197,5 +198,52 @@ public class AccountController : Controller
             }
         }
         return View(resetPasswordViewModel);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> SendCode(bool rememberMe)
+    {
+        var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
+        if (user is null)
+            return NotFound();
+
+        var userFactors = await _userManager.GetValidTwoFactorProvidersAsync(user);
+        var factorOption = userFactors.Select(factor => new SelectListItem(factor.Equals("Email") ? "ایمیل" : "تلفن", factor)).ToList();
+
+        var viewModel = new SendCodeViewModel
+        {
+            Providers = factorOption,
+            RememberMe = rememberMe,
+        };
+        return View(viewModel);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> SendCode(SendCodeViewModel sendCodeViewModel)
+    {
+        if (!ModelState.IsValid)
+            return View();
+
+        var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
+        if (user is null)
+            return NotFound();
+        var token = await _userManager.GenerateTwoFactorTokenAsync(user, sendCodeViewModel.SelectedProvider);
+        if (string.IsNullOrEmpty(token))
+            return View("Error");
+
+        string message = $"<p style='direction:rtl;font-size:14px;font-family:tahoma'> کد اعتبارسنجی : {token}</p>";
+        if (sendCodeViewModel.SelectedProvider.Equals("Email"))
+            await _emailSender.SendEmailAsync(user.Email, "اعتبارسنجی اکانت", message);
+        else if (sendCodeViewModel.SelectedProvider.Equals("Phone"))
+        {
+            var result = await _senderService.SendSMS(token, user.PhoneNumber);
+            if(!result)
+            {
+                ModelState.AddModelError(string.Empty, "در ارسال پیامک خطایی رخ داد!!!");
+                return View();
+            }
+        }
+        return RedirectToAction("VerifyCode", new { provider = sendCodeViewModel.SelectedProvider, rememberMe = sendCodeViewModel.RememberMe });
     }
 }
