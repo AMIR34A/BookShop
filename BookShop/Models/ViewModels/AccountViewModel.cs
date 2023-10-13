@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations;
 
 namespace BookShop.Models.ViewModels;
 
@@ -74,3 +75,10 @@ public class ResetPasswordViewModel
     public string ConfirmPassword { get; set; }
     public string Token { get; set; }
 }
+public class SendCodeViewModel
+{
+    public string SelectedProvider { get; set; }
+    public ICollection<SelectListItem> Providers { get; set; }
+    public bool RememberMe { get; set; }
+}
+
