@@ -32,6 +32,7 @@ public class AccountController : Controller
     public IActionResult Register() => View();
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Register(RegisterViewModel registerViewModel)
     {
         if (ModelState.IsValid)
