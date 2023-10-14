@@ -5,8 +5,8 @@ namespace BookShop.Models.ViewModels;
 
 public class RegisterViewModel : GoogleRecaptchaModelBase
 {
-    [Display(Name ="نام کاربری")]
-    [Required(ErrorMessage ="وارد نمودن {0} الزامی است")]
+    [Display(Name = "نام کاربری")]
+    [Required(ErrorMessage = "وارد نمودن {0} الزامی است")]
     public string Username { get; set; }
 
     [Display(Name = "ایمیل")]
@@ -17,7 +17,7 @@ public class RegisterViewModel : GoogleRecaptchaModelBase
     [Display(Name = "کلمه عبور")]
     [Required(ErrorMessage = "وارد نمودن {0} الزامی است.")]
     [StringLength(100, ErrorMessage = "{0} باید دارای حداقل {2} کاراکتر و حداکثر دارای {1} کاراکتر باشد.", MinimumLength = 6)]
-    public string  Password { get; set; }
+    public string Password { get; set; }
 
     [DataType(DataType.Password)]
     [Display(Name = "تکرار کلمه عبور")]
@@ -44,7 +44,7 @@ public class SignInViewModel
     [Display(Name = "مرا بخاطر بسپار")]
     public bool RememberMe { get; set; }
 
-    [Display(Name ="کد امنیتی")]
+    [Display(Name = "کد امنیتی")]
     [Required(ErrorMessage = "وارد نمودن {0} الزامی است.")]
     [StringLength(4, ErrorMessage = "کد امنیتی باید شامل 4 کاراکتر باشید.")]
     public string CaptchaCode { get; set; }
@@ -60,10 +60,10 @@ public class ForgetPasswordViewModel
 
 public class ResetPasswordViewModel
 {
-    [Display(Name ="ایمیل")]
+    [Display(Name = "ایمیل")]
     public string Email { get; set; }
 
-    [Display(Name ="رمز عبور")]
+    [Display(Name = "رمز عبور")]
     [DataType(DataType.Password)]
     [Required(ErrorMessage = "وارد نمودن {0} الزامی است.")]
     [StringLength(100, ErrorMessage = "{0} باید دارای حداقل {2} کاراکتر و حداکثر دارای {1} کاراکتر باشد.", MinimumLength = 6)]
@@ -71,7 +71,7 @@ public class ResetPasswordViewModel
 
     [Display(Name = "تکرار رمز عبور")]
     [Required(ErrorMessage = "وارد نمودن {0} الزامی است.")]
-    [Compare("Password",ErrorMessage ="تکرار کلمه عبور با کلمه عبور وارد شده مطابقت ندارد.")]
+    [Compare("Password", ErrorMessage = "تکرار کلمه عبور با کلمه عبور وارد شده مطابقت ندارد.")]
     public string ConfirmPassword { get; set; }
     public string Token { get; set; }
 }
@@ -79,6 +79,22 @@ public class SendCodeViewModel
 {
     public string SelectedProvider { get; set; }
     public ICollection<SelectListItem> Providers { get; set; }
+    public bool RememberMe { get; set; }
+}
+
+public class VerifyCodeViewModel
+{
+    [Required]
+    public string Provider { get; set; }
+
+    [Display(Name = "کد اعتبارسنجی")]
+    [Required(ErrorMessage = "وارد نمودن {0} الزامی است.")]
+    public string Code { get; set; }
+
+    [Display(Name = "مرا بخاطر بسپار؟")]
+    public bool RememberBrowser { get; set; }
+
+    [Display(Name = "RememberMe?")]
     public bool RememberMe { get; set; }
 }
 
