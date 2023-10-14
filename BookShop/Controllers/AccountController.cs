@@ -223,21 +223,21 @@ public class AccountController : Controller
     public async Task<IActionResult> SendCode(SendCodeViewModel sendCodeViewModel)
     {
         if (!ModelState.IsValid)
-            return View();
+            return View(sendCodeViewModel);
 
         var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
         if (user is null)
             return NotFound();
-        var token = await _userManager.GenerateTwoFactorTokenAsync(user, sendCodeViewModel.SelectedProvider);
-        if (string.IsNullOrEmpty(token))
+        var code = await _userManager.GenerateTwoFactorTokenAsync(user, sendCodeViewModel.SelectedProvider);
+        if (string.IsNullOrEmpty(code))
             return View("Error");
 
-        string message = $"<p style='direction:rtl;font-size:14px;font-family:tahoma'> کد اعتبارسنجی : {token}</p>";
+        string message = $"<p style='direction:rtl;font-size:14px;font-family:tahoma'> کد اعتبارسنجی : {code}</p>";
         if (sendCodeViewModel.SelectedProvider.Equals("Email"))
             await _emailSender.SendEmailAsync(user.Email, "اعتبارسنجی اکانت", message);
         else if (sendCodeViewModel.SelectedProvider.Equals("Phone"))
         {
-            var result = await _senderService.SendSMS(token, user.PhoneNumber);
+            var result = await _senderService.SendSMS(code, user.PhoneNumber);
             if(!result)
             {
                 ModelState.AddModelError(string.Empty, "در ارسال پیامک خطایی رخ داد!!!");
@@ -245,5 +245,30 @@ public class AccountController : Controller
             }
         }
         return RedirectToAction("VerifyCode", new { provider = sendCodeViewModel.SelectedProvider, rememberMe = sendCodeViewModel.RememberMe });
+    }
+    
+    [HttpGet]
+    public async Task<IActionResult> VerifyCode(string provider,bool rememberMe)
+    {
+        var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
+        if (user is null)
+            return NotFound();
+        return View(new VerifyCodeViewModel { Provider = provider, RememberBrowser = rememberMe });
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> VerifyCode(VerifyCodeViewModel verifyCodeViewModel)
+    {
+        if (!ModelState.IsValid)
+            return View(verifyCodeViewModel);
+        var signInResult = await _signInManager.TwoFactorAuthenticatorSignInAsync(verifyCodeViewModel.Code, verifyCodeViewModel.RememberMe, verifyCodeViewModel.RememberBrowser);
+        if (signInResult.Succeeded)
+            return RedirectToAction("Index", "Home");
+        else if (signInResult.IsLockedOut)
+            ModelState.AddModelError(string.Empty, "حساب کاربری شما به مدت 20 دقیقه قفل میباشد.");
+        else
+            ModelState.AddModelError(string.Empty, "کد وارد شده معتبر نمیباشد.");
+        return View();
     }
 }
