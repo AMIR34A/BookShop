@@ -115,4 +115,14 @@ public class ChangePasswordViewModel
     [Required(ErrorMessage = "وارد نمودن {0} الزامی است.")]
     [Compare("NewPassword", ErrorMessage = "تکرار کلمه عبور با کلمه عبور جدید وارد شده مطابقت ندارد.")]
     public string ConfirmPassword { get; set; }
+
+    public UserSidebarViewModel UserSidebar { get; set; }
+}
+
+public class UserSidebarViewModel
+{
+    public string FullName { get; set; }
+    public DateTime LastVisit { get; set; }
+    public DateTime RegisterTime { get; set; }
+    public string Image { get; set; }
 }
