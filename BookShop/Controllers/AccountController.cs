@@ -239,7 +239,7 @@ public class AccountController : Controller
         else if (sendCodeViewModel.SelectedProvider.Equals("Phone"))
         {
             var result = await _senderService.SendSMS(code, user.PhoneNumber);
-            if(!result)
+            if (!result)
             {
                 ModelState.AddModelError(string.Empty, "در ارسال پیامک خطایی رخ داد!!!");
                 return View();
@@ -247,9 +247,9 @@ public class AccountController : Controller
         }
         return RedirectToAction("VerifyCode", new { provider = sendCodeViewModel.SelectedProvider, rememberMe = sendCodeViewModel.RememberMe });
     }
-    
+
     [HttpGet]
-    public async Task<IActionResult> VerifyCode(string provider,bool rememberMe)
+    public async Task<IActionResult> VerifyCode(string provider, bool rememberMe)
     {
         var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
         if (user is null)
@@ -271,5 +271,21 @@ public class AccountController : Controller
         else
             ModelState.AddModelError(string.Empty, "کد وارد شده معتبر نمیباشد.");
         return View();
+    }
+
+    public async Task<IActionResult> ChangePassword()
+    {
+        var user = await _userManager.GetUserAsync(User);
+        if (user is null)
+            return NotFound();
+
+        UserSidebarViewModel userSidebarViewModel = new UserSidebarViewModel()
+        {
+            FullName = $"{user.FirstName} {user.LastName}",
+            LastVisit = user.LastViewDateTime,
+            RegisterTime = user.RegisterDate,
+            Image = user.Image
+        };
+        return View(new ChangePasswordViewModel { UserSidebar = userSidebarViewModel });
     }
 }
