@@ -107,6 +107,7 @@ public interface IApplicationUserManager
     Task<IdentityResult> RedeemTwoFactorRecoveryCodeAsync(ApplicationUser user, string code);
     Task<int> CountRecoveryCodesAsync(ApplicationUser user);
     Task<byte[]> CreateSecurityTokenAsync(ApplicationUser user);
+    Task<ApplicationUser> GetUserAsync(ClaimsPrincipal claimsPrincipal);
 
     #endregion
 
