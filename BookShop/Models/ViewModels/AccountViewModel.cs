@@ -122,7 +122,7 @@ public class ChangePasswordViewModel
 public class UserSidebarViewModel
 {
     public string FullName { get; set; }
-    public DateTime LastVisit { get; set; }
-    public DateTime RegisterTime { get; set; }
+    public DateTime? LastVisit { get; set; }
+    public DateTime? RegisterTime { get; set; }
     public string Image { get; set; }
 }
