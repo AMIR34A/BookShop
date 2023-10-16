@@ -121,6 +121,9 @@ public class AccountController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> SignOut()
     {
+        var user = await _userManager.GetUserAsync(User);
+        user.LastViewDateTime = DateTime.Now;
+        await _userManager.UpdateAsync(user);
         await _signInManager.SignOutAsync();
         return RedirectToAction("Index", "Home");
     }
