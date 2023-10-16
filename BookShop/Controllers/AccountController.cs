@@ -263,7 +263,7 @@ public class AccountController : Controller
     {
         if (!ModelState.IsValid)
             return View(verifyCodeViewModel);
-        var signInResult = await _signInManager.TwoFactorAuthenticatorSignInAsync(verifyCodeViewModel.Code, verifyCodeViewModel.RememberMe, verifyCodeViewModel.RememberBrowser);
+        var signInResult = await _signInManager.TwoFactorSignInAsync(verifyCodeViewModel.Provider, verifyCodeViewModel.Code, verifyCodeViewModel.RememberMe,verifyCodeViewModel.RememberBrowser);
         if (signInResult.Succeeded)
             return RedirectToAction("Index", "Home");
         else if (signInResult.IsLockedOut)
