@@ -263,7 +263,7 @@ public class AccountController : Controller
     {
         if (!ModelState.IsValid)
             return View(verifyCodeViewModel);
-        var signInResult = await _signInManager.TwoFactorSignInAsync(verifyCodeViewModel.Provider, verifyCodeViewModel.Code, verifyCodeViewModel.RememberMe,verifyCodeViewModel.RememberBrowser);
+        var signInResult = await _signInManager.TwoFactorSignInAsync(verifyCodeViewModel.Provider, verifyCodeViewModel.Code, verifyCodeViewModel.RememberMe, verifyCodeViewModel.RememberBrowser);
         if (signInResult.Succeeded)
             return RedirectToAction("Index", "Home");
         else if (signInResult.IsLockedOut)
@@ -273,6 +273,7 @@ public class AccountController : Controller
         return View();
     }
 
+    [HttpGet]
     public async Task<IActionResult> ChangePassword()
     {
         var user = await _userManager.GetUserAsync(User);
@@ -287,5 +288,38 @@ public class AccountController : Controller
             Image = user.Image
         };
         return View(new ChangePasswordViewModel { UserSidebar = userSidebarViewModel });
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> ChangePassword(ChangePasswordViewModel changePasswordViewModel)
+    {
+        var user = await _userManager.GetUserAsync(User);
+        if (user is null)
+            return NotFound();
+        if (ModelState.IsValid)
+        {
+            var identityResult = await _userManager.ChangePasswordAsync(user, changePasswordViewModel.OldPassword, changePasswordViewModel.NewPassword);
+
+            if (identityResult.Succeeded)
+                ViewBag.Alert = "کلمه عبور شما با موفقیت تغییر یافت.";
+            else
+            {
+                foreach (var item in identityResult.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, item.Description);
+                }
+            }
+        }
+
+        UserSidebarViewModel Sidebar = new UserSidebarViewModel()
+        {
+            FullName = user.FirstName + " " + user.LastName,
+            LastVisit = user.LastViewDateTime,
+            RegisterTime = user.RegisterDate,
+            Image = user.Image,
+        };
+        changePasswordViewModel.UserSidebar = Sidebar;
+        return View(changePasswordViewModel);
     }
 }
