@@ -1,5 +1,6 @@
 ﻿@model BookShop.Models.ViewModels.UserSidebarViewModel
 
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
 <div class="profile-sidebar">
     <div class="profile-userpic">
         @if (Model.Image == null)
@@ -53,3 +54,6 @@
         </ul>
     </div>
 </div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
