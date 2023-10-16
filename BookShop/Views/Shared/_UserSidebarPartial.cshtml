@@ -18,11 +18,11 @@
         <div class="profile-usertitle-job">
             <p class="mb-1">
                 آخرین بازدید :
-                @(Model.LastVisit.HasValue ? Model.LastVisit.Value.ToString("d MMMM yyyy ساعت HH:mm:ss") : "-");
+                @(Model.LastVisit.HasValue ? Model.LastVisit.Value.ToString("MM/dd/yyyy - HH:mm:ss") : "-")
             </p>
             <p>
                 تاریخ عضویت :
-                @(Model.RegisterTime.HasValue ? Model.RegisterTime.Value.ToString("d MMMM yyyy ساعت HH:mm:ss") : "-");
+                @(Model.RegisterTime.HasValue ? Model.RegisterTime.Value.ToString("MM/dd/yyyy - HH:mm:ss") : "-")
             </p>
         </div>
     </div>
