@@ -19,5 +19,4 @@ public class ChangePasswordInputModel
     [Required(ErrorMessage = "وارد نمودن {0} الزامی است.")]
     [Compare("NewPassword", ErrorMessage = "تکرار کلمه عبور با کلمه عبور جدید وارد شده مطابقت ندارد.")]
     public string ConfirmPassword { get; set; }
-    public AdminSidebarModel AdminSidebar { get; set; }
 }
