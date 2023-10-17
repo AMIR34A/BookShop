@@ -2,7 +2,7 @@
 
 namespace BookShop.Areas.Admin.Models;
 
-public class ChangePasswordModel
+public class ChangePasswordInputModel
 {
     [DataType(DataType.Password)]
     [Display(Name = "رمز عبور قدیمی")]
