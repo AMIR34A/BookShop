@@ -138,5 +138,5 @@ public class LogInWith2FAViewModel
     public bool RememberMe { get; set; }
 
     [Display(Name = "مرا به خاطر بسپار؟")]
-    public bool RememberMachine { get; set; }
+    public bool RememberBrowser { get; set; }
 }
