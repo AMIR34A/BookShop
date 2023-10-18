@@ -101,17 +101,17 @@ public class VerifyCodeViewModel
 public class ChangePasswordViewModel
 {
     [DataType(DataType.Password)]
-    [Display(Name ="رمز عبور قدیمی")]
+    [Display(Name = "رمز عبور قدیمی")]
     [Required(ErrorMessage = "وارد نمودن {0} الزامی است.")]
     public string OldPassword { get; set; }
 
     [DataType(DataType.Password)]
-    [Display(Name ="رمز عبور جدید")]
+    [Display(Name = "رمز عبور جدید")]
     [Required(ErrorMessage = "وارد نمودن {0} الزامی است.")]
     [StringLength(100, ErrorMessage = "{0} باید دارای حداقل {2} کاراکتر و حداکثر دارای {1} کاراکتر باشد.", MinimumLength = 6)]
     public string NewPassword { get; set; }
 
-    [Display(Name ="تکرار رمز عبور")]
+    [Display(Name = "تکرار رمز عبور")]
     [Required(ErrorMessage = "وارد نمودن {0} الزامی است.")]
     [Compare("NewPassword", ErrorMessage = "تکرار کلمه عبور با کلمه عبور جدید وارد شده مطابقت ندارد.")]
     public string ConfirmPassword { get; set; }
@@ -125,4 +125,18 @@ public class UserSidebarViewModel
     public DateTime? LastVisit { get; set; }
     public DateTime? RegisterTime { get; set; }
     public string Image { get; set; }
+}
+
+public class LogInWith2FAViewModel
+{
+    [Required(ErrorMessage = "وارد نمودن {0} الزامی است.")]
+    [StringLength(7, ErrorMessage = "کد اعتبارسنجی با حداقل دارای {2} کاراکتر و حداکثر دارای {1} کاراکتر باشد.", MinimumLength = 6)]
+    [DataType(DataType.Text)]
+    [Display(Name = "کد اعتبارسنجی")]
+    public string TwoFactorCode { get; set; }
+
+    public bool RememberMe { get; set; }
+
+    [Display(Name = "مرا به خاطر بسپار؟")]
+    public bool RememberMachine { get; set; }
 }
