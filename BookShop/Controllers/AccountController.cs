@@ -212,11 +212,22 @@ public class AccountController : Controller
             return NotFound();
 
         var userFactors = await _userManager.GetValidTwoFactorProvidersAsync(user);
-        var factorOption = userFactors.Select(factor => new SelectListItem(factor.Equals("Email") ? "ایمیل" : "تلفن", factor)).ToList();
+        List<SelectListItem> factors = new List<SelectListItem>();
+
+        foreach (var factor in userFactors)
+        {
+            var selectedFactor = factor switch
+            {
+                "Email" => new SelectListItem("ایمیل", factor),
+                "Phone" => new SelectListItem("موبایل", factor),
+                "Authenticator" => new SelectListItem("اپیکیشن احراز هویت", factor)
+            };
+            factors.Add(selectedFactor);
+        }
 
         var viewModel = new SendCodeViewModel
         {
-            Providers = factorOption,
+            Providers = factors,
             RememberMe = rememberMe,
         };
         return View(viewModel);
@@ -237,7 +248,9 @@ public class AccountController : Controller
             return View("Error");
 
         string message = $"<p style='direction:rtl;font-size:14px;font-family:tahoma'> کد اعتبارسنجی : {code}</p>";
-        if (sendCodeViewModel.SelectedProvider.Equals("Email"))
+        if (sendCodeViewModel.SelectedProvider.Equals("Authenticator"))
+            return RedirectToAction("LogInWith2FA", new { rememberMe = sendCodeViewModel.RememberMe });
+        else if (sendCodeViewModel.SelectedProvider.Equals("Email"))
             await _emailSender.SendEmailAsync(user.Email, "اعتبارسنجی اکانت", message);
         else if (sendCodeViewModel.SelectedProvider.Equals("Phone"))
         {
