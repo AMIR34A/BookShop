@@ -298,6 +298,26 @@ public class AccountController : Controller
         return View();
     }
 
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> LogInWith2FA(LogInWith2FAViewModel logInWith2FAViewModel)
+    {
+        if (!ModelState.IsValid)
+            return View();
+        var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
+        if (user is null)
+            return NotFound();
+        var authenticationCode = logInWith2FAViewModel.TwoFactorCode.Replace(" ", string.Empty).Replace("-", string.Empty);
+        var signInResult = await _signInManager.TwoFactorAuthenticatorSignInAsync(authenticationCode, logInWith2FAViewModel.RememberMe, logInWith2FAViewModel.RememberBrowser);
+        if (signInResult.Succeeded)
+            return RedirectToAction("Index", "Home");
+        else if (signInResult.IsLockedOut)
+            ModelState.AddModelError(string.Empty, "حساب کاربری شما به مدت 20 دقیقه قفل میباشد.");
+        else
+            ModelState.AddModelError(string.Empty, "کد وارد شده معتبر نمیباشد.");
+        return View(logInWith2FAViewModel);
+    }
+
     [HttpGet]
     public async Task<IActionResult> ChangePassword()
     {
