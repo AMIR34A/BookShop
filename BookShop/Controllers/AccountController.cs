@@ -290,6 +290,15 @@ public class AccountController : Controller
     }
 
     [HttpGet]
+    public async Task<IActionResult> LogInWith2FA(bool rememberMe)
+    {
+        var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
+        if (user is null)
+            return NotFound();
+        return View();
+    }
+
+    [HttpGet]
     public async Task<IActionResult> ChangePassword()
     {
         var user = await _userManager.GetUserAsync(User);
