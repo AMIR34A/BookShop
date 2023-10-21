@@ -6,6 +6,7 @@ using System.Text.Encodings.Web;
 
 namespace BookShop.Areas.Admin.Controllers;
 
+[Area("Admin")]
 public class UserController : Controller
 {
     private readonly IApplicationUserManager _userManager;
@@ -16,7 +17,7 @@ public class UserController : Controller
     {
         _userManager = userManager;
         _signInManager = signInManager;
-        urlEncoder = urlEncoder;
+        _urlEncoder = urlEncoder;
     }
     public IActionResult Index()
     {
@@ -29,7 +30,6 @@ public class UserController : Controller
         var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
         if (user is null)
             return NotFound();
-
         var unFormattedKey = _userManager.GenerateNewAuthenticatorKey();
         string formattedKey = FormatKey(unFormattedKey);
         EnableAuthenticatorViewModel enableAuthenticatorViewModel = new EnableAuthenticatorViewModel
@@ -40,6 +40,33 @@ public class UserController : Controller
         return View(enableAuthenticatorViewModel);
     }
 
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> EnableAuthenticator(EnableAuthenticatorViewModel enableAuthenticatorViewModel)
+    {
+        if (!ModelState.IsValid)
+            return View(enableAuthenticatorViewModel);
+
+        var user = await _userManager.GetUserAsync(User);
+        if (user is null)
+            return NotFound();
+
+        var verificationCode = enableAuthenticatorViewModel.Code.Replace(" ", string.Empty).Replace("-", string.Empty);
+        bool isVerificationCodeValid = await _userManager.VerifyTwoFactorTokenAsync(user, _userManager.Options.Tokens.AuthenticatorTokenProvider, verificationCode);
+        if (!isVerificationCodeValid)
+        {
+            ModelState.AddModelError(string.Empty, "کد وارد شده نامعتبر است!!!");
+            return View(enableAuthenticatorViewModel);
+        }
+        int recovryCodeCount = await _userManager.CountRecoveryCodesAsync(user);
+        if(recovryCodeCount == 0)
+        {
+            var recoveryCodes = await _userManager.GenerateNewTwoFactorRecoveryCodesAsync(user, 5);
+            return View("ShowRecoveryCodes");
+        }
+        return View("TwoFactorAuthentication");
+    }
+    
     public string FormatKey(string key)
     {
         var seperated = key.Chunk(4);
