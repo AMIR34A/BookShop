@@ -64,6 +64,7 @@ public class UserController : Controller
             var recoveryCodes = await _userManager.GenerateNewTwoFactorRecoveryCodesAsync(user, 5);
             return View("ShowRecoveryCodes");
         }
+        ViewBag.Alert = "اپیکیشن احراز هویت شا با موفقیت تایید شد.";
         return View("TwoFactorAuthentication");
     }
     
