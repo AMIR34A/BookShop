@@ -75,7 +75,16 @@ public class UserController : Controller
             _ => string.Empty
         };
 
-        return View();
+        var user = await _userManager.GetUserAsync(User);
+        if (user is null)
+            return NotFound();
+        TwoFactorAuthenticationViewModel twoFactorAuthenticationViewModel = new TwoFactorAuthenticationViewModel
+        {
+            RecoveryCodesLeft = await _userManager.CountRecoveryCodesAsync(user),
+            HasAuthenticator = string.IsNullOrEmpty(await _userManager.GetAuthenticatorKeyAsync(user)),
+            Is2FAEnabled = await _userManager.GetTwoFactorEnabledAsync(user)
+        };
+        return View(twoFactorAuthenticationViewModel);
     }
 
     public string FormatKey(string key)
