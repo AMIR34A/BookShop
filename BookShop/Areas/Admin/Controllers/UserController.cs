@@ -59,15 +59,14 @@ public class UserController : Controller
             return View(enableAuthenticatorViewModel);
         }
         int recovryCodeCount = await _userManager.CountRecoveryCodesAsync(user);
-        if(recovryCodeCount == 0)
+        if (recovryCodeCount == 0)
         {
             var recoveryCodes = await _userManager.GenerateNewTwoFactorRecoveryCodesAsync(user, 5);
             return View("ShowRecoveryCodes");
         }
-        ViewBag.Alert = "اپیکیشن احراز هویت شا با موفقیت تایید شد.";
-        return View("TwoFactorAuthentication");
+        return RedirectToAction("TwoFactorAuthentication", new { message = "Success" });
     }
-    
+
     public async Task<IActionResult> TwoFactorAuthentication(string message)
     {
         ViewBag.Messgae = message switch
