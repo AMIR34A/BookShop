@@ -87,6 +87,19 @@ public class UserController : Controller
         return View(twoFactorAuthenticationViewModel);
     }
 
+    [HttpGet]
+    public async Task<IActionResult> GenerateRecoveryCodes()
+    {
+        var user = await _userManager.GetUserAsync(User);
+        if (user is null)
+            return NotFound();
+
+        bool isTwoFactorEnable = await _userManager.GetTwoFactorEnabledAsync(user);
+        if (!isTwoFactorEnable)
+            throw new InvalidOperationException("به علت فعال نبودن تایید دو مرحله‌ای، امکان ایجاد کد ریکاوری وجود ندارد!!!");
+        return View();
+    }
+
     public string FormatKey(string key)
     {
         var seperated = key.Chunk(4);
