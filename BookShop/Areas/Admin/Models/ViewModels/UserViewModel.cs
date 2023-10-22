@@ -12,3 +12,10 @@ public class EnableAuthenticatorViewModel
     public string SharedKey { get; set; }
     public string AuthenticatorUri { get; set; }
 }
+
+public class TwoFactorAuthenticationViewModel
+{
+    public bool HasAuthenticator { get; set; }
+    public int RecoveryCodesLeft { get; set; }
+    public bool Is2FAEnabled { get; set; }
+}
