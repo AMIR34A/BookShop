@@ -68,6 +68,17 @@ public class UserController : Controller
         return View("TwoFactorAuthentication");
     }
     
+    public async Task<IActionResult> TwoFactorAuthentication(string message)
+    {
+        ViewBag.Messgae = message switch
+        {
+            "Success" => "اپیکیشن احراز هویت شا با موفقیت تایید شد.",
+            _ => string.Empty
+        };
+
+        return View();
+    }
+
     public string FormatKey(string key)
     {
         var seperated = key.Chunk(4);
