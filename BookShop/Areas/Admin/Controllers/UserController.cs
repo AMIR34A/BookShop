@@ -2,6 +2,7 @@
 using BookShop.Areas.Identity.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System.Text.Encodings.Web;
 
 namespace BookShop.Areas.Admin.Controllers;
@@ -98,6 +99,19 @@ public class UserController : Controller
         if (!isTwoFactorEnable)
             throw new InvalidOperationException("به علت فعال نبودن تایید دو مرحله‌ای، امکان ایجاد کد ریکاوری وجود ندارد!!!");
         return View();
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    [ActionName("GenerateRecoveryCode")]
+    public async Task<IActionResult> GenerateRecovery()
+    {
+        var user = await _userManager.GetUserAsync(User);
+        if (user is null)
+            return NotFound();
+
+        var codes = _userManager.GenerateNewTwoFactorRecoveryCodesAsync(user, 5);
+        return View("ShowRecoveryCodes", codes);
     }
 
     public string FormatKey(string key)
