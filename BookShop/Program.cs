@@ -60,7 +60,6 @@ builder.Services.AddScoped<IApplicationUserManager, ApplicationUserManager>();
 builder.Services.AddScoped<ApplicationIdentityErrorDescriber>();
 builder.Services.AddScoped<IEmailSender, EmailSenderService>();
 builder.Services.AddScoped<ISMSSenderService, SMSSenderService>();
-builder.Services.AddScoped<UrlEncoder>();
 
 builder.Services.AddLocalization(option => option.ResourcesPath = "Resources");
 builder.Services.AddMvc(setup =>
