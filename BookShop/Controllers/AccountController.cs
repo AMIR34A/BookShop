@@ -367,4 +367,13 @@ public class AccountController : Controller
         changePasswordViewModel.UserSidebar = Sidebar;
         return View(changePasswordViewModel);
     }
+
+    [HttpGet]
+    public async Task<IActionResult> LogInWithRecoveryCode()
+    {
+        var user = await _userManager.GetUserAsync(User);
+        if (user is null)
+            return NotFound();
+        return View();
+    }
 }
