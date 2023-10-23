@@ -114,6 +114,14 @@ public class UserController : Controller
         return View("ShowRecoveryCodes", codes);
     }
 
+    public async Task<IActionResult> ResetAuthenticator()
+    {
+        var user = await _userManager.GetUserAsync(User);
+        if (user is null)
+            return NotFound();
+        return View();
+    }
+
     public string FormatKey(string key)
     {
         var seperated = key.Chunk(4);
