@@ -114,6 +114,7 @@ public class UserController : Controller
         return View("ShowRecoveryCodes", codes);
     }
 
+    [HttpGet]
     public async Task<IActionResult> ResetAuthenticator()
     {
         var user = await _userManager.GetUserAsync(User);
