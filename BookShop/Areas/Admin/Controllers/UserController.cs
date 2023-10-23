@@ -123,6 +123,21 @@ public class UserController : Controller
         return View();
     }
 
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    [ActionName("ResetAuthenticator")]
+    public async Task<IActionResult> ResetUserAuthenticator()
+    {
+        var user = await _userManager.GetUserAsync(User);
+        if (user is null)
+            return NotFound();
+
+        await _userManager.SetTwoFactorEnabledAsync(user, false);
+        await _userManager.ResetAuthenticatorKeyAsync(user);
+        await _signInManager.RefreshSignInAsync(user);
+        return RedirectToAction("TwoFatorAuthentication");
+    }
+
     public string FormatKey(string key)
     {
         var seperated = key.Chunk(4);
