@@ -1,106 +1,152 @@
-﻿
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>فروشگاه کتاب</title>
-	<link rel="stylesheet" href="/vendor/simple-line-icons/css/simple-line-icons.css">
-	<link rel="stylesheet" href="/vendor/font-awesome/css/fontawesome-all.min.css">
-	<link rel="stylesheet" href="/css/styles.css">
-	<link href="~/css/jquery.md.bootstrap.datetimepicker.style.css" rel="stylesheet" />
-	<link rel="stylesheet" href="/css/jquery.bonsai.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>فروشگاه کتاب</title>
+    <link rel="stylesheet" href="/vendor/simple-line-icons/css/simple-line-icons.css">
+    <link rel="stylesheet" href="/vendor/font-awesome/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link href="~/css/jquery.md.bootstrap.datetimepicker.style.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/jquery.bonsai.css">
     <link href="/select2/dist/css/select2.css" rel="stylesheet" />
-	<link href="/css/bootstrap-fileinput.css" rel="stylesheet" />
+    <link href="/css/bootstrap-fileinput.css" rel="stylesheet" />
     <link href="/css/TreeView.css" rel="stylesheet" />
     <link href="~/css/combotreeplugin.css" rel="stylesheet" />
-	<script src="/vendor/jquery/jquery.min.js"></script>
+    <script src="/vendor/jquery/jquery.min.js"></script>
     <script src="/vendor/popper.js/popper.min.js"></script>
     <script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
     <script src="~/js/jquery.md.bootstrap.datetimepicker.js"></script>
-	<script src="~/js/jquery.inputmask.js"></script>
+    <script src="~/js/jquery.inputmask.js"></script>
 </head>
 <body class="sidebar-fixed header-fixed">
-	<div class="page-wrapper">
-		<nav class="navbar page-header">
-			<div>
-				<a href="#" class="btn btn-link sidebar-mobile-toggle d-md-none mr-auto">
-					<i class="fa fa-bars"></i>
-				</a>
-				<a class="navbar-brand" href="#">
-					<img src="/images/logo-header.png" alt="logo" height="45">
-					فروشگاه کتاب
-				</a>
-				<a href="#" class="btn btn-link sidebar-toggle d-md-down-none">
-					<i class="fa fa-bars"></i>
-				</a>
-			</div>
+    <div class="page-wrapper">
+        <nav class="navbar page-header">
+            <div>
+                <a href="#" class="btn btn-link sidebar-mobile-toggle d-md-none mr-auto">
+                    <i class="fa fa-bars"></i>
+                </a>
+                <a class="navbar-brand" href="#">
+                    <img src="/images/logo-header.png" alt="logo" height="45">
+                    فروشگاه کتاب
+                </a>
+                <a href="#" class="btn btn-link sidebar-toggle d-md-down-none">
+                    <i class="fa fa-bars"></i>
+                </a>
+            </div>
 
-			<ul class="navbar-nav ml-auto">
-				<li class="nav-item dropdown">
-					<partial name="_AdminLogInPartial"/>
-				</li>
-			</ul>
-		</nav>
-		<div class="main-container">
-			<div class="sidebar">
-				<nav class="sidebar-nav">
-					<ul class="nav">
-						<li class="nav-title">پنل مدیریت</li>
-						<li class="nav-item">
-							<a href="index.html" class="nav-link">
-								<i class="icon icon-speedometer"></i> داشبورد
-							</a>
-						</li>
-						<li class="nav-item nav-dropdown">
-							<a href="#" class="nav-link nav-dropdown-toggle">
-								<i class="icon icon-target"></i> مدیریت کتاب ها <i class="fa fa-caret-left"></i>
-							</a>
-							<ul class="nav-dropdown-items">
-								<li class="nav-item">
-									<a href="layouts-normal.html" class="nav-link">
-										<i class="icon icon-target"></i> مشاهده کتاب ها
-									</a>
-								</li>
-								<li class="nav-item">
-									<a href="layouts-fixed-sidebar.html" class="nav-link">
-										<i class="icon icon-target"></i> افزودن کتاب جدید
-									</a>
-								</li>
-							</ul>
-						</li>
-					</ul>
-				</nav>
-			</div>
-			<div class="content">
-				@RenderBody()
-			</div>
-		</div>
-	</div>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item dropdown">
+                    <partial name="_AdminLogInPartial" />
+                </li>
+            </ul>
+        </nav>
+        <div class="main-container">
+            <div class="sidebar">
+                <nav class="sidebar-nav">
+                    <ul class="nav">
+                        <li class="nav-title">پنل مدیریت</li>
+                        <li class="nav-item">
+                            <a href="index.html" class="nav-link">
+                                <i class="icon icon-speedometer"></i> داشبورد
+                            </a>
+                        </li>
+                        <li class="nav-item nav-dropdown">
+                            <a href="#" class="nav-link nav-dropdown-toggle">
+                                <i class="icon icon-target"></i> مدیریت کتاب ها <i class="fa fa-caret-left"></i>
+                            </a>
+                            <ul class="nav-dropdown-items">
+                                <li class="nav-item">
+                                    <a href="layouts-normal.html" class="nav-link">
+                                        <i class="icon icon-target"></i> مشاهده کتاب ها
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="layouts-fixed-sidebar.html" class="nav-link">
+                                        <i class="icon icon-target"></i> افزودن کتاب جدید
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
 
-	<script src="/vendor/chart.js/chart.min.js"></script>
-	<script src="/js/carbon.js"></script>
-	<script src="/js/demo.js"></script>
+                        <li class="nav-item nav-dropdown">
+                            <a href="#" class="nav-link nav-dropdown-toggle">
+                                <i class="icon icon-list"></i> مدیریت کاربران <i class="fa fa-caret-left"></i>
+                            </a>
+                            <ul class="nav-dropdown-items">
+                                <li class="nav-item">
+                                    <a href="/Admin/UsersManager/Index" class="nav-link">
+                                        <i class="fa fa-users"></i> مشاهده کاربران
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/Identity/Account/Register" class="nav-link">
+                                        <i class="icon icon-target"></i> عضویت کاربر جدید
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
 
-	<script src="/select2/dist/js/select2.min.js"></script>
-	<script src="/select2/dist/js/select2.full.js"></script>
-	<script src="/js/bootstrap-fileinput.js"></script>
-	<script src="/js/TreeView.js"></script>
+                        <li class="nav-item nav-dropdown">
+                            <a href="#" class="nav-link nav-dropdown-toggle">
+                                <i class="icon icon-list"></i> مدیریت نقش ها <i class="fa fa-caret-left"></i>
+                            </a>
+                            <ul class="nav-dropdown-items">
+                                <li class="nav-item">
+                                    <a href="/Admin/RolesManager/Index" class="nav-link">
+                                        <i class="icon icon-target"></i> مشاهده نقش ها
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/Admin/RolesManager/AddRole" class="nav-link">
+                                        <i class="icon icon-target"></i> افزودن نقش جدید
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="nav-item nav-dropdown">
+                            <a href="#" class="nav-link nav-dropdown-toggle">
+                                <i class="fa fa-address-book"></i> تنظیمات حساب کاربری <i class="fa fa-caret-left"></i>
+                            </a>
+                            <ul class="nav-dropdown-items">
+                                <li class="nav-item">
+                                    <a href="/Admin/User/TwoFactorAuthentication" class="nav-link">
+                                        <i class="fa fa-mobile-alt"></i> تنظیمات احراز هویت دو مرحله با اپلیکشن
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="content">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+
+    <script src="/vendor/chart.js/chart.min.js"></script>
+    <script src="/js/carbon.js"></script>
+    <script src="/js/demo.js"></script>
+    <script src="/select2/dist/js/select2.min.js"></script>
+    <script src="/select2/dist/js/select2.full.js"></script>
+    <script src="/js/bootstrap-fileinput.js"></script>
+    <script src="/js/TreeView.js"></script>
     <script src="~/js/combotreeplugin.js"></script>
     <script src="~/js/icontains.js"></script>
-	<script>
+    <script>
 
-		// for select2
-		$(".select2").select2({
-			placeholder: "انتخاب کنید"
-		});
+        // for select2
+        $(".select2").select2({
+            placeholder: "انتخاب کنید"
+        });
 
-		// for TreeView
-		$('.demo1').bonsai();
+        // for TreeView
+        $('.demo1').bonsai();
 
-	</script>
+    </script>
 </body>
 @await RenderSectionAsync("Scripts",false)
-
 </html>
