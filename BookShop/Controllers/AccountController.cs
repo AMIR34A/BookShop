@@ -376,4 +376,25 @@ public class AccountController : Controller
             return NotFound();
         return View();
     }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> LogInWithRecoveryCode(LogInWithRecoveryCodeViewModel logInWithRecoveryCodeViewModel)
+    {
+        if (!ModelState.IsValid)
+            return View();
+        var user = await _userManager.GetUserAsync(User);
+        if (user is null)
+            return NotFound();
+
+        string recoveryCode = logInWithRecoveryCodeViewModel.RecoveryCode.Replace(" ", string.Empty);
+        var signInResult = await _signInManager.TwoFactorRecoveryCodeSignInAsync(recoveryCode);
+        if (signInResult.Succeeded)
+            return RedirectToAction("Index", "Home");
+        else if (signInResult.IsLockedOut)
+            ModelState.AddModelError(string.Empty, "حساب کاربری شما به مدت 20 دقیقه قفل میباشد.");
+        else
+            ModelState.AddModelError(string.Empty, "کد وارد شده معتبر نمیباشد.");
+        return View(logInWithRecoveryCodeViewModel);
+    }
 }
