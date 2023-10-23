@@ -140,3 +140,11 @@ public class LogInWith2FAViewModel
     [Display(Name = "مرا به خاطر بسپار؟")]
     public bool RememberBrowser { get; set; }
 }
+
+public class LogInWithRecoveryCodeViewModel
+{
+    [DataType(DataType.Text)]
+    [Display(Name = "کد بازیابی")]
+    [Required(ErrorMessage = "وارد نمودن {0} الزامی است.")]
+    public string RecoveryCode { get; set; }
+}
