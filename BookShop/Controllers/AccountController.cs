@@ -397,4 +397,12 @@ public class AccountController : Controller
             ModelState.AddModelError(string.Empty, "کد وارد شده معتبر نمیباشد.");
         return View(logInWithRecoveryCodeViewModel);
     }
+
+    [HttpGet]
+    public IActionResult GetExternalLogInProvider(string provider)
+    {
+        string redirectUrl = Url.Action("GetCallbackAsync", "Account");
+        var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+        return Challenge(properties);
+    }
 }
