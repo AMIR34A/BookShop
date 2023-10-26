@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Security.Claims;
 
 namespace BookShop.Controllers;
 
@@ -399,10 +400,42 @@ public class AccountController : Controller
     }
 
     [HttpGet]
-    public IActionResult GetExternalLogInProvider(string provider)
+    public IActionResult GetExternalLoginProvider(string provider)
     {
         string redirectUrl = Url.Action("GetCallbackAsync", "Account");
         var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
-        return Challenge(properties);
+        return Challenge(properties, provider);
+    }
+
+    public async Task<IActionResult> GetCallbackAsync()
+    {
+        var info = await _signInManager.GetExternalLoginInfoAsync();
+        if (info is null)
+            ModelState.AddModelError(string.Empty, $"در عملیات ورود به سایت از طریق حساب {info.ProviderDisplayName} خطایی رخ داده است. ");
+
+        var userEmail = info.Principal.FindFirstValue(ClaimTypes.Email);
+        var user = await _userManager.FindByEmailAsync(userEmail);
+        if (user is null)
+            ModelState.AddModelError(string.Empty, "شما عضو سایت نیست، ابتدا در سایت عضو شوید.");
+        else
+        {
+            var signInResult = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false);
+            if (signInResult.Succeeded)
+                return RedirectToAction("Index", "Home");
+            else if (signInResult.IsLockedOut)
+                ModelState.AddModelError(string.Empty, "حساب کاربری شما به مدت 20 دقیقه قفل میباشد.");
+            else if (signInResult.RequiresTwoFactor)
+                return RedirectToAction("SendCode");
+            else
+            {
+                IdentityResult identityResult = await _userManager.AddLoginAsync(user, info);
+                if (identityResult.Succeeded)
+                {
+                    await _signInManager.SignInAsync(user, false);
+                    return View("Index", "Home");
+                }
+            }
+        }
+        return View("SignIn");
     }
 }
