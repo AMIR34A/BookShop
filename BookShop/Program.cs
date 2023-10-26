@@ -63,7 +63,8 @@ builder.Services.AddScoped<ISMSSenderService, SMSSenderService>();
 builder.Services.AddAuthentication()
     .AddGoogle(options =>
     {
-
+        options.ClientId = builder.Configuration.GetSection("ExternalLogIn")["ClientId"];
+        options.ClientSecret = builder.Configuration.GetSection("ExternalLogIn")["ClientSecret"];
     });
 
 builder.Services.AddLocalization(option => option.ResourcesPath = "Resources");
