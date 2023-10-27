@@ -16,17 +16,20 @@ public class AccountController : Controller
     private readonly IEmailSender _emailSender;
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly ISMSSenderService _senderService;
+    private readonly IConfiguration _configuration;
     public AccountController(IApplicationUserManager userManager,
         IApplicationRoleManager roleManager,
         IEmailSender emailSender,
         SignInManager<ApplicationUser> signInManager,
-        ISMSSenderService senderService)
+        ISMSSenderService senderService,
+        IConfiguration configuration)
     {
         _userManager = userManager;
         _roleManager = roleManager;
         _emailSender = emailSender;
         _signInManager = signInManager;
         _senderService = senderService;
+        _configuration = configuration;
     }
 
     [HttpGet]
