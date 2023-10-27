@@ -405,9 +405,16 @@ public class AccountController : Controller
     [HttpGet]
     public IActionResult GetExternalLoginProvider(string provider)
     {
-        string redirectUrl = Url.Action("GetCallbackAsync", "Account");
-        var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
-        return Challenge(properties, provider);
+        string redirectUrl;
+        if(provider.Equals("Google"))
+        {
+            redirectUrl = Url.Action("GetCallbackAsync", "Account");
+            var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+            return Challenge(properties, provider);
+        }
+        string clientId = _configuration.GetValue<string>("YahooOAth:ClientId");
+        redirectUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/signin-yahoo";
+        return Redirect($"https://api.login.yahoo.com/oauth2/request_auth?client_id={clientId}&redirect_uri={redirectUrl}&response_type=code&language=en-us");
     }
 
     public async Task<IActionResult> GetCallbackAsync()
