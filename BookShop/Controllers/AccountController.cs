@@ -448,4 +448,10 @@ public class AccountController : Controller
         }
         return View("SignIn");
     }
+
+    [Route("yahoo-signin")]
+    public async Task<IActionResult> GetYahooCallbackAsync(string code,string state)
+    {
+        return View();
+    }
 }
