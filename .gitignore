@@ -363,3 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 /BookShop/Migrations/Identity
 /BookShop/appsettings.json
+/BookShop/BookShop.csproj
