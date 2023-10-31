@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json;
 using System.Security.Claims;
 
 namespace BookShop.Controllers;
@@ -32,6 +33,7 @@ public class AccountController : Controller
         _signInManager = signInManager;
         _senderService = senderService;
         _configuration = configuration;
+        _httpClientFactory = httpClientFactory;
     }
 
     [HttpGet]
@@ -408,7 +410,7 @@ public class AccountController : Controller
     public IActionResult GetExternalLoginProvider(string provider)
     {
         string redirectUrl;
-        if(provider.Equals("Google"))
+        if (provider.Equals("Google"))
         {
             redirectUrl = Url.Action("GetCallbackAsync", "Account");
             var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
@@ -452,8 +454,33 @@ public class AccountController : Controller
     }
 
     [Route("yahoo-signin")]
-    public async Task<IActionResult> GetYahooCallbackAsync(string code,string state)
+    public async Task<IActionResult> GetYahooCallbackAsync(string code, string state)
     {
+        string redirectUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/signin-yahoo";
+
+        Dictionary<string, string> parameters = new Dictionary<string, string>()
+        {
+            ["client_id"] = _configuration.GetValue<string>("YahooOAth:ClientId"),
+            ["client_secret"] = _configuration.GetValue<string>("YahooOAth:ClientSecret"),
+            ["redirect_url"] = redirectUrl,
+            ["code"] = code,
+            ["grant_type"] = "authorization_code"
+        };
+
+        FormUrlEncodedContent formUrlEncoded = new FormUrlEncodedContent(parameters);
+
+        using HttpClient httpClient = new HttpClient();
+        var response = await httpClient.PostAsync("https://api.login.yahoo.com/oauth2/get_token", formUrlEncoded);
+
+        string jsonResponseAsString = await response.Content.ReadAsStringAsync();
+        dynamic jasonData = JsonConvert.DeserializeObject(jsonResponseAsString);
+        string token = jasonData.access_token;
+        var request = new HttpRequestMessage(HttpMethod.Get, "https://social.yahooapis.com/v1/user/me/profile?format=json");
+        request.Headers.Add("Authorization", $"Bearer {token}");
+        var client = _httpClientFactory.CreateClient();
+        response = await client.SendAsync(request);
+        jsonResponseAsString = await response.Content.ReadAsStringAsync();
+        jasonData = JsonConvert.DeserializeObject(jsonResponseAsString);
         return View();
     }
 }
