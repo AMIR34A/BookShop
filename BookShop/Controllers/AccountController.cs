@@ -17,12 +17,14 @@ public class AccountController : Controller
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly ISMSSenderService _senderService;
     private readonly IConfiguration _configuration;
+    private readonly IHttpClientFactory _httpClientFactory;
     public AccountController(IApplicationUserManager userManager,
         IApplicationRoleManager roleManager,
         IEmailSender emailSender,
         SignInManager<ApplicationUser> signInManager,
         ISMSSenderService senderService,
-        IConfiguration configuration)
+        IConfiguration configuration,
+        IHttpClientFactory httpClientFactory)
     {
         _userManager = userManager;
         _roleManager = roleManager;
