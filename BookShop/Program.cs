@@ -67,6 +67,11 @@ builder.Services.AddAuthentication()
         options.ClientSecret = builder.Configuration.GetSection("ExternalLogIn")["ClientSecret"];
     });
 
+builder.Services.ConfigureApplicationCookie(configure =>
+{
+    configure.LoginPath = "/Account/SignIn";
+});
+
 builder.Services.AddLocalization(option => option.ResourcesPath = "Resources");
 builder.Services.AddMvc(setup =>
 {
