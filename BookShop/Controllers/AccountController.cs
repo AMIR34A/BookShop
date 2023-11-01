@@ -485,4 +485,6 @@ public class AccountController : Controller
         jasonData = JsonConvert.DeserializeObject(jsonResponseAsString);
         return View();
     }
+
+    public IActionResult AccessDenide(string redirectUrl) => View();
 }
