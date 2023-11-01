@@ -1,6 +1,7 @@
 ﻿using BookShop.Areas.Identity.Data;
 using BookShop.Models.ViewModels;
 using BookShop.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +11,7 @@ using System.Security.Claims;
 
 namespace BookShop.Controllers;
 
+[Authorize]
 public class AccountController : Controller
 {
     private readonly IApplicationUserManager _userManager;
