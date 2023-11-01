@@ -1,5 +1,6 @@
 ﻿using BookShop.Areas.Identity.Data;
 using BookShop.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -8,6 +9,7 @@ using ReflectionIT.Mvc.Paging;
 namespace BookShop.Areas.Admin.Controllers;
 
 [Area("Admin")]
+[Authorize(Roles ="مدیر سایت")]
 public class UsersManagerController : Controller
 {
     private readonly IApplicationUserManager _userManager;
