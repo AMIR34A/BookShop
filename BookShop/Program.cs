@@ -67,6 +67,11 @@ builder.Services.AddAuthentication()
         options.ClientSecret = builder.Configuration.GetSection("ExternalLogIn")["ClientSecret"];
     });
 
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AccessToUserManager", policy => policy.RequireRole("مدیر سایت"));
+});
+
 builder.Services.ConfigureApplicationCookie(configure =>
 {
     configure.LoginPath = "/Account/SignIn";
