@@ -59,6 +59,7 @@ builder.Services.AddScoped<IApplicationUserManager, ApplicationUserManager>();
 builder.Services.AddScoped<ApplicationIdentityErrorDescriber>();
 builder.Services.AddScoped<IEmailSender, EmailSenderService>();
 builder.Services.AddScoped<ISMSSenderService, SMSSenderService>();
+builder.Services.AddHttpClient();
 
 builder.Services.AddAuthentication()
     .AddGoogle(options =>
