@@ -488,4 +488,7 @@ public class AccountController : Controller
     }
 
     public IActionResult AccessDenied(string redirectUrl) => View();
+
+    [Authorize(Policy ="DateOfBirth")]
+    public IActionResult DayOfBirth() => View();
 }
