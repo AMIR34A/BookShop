@@ -2,8 +2,8 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    @if(!string.IsNullOrEmpty(ViewBag.Message))
+<div style="margin-top:90px">
+    @if (!string.IsNullOrEmpty(ViewBag.Message))
     {
         <p class="alert alert-info">@ViewBag.Message</p>
     }
