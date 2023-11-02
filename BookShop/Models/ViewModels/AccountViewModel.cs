@@ -28,6 +28,10 @@ public class RegisterViewModel : GoogleRecaptchaModelBase
     [Display(Name = "شماره موبایل")]
     [Required(ErrorMessage = "وارد نمودن {0} الزامی است.")]
     public string PhoneNumber { get; set; }
+
+    [Display(Name = "تاریخ تولد")]
+    [Required(ErrorMessage = "وارد نمودن {0} الزامی است.")]
+    public string BirthDate { get; set; }
 }
 
 public class SignInViewModel
