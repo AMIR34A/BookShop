@@ -1,5 +1,5 @@
 ﻿@model BookShop.Models.ViewModels.RegisterViewModel
-@inject IConfiguration configuraton
+@inject IConfiguration configuration
 @{
     ViewData["Title"] = "Register";
     Layout = null;
@@ -12,49 +12,80 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>عضویت در فروشگاه کتاب</title>
     <link rel="stylesheet" href="/css/styles.css">
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <link rel="stylesheet" href="/vendor/font-awesome/css/fontawesome-all.min.css">
+    <link href="~/css/jquery.md.bootstrap.datetimepicker.style.css" rel="stylesheet" />
+    <script src="/vendor/jquery/jquery.min.js"></script>
+    <script src="/vendor/popper.js/popper.min.js"></script>
+    <script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/js/jquery.md.bootstrap.datetimepicker.js"></script>
     <script src='https://www.google.com/recaptcha/api.js?hl=fa'></script>
 </head>
 <body>
     <div class="page-wrapper flex-row align-items-center">
         <div class="container">
             <div class="row justify-content-center">
-                <div class="col-md-5">
+                <div class="col-md-8">
                     <div class="card p-4">
                         <div class="text-center text-uppercase h4 font-weight-light">
-                            عضویت در فروشگاه کتاب
+                            عضویت در فروشگاه
                         </div>
                         <hr />
                         <div asp-validation-summary="All" class="text-danger">
                         </div>
                         <form asp-action="Register">
                             <div class="card-body py-2">
-                                <div class="form-group">
-                                    <label class="form-control-label" asp-for="Username"></label>
-                                    <input type="text" class="form-control" asp-for="Username" placeholder="نام کاربری">
-                                    <span asp-validation-for="Username" class="text-danger"></span>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-control-label" asp-for="Email"></label>
-                                    <input type="text" class="form-control" asp-for="Email" placeholder="ایمیل">
-                                    <span asp-validation-for="Email" class="text-danger"></span>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-control-label" asp-for="PhoneNumber"></label>
-                                    <input type="text" class="form-control" asp-for="PhoneNumber" placeholder="شماره موبایل">
-                                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-control-label" asp-for="Password"></label>
-                                    <input class="form-control" asp-for="Password" placeholder="کلمه عبور">
-                                    <span asp-validation-for="Password" class="text-danger"></span>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-control-label" asp-for="ConfirmPassword"></label>
-                                    <input class="form-control" asp-for="ConfirmPassword" placeholder="تکرار کلمه عبور">
-                                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-                                </div>
-                                <div class="g-recaptcha" data-sitekey="@(configuraton.GetValue<string>("GoogleRecaptcha:SiteKey"))">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-control-label" asp-for="Username"></label>
+                                            <input type="text" class="form-control" asp-for="Username" placeholder="نام کاربری">
+                                            <span asp-validation-for="Username" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-control-label" asp-for="Email"></label>
+                                            <input type="text" class="form-control" asp-for="Email" placeholder="ایمیل">
+                                            <span asp-validation-for="Email" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-control-label" asp-for="PhoneNumber"></label>
+                                            <input type="text" class="form-control" asp-for="PhoneNumber" placeholder="شماره موبایل">
+                                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label asp-for="BirthDate"></label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text cursor-pointer" id="BirthDate">
+                                                    <i class="fa fa-calendar"></i>
+                                                </span>
+                                            </div>
+                                            <input asp-for="BirthDate" class="form-control" id="InputBirthDate" style="direction:ltr" />
+                                            <span asp-validation-for="BirthDate" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-control-label" asp-for="Password"></label>
+                                            <input class="form-control" asp-for="Password" placeholder="کلمه عبور">
+                                            <span asp-validation-for="Password" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-control-label" asp-for="ConfirmPassword"></label>
+                                            <input class="form-control" asp-for="ConfirmPassword" placeholder="تکرار کلمه عبور">
+                                            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="g-recaptcha" data-sitekey="@(configuration.GetValue<string>("GoogleReCaptcha:SiteKey"))">
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="card-footer">
@@ -66,6 +97,18 @@
             </div>
         </div>
     </div>
+
+    <script>
+        $('#BirthDate').MdPersianDateTimePicker({
+            targetTextSelector: '#InputBirthDate',
+            targetDateSelector: '#InputBirthDate',
+            placement: 'right'
+        });
+
+        $(document).ready(function () {
+            $("#InputBirthDate").inputmask("9999/99/99", { "placeholder": "_" });
+        });
+    </script>
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 </body>
