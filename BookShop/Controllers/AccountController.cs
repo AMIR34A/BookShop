@@ -486,5 +486,5 @@ public class AccountController : Controller
         return View();
     }
 
-    public IActionResult AccessDenide(string redirectUrl) => View();
+    public IActionResult AccessDenied(string redirectUrl) => View();
 }
