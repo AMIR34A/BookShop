@@ -1,5 +1,6 @@
-﻿@model BookShop.Models.ViewModels.UserSidebarViewModel
-
+﻿@using Microsoft.AspNetCore.Authorization;
+@model BookShop.Models.ViewModels.UserSidebarViewModel
+@inject IAuthorizationService authorization
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <div class="profile-sidebar">
     <div class="profile-userpic">
@@ -51,6 +52,15 @@
                     سفارشات
                 </a>
             </li>
+            @if ((await authorization.AuthorizeAsync(User, "DateOfBirth")).Succeeded)
+            {
+                <li class="nav-item">
+                    <a class="nav-link text-danger" href="#">
+                        <i class="fa fa-gift"></i>
+                        تبریک، کلیک کنید!!!
+                    </a>
+                </li>
+            }
         </ul>
     </div>
 </div>
