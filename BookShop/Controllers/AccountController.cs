@@ -11,7 +11,6 @@ using System.Security.Claims;
 
 namespace BookShop.Controllers;
 
-[Authorize]
 public class AccountController : Controller
 {
     private readonly IApplicationUserManager _userManager;
@@ -329,6 +328,7 @@ public class AccountController : Controller
     }
 
     [HttpGet]
+    [Authorize]
     public async Task<IActionResult> ChangePassword()
     {
         var user = await _userManager.GetUserAsync(User);
