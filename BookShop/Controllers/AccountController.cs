@@ -46,11 +46,13 @@ public class AccountController : Controller
     {
         if (ModelState.IsValid)
         {
+            DateTime birthDate = Convert.ToDateTime(registerViewModel.BirthDate);
             ApplicationUser user = new ApplicationUser
             {
                 UserName = registerViewModel.Username,
                 Email = registerViewModel.Email,
                 PhoneNumber = registerViewModel.PhoneNumber,
+                BirthDate = birthDate,
                 RegisterDate = DateTime.Now
             };
             IdentityResult identityResult = await _userManager.CreateAsync(user, registerViewModel.Password);
@@ -60,7 +62,7 @@ public class AccountController : Controller
                 var isExistRole = await _roleManager.RoleExistsAsync("کاربر");
                 if (!isExistRole)
                     await _roleManager.CreateAsync(new ApplicationRole("کاربر"));
-
+                await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.DateOfBirth, birthDate.ToString("MM/dd")));
                 identityResult = await _userManager.AddToRoleAsync(user, "کاربر");
                 if (identityResult.Succeeded)
                 {
@@ -73,7 +75,6 @@ public class AccountController : Controller
                     await _emailSender.SendEmailAsync(registerViewModel.Email, "تایید ایمیل حساب کاربری - سایت کتاب", message);
                     return RedirectToAction("Index", "Home", new { message = "SendingEmailSucceeded" });
                 }
-
             }
             foreach (var error in identityResult.Errors)
                 ModelState.AddModelError(string.Empty, error.Description);
