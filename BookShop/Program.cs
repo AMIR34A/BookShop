@@ -71,7 +71,7 @@ builder.Services.AddAuthentication()
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("AccessToUserManager", policy => policy.RequireRole("مدیر سایت"));
-    options.AddPolicy("DateOfBirth", policy => policy.RequireClaim(ClaimTypes.DateOfBirth, DateTime.Now.ToString("MM/dd")));
+    options.AddPolicy("DateOfBirth", policy => policy.Requirements.Add(new DateOfBirthAuthorizationRequirement()));
 });
 
 builder.Services.ConfigureApplicationCookie(configure =>
