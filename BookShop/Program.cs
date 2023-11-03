@@ -61,6 +61,7 @@ builder.Services.AddScoped<ApplicationIdentityErrorDescriber>();
 builder.Services.AddScoped<IEmailSender, EmailSenderService>();
 builder.Services.AddScoped<ISMSSenderService, SMSSenderService>();
 builder.Services.AddSingleton<IAuthorizationHandler, DateOfBirthAuthorizationHandler>();
+builder.Services.AddSingleton<IAuthorizationHandler, MinimumAgeAuthorizationHandler>();
 builder.Services.AddHttpClient();
 
 builder.Services.AddAuthentication()
@@ -74,6 +75,7 @@ builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("AccessToUserManager", policy => policy.RequireRole("مدیر سایت"));
     options.AddPolicy("DateOfBirth", policy => policy.Requirements.Add(new DateOfBirthAuthorizationRequirement()));
+    options.AddPolicy("NeedMinimumAge", policy => policy.AddRequirements(new MinimumAgeAuthorizationRequirement(18)));
 });
 
 builder.Services.ConfigureApplicationCookie(configure =>
