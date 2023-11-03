@@ -3,14 +3,15 @@ using BookShop.Areas.Identity.Data;
 using BookShop.Data;
 using BookShop.Models;
 using BookShop.Models.Repository;
+using BookShop.Policies;
 using BookShop.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using ReflectionIT.Mvc.Paging;
 using System.Globalization;
-using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("IdentityContextConnection") ?? throw new InvalidOperationException("Connection string 'IdentityContextConnection' not found.");
@@ -59,6 +60,7 @@ builder.Services.AddScoped<IApplicationUserManager, ApplicationUserManager>();
 builder.Services.AddScoped<ApplicationIdentityErrorDescriber>();
 builder.Services.AddScoped<IEmailSender, EmailSenderService>();
 builder.Services.AddScoped<ISMSSenderService, SMSSenderService>();
+builder.Services.AddSingleton<IAuthorizationHandler, DateOfBirthAuthorizationHandler>();
 builder.Services.AddHttpClient();
 
 builder.Services.AddAuthentication()
