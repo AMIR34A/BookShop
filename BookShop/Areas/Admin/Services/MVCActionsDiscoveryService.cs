@@ -11,7 +11,7 @@ using System.Runtime.CompilerServices;
 
 namespace BookShop.Areas.Admin.Services;
 
-public class MVCActionsDiscoveryService
+public class MVCActionsDiscoveryService : IMVCActionsDiscoveryService
 {
     private readonly ConcurrentDictionary<string, Lazy<ICollection<ControllerViewModel>>> _allSecuredActionsWithPloicy = new ConcurrentDictionary<string, Lazy<ICollection<ControllerViewModel>>>();
 
