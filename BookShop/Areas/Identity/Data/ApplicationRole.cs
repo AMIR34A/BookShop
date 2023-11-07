@@ -12,4 +12,5 @@ public class ApplicationRole : IdentityRole
 
     public string? Description { get; set; }
     public virtual List<ApplicationUserRoles> Users { get; set; }
+    public virtual List<ApplicationRoleClaim> Claims { get; set; }
 }
