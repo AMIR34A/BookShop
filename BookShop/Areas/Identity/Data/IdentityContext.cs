@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BookShop.Data;
 
-public class IdentityContext : IdentityDbContext<ApplicationUser, ApplicationRole, string, IdentityUserClaim<string>, ApplicationUserRoles, IdentityUserLogin<string>, IdentityRoleClaim<string>, IdentityUserToken<string>>
+public class IdentityContext : IdentityDbContext<ApplicationUser, ApplicationRole, string, IdentityUserClaim<string>, ApplicationUserRoles, IdentityUserLogin<string>, ApplicationRoleClaim, IdentityUserToken<string>>
 {
     public IdentityContext(DbContextOptions<IdentityContext> options)
         : base(options)
@@ -26,5 +26,10 @@ public class IdentityContext : IdentityDbContext<ApplicationUser, ApplicationRol
         builder.Entity<ApplicationUserRoles>()
             .HasOne(userRole => userRole.User)
             .WithMany(user => user.Roles).HasForeignKey(userRole => userRole.UserId);
+
+        builder.Entity<ApplicationRoleClaim>().ToTable("AppRoleClaims");
+        builder.Entity<ApplicationRoleClaim>()
+            .HasOne(roleClaim => roleClaim.Role)
+            .WithMany(role => role.Claims).HasForeignKey(roleClaim => roleClaim.RoleId);
     }
 }
