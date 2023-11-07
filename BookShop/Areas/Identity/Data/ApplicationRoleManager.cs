@@ -37,5 +37,5 @@ public class ApplicationRoleManager : RoleManager<ApplicationRole>, IApplication
         }).ToList();
     }
 
-    public async Task<ApplicationRole> FindClaimsInRoles(string roleId) => await Roles.FirstOrDefaultAsync(role => role.Id == roleId);
+    public async Task<ApplicationRole> FindClaimsInRolesAsync(string roleId) => await Roles.FirstOrDefaultAsync(role => role.Id == roleId);
 }

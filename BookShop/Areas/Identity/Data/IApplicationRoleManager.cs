@@ -27,5 +27,5 @@ public interface IApplicationRoleManager
 
     List<ApplicationRole> GetAllRoles();
     List<RolesViewModel> GetAllRolesAndUsersCount();
-    Task<ApplicationRole> FindClaimsInRoles(string roleId);
+    Task<ApplicationRole> FindClaimsInRolesAsync(string roleId);
 }
