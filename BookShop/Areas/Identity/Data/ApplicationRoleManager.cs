@@ -38,4 +38,39 @@ public class ApplicationRoleManager : RoleManager<ApplicationRole>, IApplication
     }
 
     public async Task<ApplicationRole> FindClaimsInRolesAsync(string roleId) => await Roles.FirstOrDefaultAsync(role => role.Id == roleId);
+
+    public async Task<IdentityResult> AddOrUpdateClaimsAsync(string roleId,string roleClaimType, string[] selectedRoleClaims)
+    {
+        var role = await Roles.FirstOrDefaultAsync(role => role.Id == roleId);
+        if (role is null)
+            return IdentityResult.Failed(new IdentityError()
+            {
+                Code = "NotFound",
+                Description ="نقش مورد نظر یافت نشد"
+            });
+
+        var currentClaimValues = role.Claims.Where(roleClaim => roleClaim.ClaimType == roleClaimType).Select(roleClaim => roleClaim.ClaimValue);
+        if (currentClaimValues.Count() == 0)
+            currentClaimValues = new List<string>();
+
+        var addeddClaimValues = selectedRoleClaims.Except(currentClaimValues);
+        foreach (var claim in addeddClaimValues)
+        {
+            role.Claims.Add(new ApplicationRoleClaim
+            {
+                RoleId = roleId,
+                ClaimType = roleClaimType,
+                ClaimValue = claim
+            });
+        }
+
+        var removedClaimValues = currentClaimValues.Except(selectedRoleClaims);
+        foreach (var claim in removedClaimValues)
+        {
+            var removedClaim = role.Claims.SingleOrDefault(roleClaim => roleClaim.ClaimValue == claim && roleClaim.ClaimType == roleClaimType);
+            role.Claims.Remove(removedClaim);
+        }
+
+        return await UpdateAsync(role);
+    }
 }
