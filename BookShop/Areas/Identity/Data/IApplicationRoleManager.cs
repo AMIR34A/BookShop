@@ -28,4 +28,5 @@ public interface IApplicationRoleManager
     List<ApplicationRole> GetAllRoles();
     List<RolesViewModel> GetAllRolesAndUsersCount();
     Task<ApplicationRole> FindClaimsInRolesAsync(string roleId);
+    Task<IdentityResult> AddOrUpdateClaimsAsync(string roleId, string roleClaimType, string[] selectedRoleClaims);
 }
