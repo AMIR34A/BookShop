@@ -17,6 +17,7 @@ namespace BookShop.Areas.Admin.Controllers
             _actionsDiscoveryService = actionsDiscoveryService;
         }
 
+        [HttpGet]
         public async Task<IActionResult> Index(string id)
         {
             if (string.IsNullOrEmpty(id))
