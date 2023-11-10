@@ -2,6 +2,7 @@
 using BookShop.Areas.Admin.Models.ViewModels;
 using BookShop.Areas.Admin.Services;
 using BookShop.Areas.Identity.Data;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookShop.Areas.Admin.Controllers
@@ -34,6 +35,15 @@ namespace BookShop.Areas.Admin.Controllers
             };
 
             return View(dynamicAccessViewModel);
+        }
+
+        [HttpPost,ValidateAntiForgeryToken]
+        public async Task<IActionResult> Index(DynamicAccessIndexViewModel dynamicAccessIndexViewModel)
+        {
+            IdentityResult identityResult = await _roleManager.AddOrUpdateClaimsAsync(dynamicAccessIndexViewModel.RoleId, ConstantPolicies.DynamicPermissin, dynamicAccessIndexViewModel.ActionsId);
+            if (!identityResult.Succeeded)
+                ModelState.AddModelError(string.Empty, "در حین انجام عملیات خطایی رخ داد.");
+            return RedirectToAction("Index", new { id = dynamicAccessIndexViewModel.RoleId });
         }
     }
 }
