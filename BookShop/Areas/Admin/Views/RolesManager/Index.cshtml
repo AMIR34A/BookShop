@@ -35,6 +35,9 @@
                             <th class="text-center">
                                 @Html.DisplayNameFor(model=>model.UserCount)
                             </th>
+                            <th>
+                                مدیریت سطح دسترسی های پویای نقش
+                            </th>
                             <th class ="text-center">عملیات</th>
                         </tr>
                     </thead>
@@ -54,6 +57,11 @@
                                         <span>
                                             تعداد کاربران
                                         </span>
+                                    </a>
+                                </td>
+                                <td class="text-center">
+                                    <a href="/Admin/DynamicAccess/Index/@role.RoleId" class="btn btn-primary">
+                                        مشاهده و تغییر لیست دسترسی های پویا
                                     </a>
                                 </td>
                                 <td class="text-center">
