@@ -1,15 +1,18 @@
-﻿using BookShop.Models;
+﻿using BookShop.Areas.Admin.Data;
+using BookShop.Models;
 using BookShop.Models.Repository;
 using BookShop.Models.ViewModels;
 using EntityFrameworkCore.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ReflectionIT.Mvc.Paging;
+using System.ComponentModel;
 
 namespace BookShop.Areas.Admin.Controllers
 {
-    [Area("Admin")]
+    [Area("Admin"),DisplayName("مدیریت کتاب‌ها")]
     public class BooksController : Controller
     {
         private readonly IUnitOfWork unitOfWork;
@@ -97,6 +100,9 @@ namespace BookShop.Areas.Admin.Controllers
             await unitOfWork.SaveAsync();
             return RedirectToAction("Index");
         }
+
+        [Authorize(Policy = ConstantPolicies.DynamicPermissin)]
+        [DisplayName("افزودن کتاب")]
         public async Task<IActionResult> Create()
         {
             var languages = await unitOfWork.RepositoryBase<Language>().GetAllAsync();
