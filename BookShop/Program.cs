@@ -63,6 +63,7 @@ builder.Services.AddScoped<IEmailSender, EmailSenderService>();
 builder.Services.AddScoped<ISMSSenderService, SMSSenderService>();
 builder.Services.AddSingleton<IAuthorizationHandler, DateOfBirthAuthorizationHandler>();
 builder.Services.AddSingleton<IAuthorizationHandler, MinimumAgeAuthorizationHandler>();
+builder.Services.AddSingleton<IAuthorizationHandler, DynamicPermissionAuthorizationHandler>();
 builder.Services.AddSingleton<IMVCActionsDiscoveryService, MVCActionsDiscoveryService>();
 builder.Services.AddHttpClient();
 
