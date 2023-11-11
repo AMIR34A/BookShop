@@ -37,7 +37,7 @@
                                     }
                                     @foreach (var action in controller.Actions.OrderBy(x => x.ActionDisplayName))
                                     {
-                                        var isSelected = Model.RoleWithClaims.Claims
+                                        var isSelected = Model.RoleWithClaims.Claims is not null && Model.RoleWithClaims.Claims
                                         .Any(roleClaim => roleClaim.ClaimType == ConstantPolicies.DynamicPermissionClaimType &&
                                         roleClaim.ClaimValue == action.ActionId);
                                         var selected = isSelected ? "checked" : "";
