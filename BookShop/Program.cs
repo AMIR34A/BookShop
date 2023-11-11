@@ -65,6 +65,7 @@ builder.Services.AddSingleton<IAuthorizationHandler, DateOfBirthAuthorizationHan
 builder.Services.AddSingleton<IAuthorizationHandler, MinimumAgeAuthorizationHandler>();
 builder.Services.AddSingleton<IAuthorizationHandler, DynamicPermissionAuthorizationHandler>();
 builder.Services.AddSingleton<IMVCActionsDiscoveryService, MVCActionsDiscoveryService>();
+builder.Services.AddSingleton<ISecurityTrimmingService, SecurityTrimmingService>();
 builder.Services.AddHttpClient();
 
 builder.Services.AddAuthentication()
