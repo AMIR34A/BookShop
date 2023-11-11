@@ -5,17 +5,15 @@ namespace BookShop.Areas.Admin.Services;
 
 public class SecurityTrimmingService : ISecurityTrimmingService
 {
-    private readonly HttpContext _httpContext;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IMVCActionsDiscoveryService _actionsDiscoveryService;
-    public SecurityTrimmingService(HttpContext httpContext, IHttpContextAccessor httpContextAccessor, IMVCActionsDiscoveryService actionsDiscoveryService)
+    public SecurityTrimmingService(IHttpContextAccessor httpContextAccessor, IMVCActionsDiscoveryService actionsDiscoveryService)
     {
-        _httpContext = httpContext;
         _httpContextAccessor = httpContextAccessor;
         _actionsDiscoveryService = actionsDiscoveryService;
     }
 
-    public bool CanCurrentUserAccess(string area, string controller, string action) => CanUserAccess(_httpContext.User, area, controller, action);
+    public bool CanCurrentUserAccess(string area, string controller, string action) => CanUserAccess(_httpContextAccessor.HttpContext.User, area, controller, action);
 
     public bool CanUserAccess(ClaimsPrincipal user, string area, string controller, string action)
     {
