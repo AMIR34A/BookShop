@@ -3,7 +3,7 @@ using System.Security.Claims;
 
 namespace BookShop.Areas.Admin.Services;
 
-public class SecurityTrimmingService
+public class SecurityTrimmingService : ISecurityTrimmingService
 {
     private readonly HttpContext _httpContext;
     private readonly IHttpContextAccessor _httpContextAccessor;
