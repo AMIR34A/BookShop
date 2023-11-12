@@ -18,7 +18,7 @@ public class SecurityTrimmingService : ISecurityTrimmingService
     public bool CanUserAccess(ClaimsPrincipal user, string area, string controller, string action)
     {
         string currentClaimValue = $"{area}:{controller}:{action}";
-        var securedControllerActions = _actionsDiscoveryService.GetAllSecuredControllerActionsWithPolicy(ConstantPolicies.DynamicPermissin);
+        var securedControllerActions = _actionsDiscoveryService.GetAllSecuredControllerActionsWithPolicy(ConstantPolicies.DynamicPermission);
         bool isSecured = securedControllerActions.SelectMany(controller => controller.Actions)
             .Any(action => action.ActionId == currentClaimValue);
         if (!isSecured)
