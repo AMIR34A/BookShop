@@ -37,8 +37,7 @@
                                     }
                                     @foreach (var action in controller.Actions.OrderBy(x => x.ActionDisplayName))
                                     {
-                                        var isSelected = Model.RoleWithClaims.Claims is not null && Model.RoleWithClaims.Claims
-                                        .Any(roleClaim => roleClaim.ClaimType == ConstantPolicies.DynamicPermissionClaimType &&
+                                        var isSelected = Model.RoleWithClaims.Claims.Any(roleClaim => roleClaim.ClaimType == ConstantPolicies.DynamicPermissionClaimType &&
                                         roleClaim.ClaimValue == action.ActionId);
                                         var selected = isSelected ? "checked" : "";
                                         var actionDisplayName = action.ActionDisplayName;
@@ -49,7 +48,7 @@
                                         <li class="list-group-item" role="presentation">
                                             <div class="toggle-switch d-block" data-ts-color="success">
                                                 <label for="@("ts"+i)" class="ts-label">@actionDisplayName</label>
-                                                <input id="@("ts"+i)" type="checkbox" name="actionIds" hidden="hidden" value="@action.ActionId" @selected>
+                                                <input id="@("ts"+i)" type="checkbox" name="ActionsId" hidden="hidden" value="@action.ActionId" @selected>
                                                 <label for="@("ts"+i)" class="ts-helper float-left"></label>
                                             </div>
 
