@@ -32,7 +32,7 @@ namespace BookShop.Areas.Admin.Controllers
             DynamicAccessIndexViewModel dynamicAccessViewModel = new DynamicAccessIndexViewModel
             {
                 RoleWithClaims = role,
-                SecuredControllerActions = _actionsDiscoveryService.GetAllSecuredControllerActionsWithPolicy(ConstantPolicies.DynamicPermissin)
+                SecuredControllerActions = _actionsDiscoveryService.GetAllSecuredControllerActionsWithPolicy(ConstantPolicies.DynamicPermission)
             };
 
             return View(dynamicAccessViewModel);
@@ -41,7 +41,7 @@ namespace BookShop.Areas.Admin.Controllers
         [HttpPost,ValidateAntiForgeryToken]
         public async Task<IActionResult> Index(DynamicAccessIndexViewModel dynamicAccessIndexViewModel)
         {
-            IdentityResult identityResult = await _roleManager.AddOrUpdateClaimsAsync(dynamicAccessIndexViewModel.RoleId, ConstantPolicies.DynamicPermissin, dynamicAccessIndexViewModel.ActionsId);
+            IdentityResult identityResult = await _roleManager.AddOrUpdateClaimsAsync(dynamicAccessIndexViewModel.RoleId, ConstantPolicies.DynamicPermission, dynamicAccessIndexViewModel.ActionsId);
             if (!identityResult.Succeeded)
                 ModelState.AddModelError(string.Empty, "در حین انجام عملیات خطایی رخ داد.");
             return RedirectToAction("Index", new { id = dynamicAccessIndexViewModel.RoleId });

@@ -101,7 +101,7 @@ namespace BookShop.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-        [Authorize(Policy = ConstantPolicies.DynamicPermissin)]
+        [Authorize(Policy = ConstantPolicies.DynamicPermission)]
         [DisplayName("افزودن کتاب")]
         public async Task<IActionResult> Create()
         {

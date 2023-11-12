@@ -81,7 +81,7 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("AccessToUserManager", policy => policy.RequireRole("مدیر سایت"));
     options.AddPolicy("DateOfBirth", policy => policy.Requirements.Add(new DateOfBirthAuthorizationRequirement()));
     options.AddPolicy("NeedMinimumAge", policy => policy.AddRequirements(new MinimumAgeAuthorizationRequirement(18)));
-    options.AddPolicy(ConstantPolicies.DynamicPermissin, policy => policy.AddRequirements(new DynamicPermissionAuthorizationRequirement()));
+    options.AddPolicy(ConstantPolicies.DynamicPermission, policy => policy.AddRequirements(new DynamicPermissionAuthorizationRequirement()));
 });
 
 builder.Services.ConfigureApplicationCookie(configure =>
