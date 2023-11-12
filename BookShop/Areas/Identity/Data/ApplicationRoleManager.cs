@@ -39,15 +39,17 @@ public class ApplicationRoleManager : RoleManager<ApplicationRole>, IApplication
 
     public async Task<ApplicationRole> FindClaimsInRolesAsync(string roleId) => await Roles.Include(role => role.Claims).FirstOrDefaultAsync(role => role.Id == roleId);
 
-    public async Task<IdentityResult> AddOrUpdateClaimsAsync(string roleId,string roleClaimType, string[] selectedRoleClaims)
+    public async Task<IdentityResult> AddOrUpdateClaimsAsync(string roleId, string roleClaimType, string[] selectedRoleClaims)
     {
-        var role = await Roles.FirstOrDefaultAsync(role => role.Id == roleId);
+        Dictionary<int, int> numbers = new Dictionary<int, int>();
+        var role = await FindClaimsInRolesAsync(roleId);
         if (role is null)
             return IdentityResult.Failed(new IdentityError()
             {
                 Code = "NotFound",
                 Description ="نقش مورد نظر یافت نشد"
             });
+
 
         var currentClaimValues = role.Claims.Where(roleClaim => roleClaim.ClaimType == roleClaimType).Select(roleClaim => roleClaim.ClaimValue);
         if (currentClaimValues.Count() == 0)
