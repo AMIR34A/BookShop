@@ -41,7 +41,6 @@ public class ApplicationRoleManager : RoleManager<ApplicationRole>, IApplication
 
     public async Task<IdentityResult> AddOrUpdateClaimsAsync(string roleId, string roleClaimType, string[] selectedRoleClaims)
     {
-        Dictionary<int, int> numbers = new Dictionary<int, int>();
         var role = await FindClaimsInRolesAsync(roleId);
         if (role is null)
             return IdentityResult.Failed(new IdentityError()
