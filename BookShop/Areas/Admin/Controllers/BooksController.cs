@@ -22,6 +22,8 @@ namespace BookShop.Areas.Admin.Controllers
         }
 
         [HttpGet]
+        [DisplayName("مشاهده کتاب‌ها")]
+        [Authorize(Policy = ConstantPolicies.DynamicPermission)]
         public async Task<IActionResult> Index(string Message, int pageIndex, int row = 5, string sortExpression = "Title", string title = "")
         {
             if (!string.IsNullOrEmpty(Message))
@@ -101,8 +103,8 @@ namespace BookShop.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-        [Authorize(Policy = ConstantPolicies.DynamicPermission)]
         [DisplayName("افزودن کتاب")]
+        [Authorize(Policy = ConstantPolicies.DynamicPermission)]
         public async Task<IActionResult> Create()
         {
             var languages = await unitOfWork.RepositoryBase<Language>().GetAllAsync();
