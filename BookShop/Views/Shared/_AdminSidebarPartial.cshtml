@@ -1,4 +1,6 @@
-﻿<div class="sidebar">
+﻿@addTagHelper*,BookShop
+
+<div class="sidebar">
     <nav class="sidebar-nav">
         <ul class="nav">
             <li class="nav-title">پنل مدیریت</li>
@@ -12,11 +14,13 @@
                     <i class="icon icon-target"></i> مدیریت کتاب ها <i class="fa fa-caret-left"></i>
                 </a>
                 <ul class="nav-dropdown-items">
-                    <li class="nav-item">
-                        <a href="layouts-normal.html" class="nav-link">
-                            <i class="icon icon-target"></i> مشاهده کتاب ها
-                        </a>
-                    </li>
+                    <security-trimming asp-area="Admin" asp-controller="Books" asp-action="Index">
+                        <li class="nav-item">
+                            <a href="Admin/Books/Index" class="nav-link">
+                                <i class="icon icon-target"></i> مشاهده کتاب ها
+                            </a>
+                        </li>
+                    </security-trimming>
                     <li class="nav-item">
                         <a href="layouts-fixed-sidebar.html" class="nav-link">
                             <i class="icon icon-target"></i> افزودن کتاب جدید
