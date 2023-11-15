@@ -12,19 +12,22 @@ public class DynamicPermissionAuthorizationHandler : AuthorizationHandler<Dynami
 
     protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, DynamicPermissionAuthorizationRequirement requirement)
     {
-        var filterContext = context.Resource as AuthorizationFilterContext;
-        if (filterContext is null)
+        var defaultContext = context.Resource as DefaultHttpContext;
+        if (defaultContext is null)
+        {
             context.Fail();
+            return Task.CompletedTask;
+        }
 
-        var actionDescriptor = filterContext.ActionDescriptor;
-        bool hasExistAreaName = actionDescriptor.RouteValues.TryGetValue("area", out string areaName);
-        string area = hasExistAreaName ? areaName : string.Empty;
+        //var actionDescriptor = filterContext.;
+        string areaName = defaultContext.GetRouteValue("area") as string;
+        string area = string.IsNullOrEmpty(areaName) ? string.Empty : areaName;
 
-        bool hasExistControllerName = actionDescriptor.RouteValues.TryGetValue("controller", out string controllerName);
-        string controller = hasExistControllerName ? controllerName : string.Empty;
+        string controllerName = defaultContext.GetRouteValue("controller") as string;
+        string controller = string.IsNullOrEmpty(controllerName) ? string.Empty : controllerName;
 
-        bool hasExistActionName = actionDescriptor.RouteValues.TryGetValue("action", out string actionName);
-        string action = hasExistActionName ? actionName : string.Empty;
+        string actionName = defaultContext.GetRouteValue("action") as string;
+        string action = string.IsNullOrEmpty(actionName) ? string.Empty : actionName;
 
         bool hasUserAccess = _securityTrimmingService.CanCurrentUserAccess(area, controller, action);
         if (hasUserAccess)
