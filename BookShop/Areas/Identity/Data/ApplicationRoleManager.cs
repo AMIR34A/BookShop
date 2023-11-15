@@ -50,20 +50,24 @@ public class ApplicationRoleManager : RoleManager<ApplicationRole>, IApplication
             });
 
 
-        var currentClaimValues = role.Claims.Where(roleClaim => roleClaim.ClaimType == roleClaimType).Select(roleClaim => roleClaim.ClaimValue);
+        var currentClaimValues = role.Claims.Where(roleClaim => roleClaim.ClaimType == roleClaimType).Select(roleClaim => roleClaim.ClaimValue).ToList();
         if (currentClaimValues.Count() == 0)
             currentClaimValues = new List<string>();
 
-        var addeddClaimValues = selectedRoleClaims.Except(currentClaimValues);
-        foreach (var claim in addeddClaimValues)
+        if(selectedRoleClaims is not null)
         {
-            role.Claims.Add(new ApplicationRoleClaim
+            var addeddClaimValues = selectedRoleClaims.Except(currentClaimValues);
+            foreach (var claim in addeddClaimValues)
             {
-                RoleId = roleId,
-                ClaimType = roleClaimType,
-                ClaimValue = claim
-            });
+                role.Claims.Add(new ApplicationRoleClaim
+                {
+                    RoleId = roleId,
+                    ClaimType = roleClaimType,
+                    ClaimValue = claim
+                });
+            }
         }
+
 
         var removedClaimValues = currentClaimValues.Except(selectedRoleClaims);
         foreach (var claim in removedClaimValues)
