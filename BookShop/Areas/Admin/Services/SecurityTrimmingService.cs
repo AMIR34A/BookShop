@@ -18,11 +18,12 @@ public class SecurityTrimmingService : ISecurityTrimmingService
     public bool CanUserAccess(ClaimsPrincipal user, string area, string controller, string action)
     {
         string currentClaimValue = $"{area}:{controller}:{action}";
+  
         var securedControllerActions = _actionsDiscoveryService.GetAllSecuredControllerActionsWithPolicy(ConstantPolicies.DynamicPermission);
-        bool isSecured = securedControllerActions.SelectMany(controller => controller.Actions)
-            .Any(action => action.ActionId == currentClaimValue);
+
+        bool isSecured = securedControllerActions.Select(controller => (controller.AreaName, controller.ControllerName, controller.Actions)).Any(controller => controller.Actions.Any(action => string.Equals($"{controller.AreaName}:{controller.ControllerName}:{action.ActionName}", currentClaimValue)));
         if (!isSecured)
-            throw new KeyNotFoundException("");
+            return false;
 
         if (!user.Identity.IsAuthenticated)
             return false;
