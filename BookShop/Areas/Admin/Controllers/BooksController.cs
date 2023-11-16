@@ -89,6 +89,8 @@ namespace BookShop.Areas.Admin.Controllers
             return View(unitOfWork.BooksRepository.GetAllBooks(booksAdvancedSearch.Title, booksAdvancedSearch.ISBN, booksAdvancedSearch.Language, booksAdvancedSearch.Author, booksAdvancedSearch.Translator, booksAdvancedSearch.Category, booksAdvancedSearch.Publisher));
         }
 
+        [DisplayName("مشاهده کتاب‌ها")]
+        [Authorize(Policy = ConstantPolicies.DynamicPermission)]
         public IActionResult Details(int id)
         {
             //var bookInfo = _context.ReadAllBooks.Where(b => b.BookId == id).First();
@@ -167,6 +169,8 @@ namespace BookShop.Areas.Admin.Controllers
         }
 
         [HttpGet]
+        [DisplayName("مشاهده کتاب‌ها")]
+        [Authorize(Policy = ConstantPolicies.DynamicPermission)]
         public async Task<IActionResult> Edit(int? id)
         {
             if (!id.HasValue)
