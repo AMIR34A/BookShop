@@ -1,15 +1,17 @@
-﻿using BookShop.Areas.Identity.Data;
+﻿using BookShop.Areas.Admin.Data;
+using BookShop.Areas.Identity.Data;
 using BookShop.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using ReflectionIT.Mvc.Paging;
+using System.ComponentModel;
 
 namespace BookShop.Areas.Admin.Controllers;
 
-[Area("Admin")]
-[Authorize(Roles ="مدیر سایت")]
+
+[Area("Admin"), DisplayName("مدیریت کاربران")]
 public class UsersManagerController : Controller
 {
     private readonly IApplicationUserManager _userManager;
@@ -23,6 +25,8 @@ public class UsersManagerController : Controller
         _emailSender = emailSender;
     }
 
+    [Authorize(Policy = ConstantPolicies.DynamicPermission)]
+    [DisplayName("مشاهده کاربران")]
     public async Task<IActionResult> Index(string? message, int pageIndex = 1, int pageSize = 10)
     {
         string mes = message switch
