@@ -8,15 +8,15 @@ namespace BookShop.Areas.Admin.Controllers;
 [Area("Admin")]
 public class RolesManagerController : Controller
 {
-    IApplicationRoleManager roleManager;
-    public RolesManagerController(IApplicationRoleManager roleManager) => this.roleManager = roleManager;
+    private readonly IApplicationRoleManager _roleManager;
 
+    public RolesManagerController(IApplicationRoleManager roleManager) => _roleManager = roleManager;
 
     public IActionResult Index(string message, int page = 1, int row = 10)
     {
         if (!string.IsNullOrEmpty(message))
             TempData["Message"] = message;
-        var roles = roleManager.GetAllRolesAndUsersCount();
+        var roles = _roleManager.GetAllRolesAndUsersCount();
         var pagingModel = PagingList.Create(roles, row, page);
         pagingModel.RouteValue = new RouteValueDictionary()
         {
@@ -35,7 +35,7 @@ public class RolesManagerController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> AddRole(RolesViewModel rolesViewModel)
     {
-        var result = await roleManager.CreateAsync(new ApplicationRole(rolesViewModel.RoleName, rolesViewModel.Description));
+        var result = await _roleManager.CreateAsync(new ApplicationRole(rolesViewModel.RoleName, rolesViewModel.Description));
         if (result.Succeeded)
             return RedirectToAction("Index");
 
@@ -47,7 +47,7 @@ public class RolesManagerController : Controller
     [HttpGet]
     public async Task<IActionResult> EditRole(string id)
     {
-        var role = await roleManager.FindByIdAsync(id);
+        var role = await _roleManager.FindByIdAsync(id);
         if (role is null)
             return NotFound();
         var rolesViewModel = new RolesViewModel()
@@ -63,13 +63,13 @@ public class RolesManagerController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> EditRole(RolesViewModel rolesViewModel)
     {
-        var role = await roleManager.FindByIdAsync(rolesViewModel.RoleId);
+        var role = await _roleManager.FindByIdAsync(rolesViewModel.RoleId);
         if (role is null)
             return NotFound();
         role.Name = rolesViewModel.RoleName;
         role.Description = rolesViewModel.Description;
 
-        var result = await roleManager.UpdateAsync(role);
+        var result = await _roleManager.UpdateAsync(role);
         if (result.Succeeded)
             return RedirectToAction("Index", new { message = "عملیات با موفقیت انجام شد" });
 
@@ -81,7 +81,7 @@ public class RolesManagerController : Controller
     [HttpGet]
     public async Task<IActionResult> DeleteRole(string id)
     {
-        var role = await roleManager.FindByIdAsync(id);
+        var role = await _roleManager.FindByIdAsync(id);
         if (role is null)
             return NotFound();
         var rolesViewModel = new RolesViewModel
@@ -97,8 +97,8 @@ public class RolesManagerController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteRoleConfirmed(string id)
     {
-        var role = await roleManager.FindByIdAsync(id);
-        var result = await roleManager.DeleteAsync(role);
+        var role = await _roleManager.FindByIdAsync(id);
+        var result = await _roleManager.DeleteAsync(role);
         if (result.Succeeded)
             return RedirectToAction("Index", new { message = "عملیات با موفقیت انجام شد" });
 
