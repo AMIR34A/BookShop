@@ -89,7 +89,7 @@ namespace BookShop.Areas.Admin.Controllers
             return View(unitOfWork.BooksRepository.GetAllBooks(booksAdvancedSearch.Title, booksAdvancedSearch.ISBN, booksAdvancedSearch.Language, booksAdvancedSearch.Author, booksAdvancedSearch.Translator, booksAdvancedSearch.Category, booksAdvancedSearch.Publisher));
         }
 
-        [DisplayName("مشاهده کتاب‌ها")]
+        [DisplayName("مشاهده جزئیات کتاب‌")]
         [Authorize(Policy = ConstantPolicies.DynamicPermission)]
         public IActionResult Details(int id)
         {
@@ -169,7 +169,7 @@ namespace BookShop.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        [DisplayName("مشاهده کتاب‌ها")]
+        [DisplayName("ویرایش کتاب‌")]
         [Authorize(Policy = ConstantPolicies.DynamicPermission)]
         public async Task<IActionResult> Edit(int? id)
         {
@@ -278,6 +278,11 @@ namespace BookShop.Areas.Admin.Controllers
                 var authors = (from a in unitOfWork.BookShopContext.Author_Books
                                where a.BookId == viewModel.BookId
                                select a.AuthorId).AsEnumerable().ToArray();
+
+                if (viewModel.CategoryID is null)
+                    viewModel.CategoryID = Array.Empty<int>();
+                if(viewModel.TranslatorID is null)
+                    viewModel.TranslatorID = Array.Empty<int>();
 
                 var deletedCategories = categories.Except(viewModel.CategoryID);
                 var deletedTranslators = translators.Except(viewModel.TranslatorID);
