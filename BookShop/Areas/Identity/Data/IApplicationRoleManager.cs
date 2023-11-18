@@ -1,4 +1,5 @@
 ﻿using BookShop.Areas.Admin.Models.ViewModels;
+using BookShop.Models.ViewModels;
 using Microsoft.AspNetCore.Identity;
 
 namespace BookShop.Areas.Identity.Data;
@@ -29,4 +30,5 @@ public interface IApplicationRoleManager
     List<RolesViewModel> GetAllRolesAndUsersCount();
     Task<ApplicationRole> FindClaimsInRolesAsync(string roleId);
     Task<IdentityResult> AddOrUpdateClaimsAsync(string roleId, string roleClaimType, string[] selectedRoleClaims);
+    Task<List<UsersViewModel>> GetUsersInRoleAsync(string roleId);
 }
