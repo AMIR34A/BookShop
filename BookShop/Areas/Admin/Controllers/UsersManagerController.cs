@@ -250,4 +250,15 @@ public class UsersManagerController : Controller
             ModelState.AddModelError(string.Empty, "مشکلی رخ داد!!!");
         return RedirectToAction("Details", new { id = id });
     }
+
+    [HttpGet]
+    [Route("/Admin/UsersManager/GetUsersInRole/{roleId}")]
+    public async Task<IActionResult> GetUsersInRole(string roleId, int pageSize = 10, int pageIndex = 1)
+    {
+        if (string.IsNullOrEmpty(roleId))
+            return NotFound();
+        var users = await _roleManager.GetUsersInRoleAsync(roleId);
+        var pagingModel = PagingList.Create(users, pageSize, pageIndex);
+        return View("Index", pagingModel);
+    }
 }
