@@ -48,6 +48,8 @@ public class UsersManagerController : Controller
         return View(pagingModel);
     }
 
+    [Authorize(Policy = ConstantPolicies.DynamicPermission)]
+    [DisplayName("اطلاعات کاربر")]
     public async Task<IActionResult> Details(string id)
     {
         var user = await _userManager.FindUserWithRolesByIdAsync(id);
@@ -55,6 +57,8 @@ public class UsersManagerController : Controller
     }
 
     [HttpGet]
+    [Authorize(Policy = ConstantPolicies.DynamicPermission)]
+    [DisplayName("ویرایش کاربر")]
     public async Task<IActionResult> Edit(string id)
     {
         if (string.IsNullOrEmpty(id))
@@ -107,6 +111,8 @@ public class UsersManagerController : Controller
     }
 
     [HttpGet]
+    [Authorize(Policy = ConstantPolicies.DynamicPermission)]
+    [DisplayName("حذف کاربر")]
     public async Task<IActionResult> Delete(string id)
     {
         if (string.IsNullOrEmpty(id))
@@ -178,6 +184,8 @@ public class UsersManagerController : Controller
     }
 
     [HttpGet]
+    [Authorize(Policy = ConstantPolicies.DynamicPermission)]
+    [DisplayName("بازنشانی پسورد")]
     public async Task<IActionResult> ResetPassword(string id)
     {
         var user = await _userManager.FindByIdAsync(id);
