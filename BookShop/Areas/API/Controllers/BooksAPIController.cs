@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BookShop.Models.Repository;
+using BookShop.Models.ViewModels;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BookShop.Areas.API.Controllers;
 
@@ -6,4 +8,11 @@ namespace BookShop.Areas.API.Controllers;
 [ApiController]
 public class BooksAPIController : ControllerBase
 {
+    IUnitOfWork _unitOfWork;
+
+    public BooksAPIController(IUnitOfWork unitOfWork)
+    {
+        _unitOfWork = unitOfWork;
+    }
+    public List<BooksIndexViewModel> GetAllBooks() => _unitOfWork.BooksRepository.GetAllBooks("", "", "", "", "", "", "");
 }
