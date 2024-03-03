@@ -1,6 +1,6 @@
 ﻿using BookShop.Models.ViewModels;
+using EntityFrameworkCore.Models;
 using Microsoft.EntityFrameworkCore;
-using static BookShop.Models.ViewModels.CategoryViewModel;
 
 namespace BookShop.Models.Repository;
 
@@ -116,5 +116,46 @@ public class BooksRepository : IBooksRepository
         }
 
         return allBooks;
+    }
+
+    public async Task<bool> CreateBook(BooksCreateEditViewModel viewModel)
+    {
+        List<Book_Translator> translators = new List<Book_Translator>();
+        List<Book_Category> categories = new List<Book_Category>();
+
+        if (viewModel.TranslatorID is not null)
+            translators = viewModel.TranslatorID.Select(translator => new Book_Translator { TranslatorId = translator }).ToList();
+        if (viewModel.CategoryID is not null)
+            categories = viewModel.CategoryID.Select(category => new Book_Category { CategoryId = category }).ToList();
+        try
+        {
+            var transaction = await _unitOfWork.BookShopContext.Database.BeginTransactionAsync();
+            Book book = new Book
+            {
+                Title = viewModel.Title,
+                ISBN = viewModel.ISBN,
+                Summary = viewModel.Summary,
+                NumOfPage = viewModel.NumOfPages,
+                Stock = viewModel.Stock,
+                Price = viewModel.Price,
+                LanguageId = viewModel.LanguageID,
+                IsPublished = viewModel.IsPublish,
+                Weight = viewModel.Weight,
+                PublishYear = viewModel.PublishYear,
+                PublisherId = viewModel.PublisherID,
+                Author_Books = viewModel.AuthorID.Select(author => new Author_Book { AuthorId = author }).ToList(),
+                Book_Translators = translators,
+                Book_Categories = categories
+            };
+
+            await _unitOfWork.RepositoryBase<Book>().CreateAsync(book);
+            await _unitOfWork.SaveAsync();
+            await transaction.CommitAsync();
+            return true;
+        }
+        catch 
+        {
+            return false;
+        }
     }
 }
