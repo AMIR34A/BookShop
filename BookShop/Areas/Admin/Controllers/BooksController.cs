@@ -9,10 +9,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ReflectionIT.Mvc.Paging;
 using System.ComponentModel;
+using Publisher = EntityFrameworkCore.Models.Publisher;
 
 namespace BookShop.Areas.Admin.Controllers
 {
-    [Area("Admin"),DisplayName("مدیریت کتاب‌ها")]
+    [Area("Admin"), DisplayName("مدیریت کتاب‌ها")]
     public class BooksController : Controller
     {
         private readonly IUnitOfWork unitOfWork;
@@ -110,7 +111,7 @@ namespace BookShop.Areas.Admin.Controllers
         public async Task<IActionResult> Create()
         {
             var languages = await unitOfWork.RepositoryBase<Language>().GetAllAsync();
-            var publishers = await unitOfWork.RepositoryBase<Publisher>().GetAllAsync();
+            var publishers = await unitOfWork.RepositoryBase<EntityFrameworkCore.Models.Publisher>().GetAllAsync();
             var authors = await unitOfWork.RepositoryBase<Author>().GetAllAsync();
             var translators = await unitOfWork.RepositoryBase<Translator>().GetAllAsync();
 
@@ -125,47 +126,22 @@ namespace BookShop.Areas.Admin.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(BooksCreateEditViewModel viewModel)
         {
-            //if (!ModelState.IsValid)
-            //{
-            //    return View(viewModel);
-            //}
-            List<Book_Translator> translators = new List<Book_Translator>();
-            List<Book_Category> categories = new List<Book_Category>();
-
-            if (viewModel.TranslatorID is not null)
-                translators = viewModel.TranslatorID.Select(translator => new Book_Translator { TranslatorId = translator }).ToList();
-            if (viewModel.CategoryID is not null)
-                categories = viewModel.CategoryID.Select(category => new Book_Category { CategoryId = category }).ToList();
-            try
+            if (ModelState.IsValid)
             {
-                var transaction = await unitOfWork.BookShopContext.Database.BeginTransactionAsync(); ;
-                Book book = new Book
-                {
-                    Title = viewModel.Title,
-                    ISBN = viewModel.ISBN,
-                    Summary = viewModel.Summary,
-                    NumOfPage = viewModel.NumOfPages,
-                    Stock = viewModel.Stock,
-                    Price = viewModel.Price,
-                    LanguageId = viewModel.LanguageID,
-                    IsPublished = viewModel.IsPublish,
-                    Weight = viewModel.Weight,
-                    PublishYear = viewModel.PublishYear,
-                    PublisherId = viewModel.PublisherID,
-                    Author_Books = viewModel.AuthorID.Select(author => new Author_Book { AuthorId = author }).ToList(),
-                    Book_Translators = translators,
-                    Book_Categories = categories
-                };
+                if (await unitOfWork.BooksRepository.CreateBookAsync(viewModel))
+                    return RedirectToAction("Index");
+            }
+            var languages = await unitOfWork.RepositoryBase<Language>().GetAllAsync();
+            var publishers = await unitOfWork.RepositoryBase<Publisher>().GetAllAsync();
+            var authors = await unitOfWork.RepositoryBase<Author>().GetAllAsync();
+            var translators = await unitOfWork.RepositoryBase<Translator>().GetAllAsync();
 
-                await unitOfWork.RepositoryBase<Book>().CreateAsync(book);
-                await unitOfWork.SaveAsync();
-                await transaction.CommitAsync();
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return RedirectToAction("Index", new { Message = "Failde" });
-            }
+            ViewBag.LanguageID = new SelectList(languages, "LanguageId", "LanguageName");
+            ViewBag.PublisherId = new SelectList(publishers, "PublisherId", "PublisherName");
+            ViewBag.AuthorID = new SelectList(authors.Select(t => new AuthorList { AuthorID = t.AuthorId, NameFamily = $"{t.FirstName} {t.LastName}" }), "AuthorID", "NameFamily");
+            ViewBag.TranslatorID = new SelectList(translators.Select(t => new TranslatorList { TranslatorID = t.TranslatorId, NameFamily = $"{t.FirstName} {t.LastName}" }), "TranslatorID", "NameFamily");
+            viewModel.BookSubCategoriesViewModel = new BookSubCategoriesViewModel(unitOfWork.BooksRepository.GetAllCategories(), viewModel.CategoryID);
+            return View(viewModel);
         }
 
         [HttpGet]
@@ -281,7 +257,7 @@ namespace BookShop.Areas.Admin.Controllers
 
                 if (viewModel.CategoryID is null)
                     viewModel.CategoryID = Array.Empty<int>();
-                if(viewModel.TranslatorID is null)
+                if (viewModel.TranslatorID is null)
                     viewModel.TranslatorID = Array.Empty<int>();
 
                 var deletedCategories = categories.Except(viewModel.CategoryID);
