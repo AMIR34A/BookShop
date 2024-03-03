@@ -1,17 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.CodeDom;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using static BookShop.Models.ViewModels.CategoryViewModel;
 
 namespace BookShop.Models.ViewModels
 {
     public class BookSubCategoriesViewModel
     {
-        public BookSubCategoriesViewModel(List<TreeViewCategory> treeViewCategories , int[] categories)
+        public BookSubCategoriesViewModel(List<TreeViewCategory> treeViewCategories, int[] categories)
         {
             Categories = categories;
-            TreeViewCategories = treeViewCategories; 
+            TreeViewCategories = treeViewCategories;
         }
         public int[] Categories { get; set; }
         public List<TreeViewCategory> TreeViewCategories { get; set; }
@@ -87,7 +85,7 @@ namespace BookShop.Models.ViewModels
     public class BooksIndexViewModel
     {
         public int BookId { get; set; }
-        [Display(Name ="عنوان")]
+        [Display(Name = "عنوان")]
         public string Title { get; set; }
         public int Price { get; set; }
         public int Stock { get; set; }
@@ -131,7 +129,7 @@ namespace BookShop.Models.ViewModels
     {
         public int BookId { get; set; }
         public string ISBN { get; set; }
-        [Column(TypeName ="image")]
+        [Column(TypeName = "image")]
         public byte[]? Image { get; set; }
         public bool? IsPublished { get; set; }
         public int NumOfPage { get; set; }
