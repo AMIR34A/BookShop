@@ -118,7 +118,7 @@ public class BooksRepository : IBooksRepository
         return allBooks;
     }
 
-    public async Task<bool> CreateBook(BooksCreateEditViewModel viewModel)
+    public async Task<bool> CreateBookAsync(BooksCreateEditViewModel viewModel)
     {
         List<Book_Translator> translators = new List<Book_Translator>();
         List<Book_Category> categories = new List<Book_Category>();
