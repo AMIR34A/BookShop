@@ -14,5 +14,10 @@ public class BooksAPIController : ControllerBase
     {
         _unitOfWork = unitOfWork;
     }
+
+    [HttpGet]
     public List<BooksIndexViewModel> GetAllBooks() => _unitOfWork.BooksRepository.GetAllBooks("", "", "", "", "", "", "");
+
+    [HttpPost]
+    public async Task<string> CreateBook(BooksCreateEditViewModel viewModel) => await _unitOfWork.BooksRepository.CreateBookAsync(viewModel) ? "عملیات با موفقیت انجام شد." : "خطایی رخ داد.";
 }
