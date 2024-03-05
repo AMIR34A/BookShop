@@ -23,7 +23,7 @@
             get
             {
                 if (booksRepository is null)
-                    booksRepository = new BooksRepository(_context);
+                    booksRepository = new BooksRepository(this);
                 return booksRepository;
             }
         }
