@@ -158,4 +158,85 @@ public class BooksRepository : IBooksRepository
             return false;
         }
     }
+
+    public async Task<bool> EditBookAsync(BooksCreateEditViewModel viewModel)
+    {
+        DateTime? dateTime;
+        if (!viewModel.RecentIsPublish && viewModel.IsPublish)
+            dateTime = DateTime.Now;
+        else if (viewModel.RecentIsPublish && !viewModel.IsPublish)
+            dateTime = null;
+        else
+            dateTime = viewModel.PublishDate;
+        try
+        {
+            var book = new Book
+            {
+                BookId = viewModel.BookId,
+                Title = viewModel.Title,
+                ISBN = viewModel.ISBN,
+                IsPublished = viewModel.IsPublish,
+                NumOfPage = viewModel.NumOfPages,
+                Price = viewModel.Price,
+                Stock = viewModel.Stock,
+                Summary = viewModel.Summary,
+                Weight = viewModel.Weight,
+                PublishYear = viewModel.PublishYear,
+                LanguageId = viewModel.LanguageID,
+                PublisherId = viewModel.PublisherID,
+                PublishedTime = dateTime
+            };
+
+            var categories = (from c in _unitOfWork.BookShopContext.Book_Categories
+                              where c.BookId == viewModel.BookId
+                              select c.CategoryId).AsEnumerable().ToArray();
+
+            var translators = (from t in _unitOfWork.BookShopContext.Book_Translators
+                               where t.BookId == viewModel.BookId
+                               select t.TranslatorId).AsEnumerable().ToArray();
+
+            var authors = (from a in _unitOfWork.BookShopContext.Author_Books
+                           where a.BookId == viewModel.BookId
+                           select a.AuthorId).AsEnumerable().ToArray();
+
+            if (viewModel.CategoryID is null)
+                viewModel.CategoryID = Array.Empty<int>();
+            if (viewModel.TranslatorID is null)
+                viewModel.TranslatorID = Array.Empty<int>();
+
+            var deletedCategories = categories.Except(viewModel.CategoryID);
+            var deletedTranslators = translators.Except(viewModel.TranslatorID);
+            var deletedAuthors = authors.Except(viewModel.AuthorID);
+
+            var addedCategories = viewModel.CategoryID.Except(categories);
+            var addedTranslators = viewModel.TranslatorID.Except(translators);
+            var addedAuthors = viewModel.AuthorID.Except(authors);
+
+            if (deletedCategories.Count() > 0)
+                _unitOfWork.RepositoryBase<Book_Category>().DeleteRange(deletedCategories.Select(c => new Book_Category { BookId = viewModel.BookId, CategoryId = c }));
+
+            if (deletedTranslators.Count() > 0)
+                _unitOfWork.RepositoryBase<Book_Translator>().DeleteRange(deletedTranslators.Select(t => new Book_Translator { BookId = viewModel.BookId, TranslatorId = t }));
+
+            if (deletedAuthors.Count() > 0)
+                _unitOfWork.RepositoryBase<Author_Book>().DeleteRange(deletedAuthors.Select(a => new Author_Book { BookId = viewModel.BookId, AuthorId = a }));
+
+            if (addedCategories.Count() > 0)
+                await _unitOfWork.RepositoryBase<Book_Category>().CreateRangeAsync(addedCategories.Select(c => new Book_Category { BookId = viewModel.BookId, CategoryId = c }));
+
+            if (addedTranslators.Count() > 0)
+                await _unitOfWork.RepositoryBase<Book_Translator>().CreateRangeAsync(addedTranslators.Select(t => new Book_Translator { BookId = viewModel.BookId, TranslatorId = t }));
+
+            if (addedAuthors.Count() > 0)
+                await _unitOfWork.RepositoryBase<Author_Book>().CreateRangeAsync(addedAuthors.Select(a => new Author_Book { BookId = viewModel.BookId, AuthorId = a }));
+
+            _unitOfWork.RepositoryBase<Book>().Update(book);
+            await _unitOfWork.SaveAsync();
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
+    }
 }
