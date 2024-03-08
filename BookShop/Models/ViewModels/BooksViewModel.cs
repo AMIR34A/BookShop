@@ -29,7 +29,7 @@ namespace BookShop.Models.ViewModels
 
         public int BookId { get; set; }
         public BookSubCategoriesViewModel? BookSubCategoriesViewModel { get; set; }
-        public IEnumerable<TreeViewCategory> Categories { get; set; }
+        public IEnumerable<TreeViewCategory>? Categories { get; set; }
 
         [Required(ErrorMessage = "وارد نمودن {0} الزامی است.")]
         [Display(Name = "عنوان ")]
