@@ -217,85 +217,12 @@ namespace BookShop.Areas.Admin.Controllers
             ViewBag.AuthorID = new SelectList(authorsV.Select(t => new AuthorList { AuthorID = t.AuthorId, NameFamily = $"{t.FirstName} {t.LastName}" }), "AuthorID", "NameFamily");
             ViewBag.TranslatorID = new SelectList(translatorsV.Select(t => new TranslatorList { TranslatorID = t.TranslatorId, NameFamily = $"{t.FirstName} {t.LastName}" }), "TranslatorID", "NameFamily");
 
-            DateTime? dateTime;
-            if (!viewModel.RecentIsPublish && viewModel.IsPublish)
-                dateTime = DateTime.Now;
-            else if (viewModel.RecentIsPublish && !viewModel.IsPublish)
-                dateTime = null;
-            else
-                dateTime = viewModel.PublishDate;
-            try
-            {
-                var book = new Book
-                {
-                    BookId = viewModel.BookId,
-                    Title = viewModel.Title,
-                    ISBN = viewModel.ISBN,
-                    IsPublished = viewModel.IsPublish,
-                    NumOfPage = viewModel.NumOfPages,
-                    Price = viewModel.Price,
-                    Stock = viewModel.Stock,
-                    Summary = viewModel.Summary,
-                    Weight = viewModel.Weight,
-                    PublishYear = viewModel.PublishYear,
-                    LanguageId = viewModel.LanguageID,
-                    PublisherId = viewModel.PublisherID,
-                    PublishedTime = dateTime
-                };
-
-                var categories = (from c in unitOfWork.BookShopContext.Book_Categories
-                                  where c.BookId == viewModel.BookId
-                                  select c.CategoryId).AsEnumerable().ToArray();
-
-                var translators = (from t in unitOfWork.BookShopContext.Book_Translators
-                                   where t.BookId == viewModel.BookId
-                                   select t.TranslatorId).AsEnumerable().ToArray();
-
-                var authors = (from a in unitOfWork.BookShopContext.Author_Books
-                               where a.BookId == viewModel.BookId
-                               select a.AuthorId).AsEnumerable().ToArray();
-
-                if (viewModel.CategoryID is null)
-                    viewModel.CategoryID = Array.Empty<int>();
-                if (viewModel.TranslatorID is null)
-                    viewModel.TranslatorID = Array.Empty<int>();
-
-                var deletedCategories = categories.Except(viewModel.CategoryID);
-                var deletedTranslators = translators.Except(viewModel.TranslatorID);
-                var deletedAuthors = authors.Except(viewModel.AuthorID);
-
-                var addedCategories = viewModel.CategoryID.Except(categories);
-                var addedTranslators = viewModel.TranslatorID.Except(translators);
-                var addedAuthors = viewModel.AuthorID.Except(authors);
-
-                if (deletedCategories.Count() > 0)
-                    unitOfWork.RepositoryBase<Book_Category>().DeleteRange(deletedCategories.Select(c => new Book_Category { BookId = viewModel.BookId, CategoryId = c }));
-
-                if (deletedTranslators.Count() > 0)
-                    unitOfWork.RepositoryBase<Book_Translator>().DeleteRange(deletedTranslators.Select(t => new Book_Translator { BookId = viewModel.BookId, TranslatorId = t }));
-
-                if (deletedAuthors.Count() > 0)
-                    unitOfWork.RepositoryBase<Author_Book>().DeleteRange(deletedAuthors.Select(a => new Author_Book { BookId = viewModel.BookId, AuthorId = a }));
-
-                if (addedCategories.Count() > 0)
-                    await unitOfWork.RepositoryBase<Book_Category>().CreateRangeAsync(addedCategories.Select(c => new Book_Category { BookId = viewModel.BookId, CategoryId = c }));
-
-                if (addedTranslators.Count() > 0)
-                    await unitOfWork.RepositoryBase<Book_Translator>().CreateRangeAsync(addedTranslators.Select(t => new Book_Translator { BookId = viewModel.BookId, TranslatorId = t }));
-
-                if (addedAuthors.Count() > 0)
-                    await unitOfWork.RepositoryBase<Author_Book>().CreateRangeAsync(addedAuthors.Select(a => new Author_Book { BookId = viewModel.BookId, AuthorId = a }));
-
-                unitOfWork.RepositoryBase<Book>().Update(book);
-                await unitOfWork.SaveAsync();
+            if (await unitOfWork.BooksRepository.EditBookAsync(viewModel))
                 ViewBag.MessageSuccess = "تغییرات با موفقیت ذخیره شد";
-                return View(viewModel);
-            }
-            catch
-            {
+            else
                 ViewBag.MessageFail = "خطایی رخ داد، مجددا تلاش کنید";
-                return View(viewModel);
-            }
+
+            return View(viewModel);
         }
 
         public async Task<IActionResult> SearchByISBN(string ISBN)
