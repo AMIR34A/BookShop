@@ -1,0 +1,5 @@
+﻿@BookShop_HostAddress = https://localhost:44348
+
+GET {{BookShop_HostAddress}}/account/confirmemail/{id}?userId=string&token=string
+
+###

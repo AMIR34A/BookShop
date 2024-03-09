@@ -20,4 +20,8 @@ public class BooksAPIController : ControllerBase
 
     [HttpPost]
     public async Task<string> CreateBook(BooksCreateEditViewModel viewModel) => await _unitOfWork.BooksRepository.CreateBookAsync(viewModel) ? "عملیات با موفقیت انجام شد." : "خطایی رخ داد.";
+
+    [HttpPut]
+    public async Task<string> EditBook(BooksCreateEditViewModel viewModel) => await _unitOfWork.BooksRepository.EditBookAsync(viewModel) ? "عملیات با موفقیت انجام شد." : "خطایی رخ داد.";
+
 }
