@@ -1,1 +1,1 @@
-A simple bookstore website
+A simple bookstore website.
