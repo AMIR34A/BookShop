@@ -24,4 +24,8 @@ public class BooksAPIController : ControllerBase
     [HttpPut]
     public async Task<string> EditBook(BooksCreateEditViewModel viewModel) => await _unitOfWork.BooksRepository.EditBookAsync(viewModel) ? "عملیات با موفقیت انجام شد." : "خطایی رخ داد.";
 
+    public async Task<string> DeleteBook(int id)
+    {
+
+    }
 }
