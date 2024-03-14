@@ -1,5 +1,6 @@
 ﻿using BookShop.Models.Repository;
 using BookShop.Models.ViewModels;
+using EntityFrameworkCore.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookShop.Areas.API.Controllers;
@@ -24,8 +25,14 @@ public class BooksAPIController : ControllerBase
     [HttpPut]
     public async Task<string> EditBook(BooksCreateEditViewModel viewModel) => await _unitOfWork.BooksRepository.EditBookAsync(viewModel) ? "عملیات با موفقیت انجام شد." : "خطایی رخ داد.";
 
-    public async Task<string> DeleteBook(int id)
+    public async Task<IActionResult> DeleteBook(int id)
     {
-
+        var book = await _unitOfWork.RepositoryBase<Book>().FindByIdAsync(id);
+        if (book is not null)
+        {
+            book.IsDeleted = true;
+            return Content("عملیات با موفقیت انجام شد.");
+        }
+        return NotFound();
     }
 }
