@@ -137,6 +137,7 @@ public class BooksRepository : IBooksRepository
                 Summary = viewModel.Summary,
                 NumOfPage = viewModel.NumOfPages,
                 Stock = viewModel.Stock,
+                Image = !string.IsNullOrEmpty(viewModel.Base64Image) ? Convert.FromBase64String(viewModel.Base64Image) : null,
                 Price = viewModel.Price,
                 LanguageId = viewModel.LanguageID,
                 IsPublished = viewModel.IsPublish,
@@ -153,7 +154,7 @@ public class BooksRepository : IBooksRepository
             await transaction.CommitAsync();
             return true;
         }
-        catch 
+        catch
         {
             return false;
         }
