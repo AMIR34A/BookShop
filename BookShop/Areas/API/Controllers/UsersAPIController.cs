@@ -1,5 +1,5 @@
 ﻿using BookShop.Areas.Identity.Data;
-using Microsoft.AspNetCore.Http;
+using BookShop.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookShop.Areas.API.Controllers;
@@ -16,4 +16,7 @@ public class UsersAPIController : ControllerBase
         _applicationUserManager = applicationUserManager;
         _applicationRoleManager = applicationRoleManager;
     }
+
+    [HttpGet]
+    public async Task<List<UsersViewModel>> Get() => await _applicationUserManager.GetAllUsersWithRolesAsync();
 }
