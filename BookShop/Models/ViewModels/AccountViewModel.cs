@@ -42,7 +42,7 @@ public class RegisterViewModel : BaseRegisterViewModel
     public string GoogleRecaptchaResponse { get; set; }
 }
 
-public class SignInViewModel
+public class SignInBaseViewModel
 {
     [Display(Name = "نام کاربری")]
     [Required(ErrorMessage = "وارد نمودن {0} الزامی است.")]
@@ -52,7 +52,10 @@ public class SignInViewModel
     [Required(ErrorMessage = "وارد نمودن {0} الزامی است.")]
     [DataType(DataType.Password)]
     public string Password { get; set; }
+}
 
+public class SignInViewModel : SignInBaseViewModel
+{
     [Display(Name = "مرا بخاطر بسپار")]
     public bool RememberMe { get; set; }
 
