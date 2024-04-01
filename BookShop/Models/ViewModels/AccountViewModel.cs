@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BookShop.Models.ViewModels;
 
-public class BaseRegisterViewModel
+public class RegisterBaseViewModel
 {
     [Display(Name = "نام کاربری")]
     [Required(ErrorMessage = "وارد نمودن {0} الزامی است")]
@@ -23,7 +23,7 @@ public class BaseRegisterViewModel
     public string BirthDate { get; set; }
 }
 
-public class RegisterViewModel : BaseRegisterViewModel
+public class RegisterViewModel : RegisterBaseViewModel
 {
     [DataType(DataType.Password)]
     [Display(Name = "کلمه عبور")]
