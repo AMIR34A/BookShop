@@ -57,4 +57,13 @@ public class UsersAPIController : ControllerBase
         }
         return new JsonResult(identityResult.Errors);
     }
+
+    public async Task<string> SignIn(SignInBaseViewModel signInBaseViewModel)
+    {
+        var user = await _applicationUserManager.FindByNameAsync(signInBaseViewModel.Username);
+        if (user is null)
+            return "کاربری با این نام کاربری یافت نشد!!!";
+        var result = await _applicationUserManager.CheckPasswordAsync(user, signInBaseViewModel.Password);
+        return result ? "احراز هویت با موفقیت انجام شد." : "نام کاربری و یا پسورد اشتباه میباشد.";
+    }
 }
