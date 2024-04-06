@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BookShop.Areas.API.Models;
+namespace BookShop.Areas.API.Classes;
 
 public enum ApiResultStatusCode
 {
