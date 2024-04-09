@@ -20,15 +20,9 @@ public class APIResult
     }
 
     #region Implicit Operators
-    public static implicit operator APIResult(OkResult result)
-    {
-        return new APIResult(true, ApiResultStatusCode.Success);
-    }
+    public static implicit operator APIResult(OkResult result) => new APIResult(true, ApiResultStatusCode.Success);
 
-    public static implicit operator APIResult(BadRequestResult result)
-    {
-        return new APIResult(false, ApiResultStatusCode.BadRequest);
-    }
+    public static implicit operator APIResult(BadRequestResult result) => new APIResult(false, ApiResultStatusCode.BadRequest);
 
     public static implicit operator APIResult(BadRequestObjectResult result)
     {
@@ -46,9 +40,7 @@ public class APIResult
         }
 
         else
-        {
             messages.Add(result.Value.ToString());
-        }
 
         return new APIResult(false, ApiResultStatusCode.BadRequest, messages);
     }
@@ -59,12 +51,8 @@ public class APIResult
         return new APIResult(true, ApiResultStatusCode.Success, messages);
     }
 
-    public static implicit operator APIResult(NotFoundResult result)
-    {
-        return new APIResult(false, ApiResultStatusCode.NotFound);
-    }
+    public static implicit operator APIResult(NotFoundResult result) => new APIResult(false, ApiResultStatusCode.NotFound);
     #endregion
-
 }
 
 public class APIResult<TData> : APIResult where TData : class
@@ -78,25 +66,13 @@ public class APIResult<TData> : APIResult where TData : class
     }
 
     #region Implicit Operators
-    public static implicit operator APIResult<TData>(TData data)
-    {
-        return new APIResult<TData>(true, ApiResultStatusCode.Success, data);
-    }
+    public static implicit operator APIResult<TData>(TData data) => new APIResult<TData>(true, ApiResultStatusCode.Success, data);
 
-    public static implicit operator APIResult<TData>(OkResult result)
-    {
-        return new APIResult<TData>(true, ApiResultStatusCode.Success, null);
-    }
+    public static implicit operator APIResult<TData>(OkResult result) => new APIResult<TData>(true, ApiResultStatusCode.Success, null);
 
-    public static implicit operator APIResult<TData>(OkObjectResult result)
-    {
-        return new APIResult<TData>(true, ApiResultStatusCode.Success, (TData)result.Value);
-    }
+    public static implicit operator APIResult<TData>(OkObjectResult result) => new APIResult<TData>(true, ApiResultStatusCode.Success, (TData)result.Value);
 
-    public static implicit operator APIResult<TData>(BadRequestResult result)
-    {
-        return new APIResult<TData>(false, ApiResultStatusCode.BadRequest, null);
-    }
+    public static implicit operator APIResult<TData>(BadRequestResult result) => new APIResult<TData>(false, ApiResultStatusCode.BadRequest, null);
 
     public static implicit operator APIResult<TData>(BadRequestObjectResult result)
     {
@@ -115,9 +91,7 @@ public class APIResult<TData> : APIResult where TData : class
         }
 
         else
-        {
             message.Add(result.Value.ToString());
-        }
 
         return new APIResult<TData>(false, ApiResultStatusCode.BadRequest, null, message);
     }
@@ -128,14 +102,8 @@ public class APIResult<TData> : APIResult where TData : class
         return new APIResult<TData>(true, ApiResultStatusCode.Success, null, messages);
     }
 
-    public static implicit operator APIResult<TData>(NotFoundResult result)
-    {
-        return new APIResult<TData>(false, ApiResultStatusCode.NotFound, null);
-    }
+    public static implicit operator APIResult<TData>(NotFoundResult result) => new APIResult<TData>(false, ApiResultStatusCode.NotFound, null);
 
-    public static implicit operator APIResult<TData>(NotFoundObjectResult result)
-    {
-        return new APIResult<TData>(false, ApiResultStatusCode.NotFound, (TData)result.Value);
-    }
+    public static implicit operator APIResult<TData>(NotFoundObjectResult result) => new APIResult<TData>(false, ApiResultStatusCode.NotFound, (TData)result.Value);
     #endregion
 }
