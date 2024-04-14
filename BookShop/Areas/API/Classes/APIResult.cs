@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
 namespace BookShop.Areas.API.Classes;
@@ -24,26 +23,7 @@ public class APIResult
 
     public static implicit operator APIResult(BadRequestResult result) => new APIResult(false, ApiResultStatusCode.BadRequest);
 
-    public static implicit operator APIResult(BadRequestObjectResult result)
-    {
-        List<string> messages = new List<string>();
-        if (result.Value is SerializableError errors)
-        {
-            var errorMessages = errors.SelectMany(p => (string[])p.Value).Distinct();
-            messages.AddRange(errorMessages);
-        }
-
-        else if (result.Value is IEnumerable<IdentityError> identityErrors)
-        {
-            var errorMessages = identityErrors.Select(p => p.Description).Distinct();
-            messages.AddRange(errorMessages);
-        }
-
-        else
-            messages.Add(result.Value.ToString());
-
-        return new APIResult(false, ApiResultStatusCode.BadRequest, messages);
-    }
+    public static implicit operator APIResult(BadRequestObjectResult result) => new APIResult(false, ApiResultStatusCode.BadRequest, result.GetErrors());
 
     public static implicit operator APIResult(ContentResult result)
     {
@@ -74,27 +54,7 @@ public class APIResult<TData> : APIResult where TData : class
 
     public static implicit operator APIResult<TData>(BadRequestResult result) => new APIResult<TData>(false, ApiResultStatusCode.BadRequest, null);
 
-    public static implicit operator APIResult<TData>(BadRequestObjectResult result)
-    {
-
-        List<string> message = new List<string>();
-        if (result.Value is SerializableError errors)
-        {
-            var errorMessages = errors.SelectMany(p => (string[])p.Value).Distinct();
-            message.AddRange(errorMessages);
-        }
-
-        else if (result.Value is IEnumerable<IdentityError> identityErrors)
-        {
-            var errorMessages = identityErrors.Select(p => p.Description).Distinct();
-            message.AddRange(errorMessages);
-        }
-
-        else
-            message.Add(result.Value.ToString());
-
-        return new APIResult<TData>(false, ApiResultStatusCode.BadRequest, null, message);
-    }
+    public static implicit operator APIResult<TData>(BadRequestObjectResult result) => new APIResult<TData>(false, ApiResultStatusCode.BadRequest, null, result.GetErrors());
 
     public static implicit operator APIResult<TData>(ContentResult result)
     {
