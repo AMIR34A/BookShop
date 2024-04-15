@@ -1,4 +1,5 @@
-﻿using BookShop.Models.Repository;
+﻿using BookShop.Areas.API.Classes;
+using BookShop.Models.Repository;
 using BookShop.Models.ViewModels;
 using EntityFrameworkCore.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -17,22 +18,23 @@ public class BooksAPIController : ControllerBase
     }
 
     [HttpGet]
-    public List<BooksIndexViewModel> GetAllBooks() => _unitOfWork.BooksRepository.GetAllBooks("", "", "", "", "", "", "");
+    public APIResult<List<BooksIndexViewModel>> GetAllBooks() => _unitOfWork.BooksRepository.GetAllBooks("", "", "", "", "", "", "");
 
     [HttpPost]
-    public async Task<string> CreateBook(BooksCreateEditViewModel viewModel) => await _unitOfWork.BooksRepository.CreateBookAsync(viewModel) ? "عملیات با موفقیت انجام شد." : "خطایی رخ داد.";
+    public async Task<APIResult<string>> CreateBook(BooksCreateEditViewModel viewModel) => await _unitOfWork.BooksRepository.CreateBookAsync(viewModel) ? Ok("عملیات با موفقیت انجام شد.") : BadRequest("خطایی رخ داد.");
 
     [HttpPut]
-    public async Task<string> EditBook(BooksCreateEditViewModel viewModel) => await _unitOfWork.BooksRepository.EditBookAsync(viewModel) ? "عملیات با موفقیت انجام شد." : "خطایی رخ داد.";
+    public async Task<APIResult<string>> EditBook(BooksCreateEditViewModel viewModel) => await _unitOfWork.BooksRepository.EditBookAsync(viewModel) ? Ok("عملیات با موفقیت انجام شد.") : BadRequest("خطایی رخ داد.");
 
-    public async Task<IActionResult> DeleteBook(int id)
+    [HttpDelete]
+    public async Task<APIResult<string>> DeleteBook(int id)
     {
         var book = await _unitOfWork.RepositoryBase<Book>().FindByIdAsync(id);
         if (book is not null)
         {
             book.IsDeleted = true;
-            return Content("عملیات با موفقیت انجام شد.");
+            return Ok("عملیات با موفقیت انجام شد.");
         }
-        return NotFound();
+        return BadRequest();
     }
 }
