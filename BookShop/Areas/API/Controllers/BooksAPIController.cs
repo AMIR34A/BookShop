@@ -1,4 +1,5 @@
-﻿using BookShop.Areas.API.Classes;
+﻿using Asp.Versioning;
+using BookShop.Areas.API.Classes;
 using BookShop.Models.Repository;
 using BookShop.Models.ViewModels;
 using EntityFrameworkCore.Models;
@@ -6,8 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BookShop.Areas.API.Controllers;
 
-[Route("api/[controller]")]
+[Route("api/{v:apiVersion}/[controller]")]
 [ApiController]
+[ApiVersion("1.0")]
 public class BooksAPIController : ControllerBase
 {
     IUnitOfWork _unitOfWork;
