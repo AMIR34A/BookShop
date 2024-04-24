@@ -63,6 +63,7 @@ builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 builder.Services.AddTransient<BookShopContext>();
 builder.Services.AddTransient<BooksRepository>();
 builder.Services.AddTransient<PersianCalendar>();
+builder.Services.AddTransient<IJwtService, JwtService>();
 builder.Services.AddScoped<IApplicationRoleManager, ApplicationRoleManager>();
 builder.Services.AddScoped<IApplicationUserManager, ApplicationUserManager>();
 builder.Services.AddScoped<ApplicationIdentityErrorDescriber>();

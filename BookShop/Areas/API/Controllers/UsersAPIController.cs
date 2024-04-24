@@ -1,4 +1,5 @@
 ﻿using BookShop.Areas.API.Classes;
+using BookShop.Areas.API.Services;
 using BookShop.Areas.Identity.Data;
 using BookShop.Models.ViewModels;
 using Microsoft.AspNetCore.Identity;
@@ -13,11 +14,13 @@ public class UsersAPIController : ControllerBase
 {
     private readonly IApplicationUserManager _applicationUserManager;
     private readonly IApplicationRoleManager _applicationRoleManager;
+    private readonly IJwtService _jwtService;
 
-    public UsersAPIController(IApplicationUserManager applicationUserManager, IApplicationRoleManager applicationRoleManager)
+    public UsersAPIController(IApplicationUserManager applicationUserManager, IApplicationRoleManager applicationRoleManager, IJwtService jwtService)
     {
         _applicationUserManager = applicationUserManager;
         _applicationRoleManager = applicationRoleManager;
+        _jwtService = jwtService;
     }
 
     [HttpGet]
@@ -67,6 +70,6 @@ public class UsersAPIController : ControllerBase
         if (user is null)
             return BadRequest("کاربری با این نام کاربری یافت نشد!!!");
         var result = await _applicationUserManager.CheckPasswordAsync(user, signInBaseViewModel.Password);
-        return result ? Ok("احراز هویت با موفقیت انجام شد.") : BadRequest("نام کاربری و یا پسورد اشتباه میباشد.");
+        return result ? Ok(await _jwtService.GenerateTokenAsync(user)) : BadRequest("نام کاربری و یا پسورد اشتباه میباشد.");
     }
 }
