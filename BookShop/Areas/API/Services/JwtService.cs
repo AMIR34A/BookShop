@@ -14,8 +14,11 @@ public class JwtService : IJwtService
 
     public async Task<string> GenerateTokenAsync(ApplicationUser user)
     {
-        byte[] secretKey = Encoding.UTF8.GetBytes("1234567890abcdefg");
-        var signinCredential = new SigningCredentials(new SymmetricSecurityKey(secretKey), SecurityAlgorithms.HmacSha256Signature);
+        byte[] secretKey = Encoding.UTF8.GetBytes("1234567890abcdefghijklmnopqrstuvwxyz");
+        var signinCredentials = new SigningCredentials(new SymmetricSecurityKey(secretKey), SecurityAlgorithms.HmacSha256Signature);
+
+        byte[] bytes = Encoding.UTF8.GetBytes("1234567890abcdef");
+        var encryptingCredentials = new EncryptingCredentials(new SymmetricSecurityKey(bytes), SecurityAlgorithms.Aes128KW, SecurityAlgorithms.Aes128CbcHmacSha256);
 
         var tokenDescriotir = new SecurityTokenDescriptor
         {
@@ -24,8 +27,9 @@ public class JwtService : IJwtService
             IssuedAt = DateTime.Now,
             NotBefore = DateTime.Now,
             Expires = DateTime.Now.AddMinutes(20),
-            SigningCredentials = signinCredential,
-            Subject = new ClaimsIdentity(await GetClaimsAsync(user))
+            SigningCredentials = signinCredentials,
+            Subject = new ClaimsIdentity(await GetClaimsAsync(user)),
+            EncryptingCredentials = encryptingCredentials
         };
 
         var tokenHandler = new JwtSecurityTokenHandler();
