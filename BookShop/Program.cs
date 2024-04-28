@@ -1,18 +1,23 @@
+using Asp.Versioning;
 using BookShop.Areas.Admin.Data;
 using BookShop.Areas.Admin.Services;
+using BookShop.Areas.API.Services;
 using BookShop.Areas.Identity.Data;
 using BookShop.Data;
 using BookShop.Models;
 using BookShop.Models.Repository;
 using BookShop.Policies;
 using BookShop.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
+using Microsoft.IdentityModel.Tokens;
 using ReflectionIT.Mvc.Paging;
 using System.Globalization;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("IdentityContextConnection") ?? throw new InvalidOperationException("Connection string 'IdentityContextConnection' not found.");
@@ -77,7 +82,35 @@ builder.Services.AddSingleton<ISecurityTrimmingService, SecurityTrimmingService>
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddHttpClient();
 
-builder.Services.AddAuthentication()
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    byte[] secretKey = Encoding.UTF8.GetBytes("1234567890abcdefghijklmnopqrstuvwxyz");
+
+    byte[] bytes = Encoding.UTF8.GetBytes("1234567890abcdef");
+
+    TokenValidationParameters tokenValidationParameters = new TokenValidationParameters()
+    {
+        RequireSignedTokens = true,
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(secretKey),
+        RequireExpirationTime = true,
+        ValidateLifetime = true,
+        ValidateAudience = true,
+        ValidAudience = "BookShop.ir",
+        ValidateIssuer = true,
+        ValidIssuer = "BookShop.ir",
+        TokenDecryptionKey = new SymmetricSecurityKey(bytes)
+    };
+    options.RequireHttpsMetadata = false;
+    options.SaveToken = true;
+    options.TokenValidationParameters = tokenValidationParameters;
+})
     .AddGoogle(options =>
     {
         options.ClientId = builder.Configuration.GetSection("ExternalLogIn")["ClientId"];
