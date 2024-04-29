@@ -2,6 +2,7 @@
 using BookShop.Areas.API.Services;
 using BookShop.Areas.Identity.Data;
 using BookShop.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,6 +11,7 @@ namespace BookShop.Areas.API.Controllers;
 [Route("api/[controller]/[action]")]
 [ApiController]
 [APIResultFilter]
+[Authorize]
 public class UsersAPIController : ControllerBase
 {
     private readonly IApplicationUserManager _applicationUserManager;
