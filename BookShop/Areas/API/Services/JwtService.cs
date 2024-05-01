@@ -9,8 +9,13 @@ namespace BookShop.Areas.API.Services;
 public class JwtService : IJwtService
 {
     private readonly IApplicationUserManager _applicationUserManager;
+    private readonly IApplicationRoleManager _applicationRoleManager;
 
-    public JwtService(IApplicationUserManager applicationUserManager) => _applicationUserManager = applicationUserManager;
+    public JwtService(IApplicationUserManager applicationUserManager, IApplicationRoleManager applicationRoleManager)
+    {
+        _applicationUserManager = applicationUserManager;
+        _applicationRoleManager = applicationRoleManager;
+    }
 
     public async Task<string> GenerateTokenAsync(ApplicationUser user)
     {
