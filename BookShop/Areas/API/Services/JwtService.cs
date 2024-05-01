@@ -1,4 +1,5 @@
-﻿using BookShop.Areas.Identity.Data;
+﻿using BookShop.Areas.Admin.Data;
+using BookShop.Areas.Identity.Data;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -53,9 +54,16 @@ public class JwtService : IJwtService
             new Claim(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString())
         };
 
-        var roles = await _applicationUserManager.GetRolesAsync(user);
+        var roles = _applicationRoleManager.Roles.ToList();
 
-        claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
+        foreach (var role in roles)
+        {
+            var roleClaims = await _applicationRoleManager.FindClaimsInRolesAsync(role.Id);
+            foreach (var claim in roleClaims.Claims)
+                claims.Add(new Claim(ConstantPolicies.DynamicPermission, claim.ClaimValue));
+        }
+
+        claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role.Name)));
         return claims;
     }
 }
