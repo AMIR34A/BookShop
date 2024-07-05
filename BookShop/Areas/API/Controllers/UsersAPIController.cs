@@ -11,7 +11,6 @@ namespace BookShop.Areas.API.Controllers;
 [Route("api/[controller]/[action]")]
 [ApiController]
 [APIResultFilter]
-[Authorize]
 public class UsersAPIController : ControllerBase
 {
     private readonly IApplicationUserManager _applicationUserManager;
@@ -26,6 +25,7 @@ public class UsersAPIController : ControllerBase
     }
 
     [HttpGet]
+    [Authorize]
     public async Task<APIResult<List<UsersViewModel>>> Get() => await _applicationUserManager.GetAllUsersWithRolesAsync();
 
     [HttpGet("{id}")]
