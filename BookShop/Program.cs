@@ -82,6 +82,8 @@ builder.Services.AddSingleton<ISecurityTrimmingService, SecurityTrimmingService>
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddHttpClient();
 
+builder.Services.Configure<SiteSettings>(builder.Configuration.GetSection(nameof(SiteSettings)));
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -90,9 +92,10 @@ builder.Services.AddAuthentication(options =>
 })
 .AddJwtBearer(options =>
 {
-    byte[] secretKey = Encoding.UTF8.GetBytes("1234567890abcdefghijklmnopqrstuvwxyz");
+    SiteSettings? siteSettings = builder.Configuration.GetSection(nameof(SiteSettings)).Get<SiteSettings>();
+    byte[] secretKey = Encoding.UTF8.GetBytes(siteSettings.JWTSettings.SecretKey);
 
-    byte[] bytes = Encoding.UTF8.GetBytes("1234567890abcdef");
+    byte[] bytes = Encoding.UTF8.GetBytes(siteSettings.JWTSettings.EncryptKey);
 
     TokenValidationParameters tokenValidationParameters = new TokenValidationParameters()
     {
@@ -102,14 +105,21 @@ builder.Services.AddAuthentication(options =>
         RequireExpirationTime = true,
         ValidateLifetime = true,
         ValidateAudience = true,
-        ValidAudience = "BookShop.ir",
+        ValidAudience = siteSettings.JWTSettings.Audience,
         ValidateIssuer = true,
-        ValidIssuer = "BookShop.ir",
+        ValidIssuer = siteSettings.JWTSettings.Issuer,
         TokenDecryptionKey = new SymmetricSecurityKey(bytes)
     };
     options.RequireHttpsMetadata = false;
     options.SaveToken = true;
     options.TokenValidationParameters = tokenValidationParameters;
+    options.Events = new JwtBearerEvents()
+    {
+        OnAuthenticationFailed = context =>
+        {
+           return context.Exception is not null? throw new AppException(): Task.CompletedTask;
+        }
+    };
 })
     .AddGoogle(options =>
     {
@@ -162,6 +172,8 @@ if (!app.Environment.IsDevelopment())
     //});
 }
 
+app.CustomExceptionHandler();
+//app.UseExceptionHandler();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
