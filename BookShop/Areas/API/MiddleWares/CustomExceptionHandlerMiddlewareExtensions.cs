@@ -2,19 +2,26 @@
 using Newtonsoft.Json;
 using System.Net;
 
+
 namespace BookShop.Areas.API.Middlewares;
 
-public class CustomExceptionHandlerMiddlewareExtensions
+public static class CustomExceptionHandlerMiddlewareExtensions
 {
+    public static IApplicationBuilder CustomExceptionHandler(this IApplicationBuilder applicationBuilder)
+    {
+        return applicationBuilder.UseMiddleware<CustomExceptionHandlerMiddleware>();
+    }
 }
 
 public class CustomExceptionHandlerMiddleware
 {
     private readonly RequestDelegate _next;
+    private readonly IWebHostEnvironment _webHostEnvironment;
 
-    public CustomExceptionHandlerMiddleware(RequestDelegate next)
+    public CustomExceptionHandlerMiddleware(RequestDelegate next, IWebHostEnvironment webHostEnvironment)
     {
         _next = next;
+        _webHostEnvironment = webHostEnvironment;
     }
 
     public async Task Invoke(HttpContext httpContext)
@@ -29,20 +36,25 @@ public class CustomExceptionHandlerMiddleware
         }
         catch (Exception exception)
         {
-            var error = new Dictionary<string, string>
+            if (_webHostEnvironment.IsDevelopment())
             {
-                ["Exception"] = exception.Message,
-                ["StackTrace"] = exception.StackTrace
-            };
+                var error = new Dictionary<string, string>
+                {
+                    ["Exception"] = exception.Message,
+                    ["StackTrace"] = exception.StackTrace
+                };
 
-            messages.Add(JsonConvert.SerializeObject(error));
-            var result = new APIResult(false, apiResultStatusCode, messages);
-            var jsonResult = JsonConvert.SerializeObject(result);
+                messages.Add(JsonConvert.SerializeObject(error));
+                var result = new APIResult(false, apiResultStatusCode, messages);
+                var jsonResult = JsonConvert.SerializeObject(result);
 
-            httpContext.Response.StatusCode = (int)httpStatusCode;
-            httpContext.Response.ContentType = "application/json";
+                httpContext.Response.StatusCode = (int)httpStatusCode;
+                httpContext.Response.ContentType = "application/json";
 
-            await httpContext.Response.WriteAsync(jsonResult);
+                await httpContext.Response.WriteAsync(jsonResult);
+            }
+            else
+                messages.Add("Something went wrong");
         }
     }
 }
