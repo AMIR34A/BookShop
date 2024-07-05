@@ -41,16 +41,13 @@ public class UsersAPIController : ControllerBase
     [HttpPost]
     public async Task<APIResult<JsonResult>> Register(RegisterBaseViewModel registerBaseViewModel)
     {
-        DateTime birthDate = Convert.ToDateTime(registerBaseViewModel.BirthDate);
         ApplicationUser user = new ApplicationUser
         {
             UserName = registerBaseViewModel.Username,
             Email = registerBaseViewModel.Email,
-            PhoneNumber = registerBaseViewModel.PhoneNumber,
-            BirthDate = birthDate,
             RegisterDate = DateTime.Now
         };
-        IdentityResult identityResult = await _applicationUserManager.CreateAsync(user);
+        IdentityResult identityResult = await _applicationUserManager.CreateAsync(user, registerBaseViewModel.Password);
 
         if (identityResult.Succeeded)
         {
