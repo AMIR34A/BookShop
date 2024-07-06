@@ -1,4 +1,5 @@
 ﻿using BookShop.Areas.API.Classes;
+using BookShop.Exceptions;
 using Newtonsoft.Json;
 using System.Net;
 
@@ -34,6 +35,34 @@ public class CustomExceptionHandlerMiddleware
         {
             await _next(httpContext);
         }
+        catch (AppException exception)
+        {
+            httpStatusCode = exception.HttpStatusCode;
+            apiResultStatusCode = exception.ApiStatusCode;
+
+            if (_webHostEnvironment.IsDevelopment())
+            {
+                var error = new Dictionary<string, string>
+                {
+                    ["Exception"] = exception.Message,
+                    ["StackTrace"] = exception.StackTrace,
+                };
+
+                if (exception.InnerException is not null)
+                {
+                    error.Add("InnerException.Exception", exception.InnerException.Message);
+                    error.Add("InnerException.StackTrace", exception.InnerException.StackTrace);
+                }
+                if (exception.AdditionalData is not null)
+                    error.Add("AdditionalData", JsonConvert.SerializeObject(exception.AdditionalData));
+
+                messages.Add(JsonConvert.SerializeObject(error));
+            }
+            else
+                messages.Add("Something went wrong.");
+
+            await WriteToResponseAsync();
+        }
         catch (Exception exception)
         {
             if (_webHostEnvironment.IsDevelopment())
@@ -45,16 +74,22 @@ public class CustomExceptionHandlerMiddleware
                 };
 
                 messages.Add(JsonConvert.SerializeObject(error));
-                var result = new APIResult(false, apiResultStatusCode, messages);
-                var jsonResult = JsonConvert.SerializeObject(result);
-
-                httpContext.Response.StatusCode = (int)httpStatusCode;
-                httpContext.Response.ContentType = "application/json";
-
-                await httpContext.Response.WriteAsync(jsonResult);
             }
             else
-                messages.Add("Something went wrong");
+                messages.Add("Something went wrong.");
+
+            await WriteToResponseAsync();
+        }
+
+        async Task WriteToResponseAsync()
+        {
+            var result = new APIResult(false, apiResultStatusCode, messages);
+            var jsonResult = JsonConvert.SerializeObject(result);
+
+            httpContext.Response.StatusCode = (int)httpStatusCode;
+            httpContext.Response.ContentType = "application/json";
+
+            await httpContext.Response.WriteAsync(jsonResult);
         }
     }
 }
