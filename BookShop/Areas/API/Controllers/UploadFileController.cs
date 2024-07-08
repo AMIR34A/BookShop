@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Asp.Versioning;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BookShop.Areas.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[ApiVersion("1.0")]
 public class UploadFileController : ControllerBase
 {
     private readonly IWebHostEnvironment _webHostEnvironment;

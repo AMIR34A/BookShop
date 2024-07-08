@@ -1,3 +1,4 @@
+﻿using Asp.Versioning;
 ﻿using BookShop.Areas.API.Classes;
 using BookShop.Areas.API.Services;
 using BookShop.Areas.Identity.Data;
@@ -11,6 +12,7 @@ namespace BookShop.Areas.API.Controllers;
 [Route("api/[controller]/[action]")]
 [ApiController]
 [APIResultFilter]
+[ApiVersion("1.0")]
 public class UsersAPIController : ControllerBase
 {
     private readonly IApplicationUserManager _applicationUserManager;
