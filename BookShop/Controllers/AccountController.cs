@@ -11,6 +11,7 @@ using System.Security.Claims;
 
 namespace BookShop.Controllers;
 
+[ApiExplorerSettings(IgnoreApi = true)]
 public class AccountController : Controller
 {
     private readonly IApplicationUserManager _userManager;
@@ -489,6 +490,6 @@ public class AccountController : Controller
 
     public IActionResult AccessDenied(string redirectUrl) => View();
 
-    [Authorize(Policy ="DateOfBirth")]
+    [Authorize(Policy = "DateOfBirth")]
     public IActionResult DayOfBirth() => View();
 }

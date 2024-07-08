@@ -2,6 +2,7 @@
 
 namespace BookShop.Controllers
 {
+    [ApiExplorerSettings(IgnoreApi = true)]
     public class HomeController : Controller
     {
         public IActionResult Index(string message)

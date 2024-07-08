@@ -14,6 +14,7 @@ using Publisher = EntityFrameworkCore.Models.Publisher;
 namespace BookShop.Areas.Admin.Controllers
 {
     [Area("Admin"), DisplayName("مدیریت کتاب‌ها")]
+    [ApiExplorerSettings(IgnoreApi = true)]
     public class BooksController : Controller
     {
         private readonly IUnitOfWork unitOfWork;

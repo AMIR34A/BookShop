@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 namespace BookShop.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [ApiExplorerSettings(IgnoreApi = true)]
     public class AuthorsController : Controller
     {
         private readonly IUnitOfWork unitOfWork;

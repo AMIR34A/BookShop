@@ -8,6 +8,7 @@ using System.Text.Encodings.Web;
 namespace BookShop.Areas.Admin.Controllers;
 
 [Area("Admin")]
+[ApiExplorerSettings(IgnoreApi = true)]
 public class UserController : Controller
 {
     private readonly IApplicationUserManager _userManager;

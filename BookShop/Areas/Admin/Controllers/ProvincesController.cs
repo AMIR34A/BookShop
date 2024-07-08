@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BookShop.Areas.Admin.Controllers;
 
 [Area("Admin")]
+[ApiExplorerSettings(IgnoreApi = true)]
 public class ProvincesController : Controller
 {
     IUnitOfWork unitOfWork;

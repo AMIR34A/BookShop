@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BookShop.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [ApiExplorerSettings(IgnoreApi = true)]
     public class DynamicAccessController : Controller
     {
         private readonly IApplicationRoleManager _roleManager;

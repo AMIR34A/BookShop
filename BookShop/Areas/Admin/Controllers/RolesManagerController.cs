@@ -6,6 +6,7 @@ using ReflectionIT.Mvc.Paging;
 namespace BookShop.Areas.Admin.Controllers;
 
 [Area("Admin")]
+[ApiExplorerSettings(IgnoreApi = true)]
 public class RolesManagerController : Controller
 {
     private readonly IApplicationRoleManager _roleManager;

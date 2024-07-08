@@ -12,6 +12,7 @@ namespace BookShop.Areas.Admin.Controllers;
 
 
 [Area("Admin"), DisplayName("مدیریت کاربران")]
+[ApiExplorerSettings(IgnoreApi = true)]
 public class UsersManagerController : Controller
 {
     private readonly IApplicationUserManager _userManager;

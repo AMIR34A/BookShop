@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 namespace BookShop.Areas.Admin.Controllers;
 
 //[Area("Admin")]
+[ApiExplorerSettings(IgnoreApi = true)]
 public class TranslatorsController : Controller
 {
     IUnitOfWork unitOfWork;
