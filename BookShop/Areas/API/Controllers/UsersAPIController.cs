@@ -1,5 +1,5 @@
 ﻿using Asp.Versioning;
-﻿using BookShop.Areas.API.Classes;
+using BookShop.Areas.API.Classes;
 using BookShop.Areas.API.Services;
 using BookShop.Areas.Identity.Data;
 using BookShop.Models.ViewModels;
@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BookShop.Areas.API.Controllers;
 
-[Route("api/[controller]/[action]")]
+[Route("api/version:apiVersion/[controller]/[action]")]
 [ApiController]
 [APIResultFilter]
 [ApiVersion("1.0")]
