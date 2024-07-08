@@ -1,9 +1,14 @@
 using Asp.Versioning;
 using BookShop.Areas.Admin.Data;
 using BookShop.Areas.Admin.Services;
+using BookShop.Areas.API.Classes;
+using BookShop.Areas.API.Middlewares;
 using BookShop.Areas.API.Services;
+using BookShop.Areas.API.Swagger;
 using BookShop.Areas.Identity.Data;
+using BookShop.Classes;
 using BookShop.Data;
+using BookShop.Exceptions;
 using BookShop.Models;
 using BookShop.Models.Repository;
 using BookShop.Policies;
@@ -17,6 +22,7 @@ using Microsoft.Extensions.Localization;
 using Microsoft.IdentityModel.Tokens;
 using ReflectionIT.Mvc.Paging;
 using System.Globalization;
+using System.Net;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -81,6 +87,7 @@ builder.Services.AddSingleton<IMVCActionsDiscoveryService, MVCActionsDiscoverySe
 builder.Services.AddSingleton<ISecurityTrimmingService, SecurityTrimmingService>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddHttpClient();
+builder.Services.AddSwagger();
 
 builder.Services.Configure<SiteSettings>(builder.Configuration.GetSection(nameof(SiteSettings)));
 
@@ -117,7 +124,23 @@ builder.Services.AddAuthentication(options =>
     {
         OnAuthenticationFailed = context =>
         {
-           return context.Exception is not null? throw new AppException(): Task.CompletedTask;
+            return context.Exception is not null ? throw new AppException(ApiResultStatusCode.UnAuthorized, "Authentication failed", HttpStatusCode.Unauthorized, context.Exception) : Task.CompletedTask;
+        },
+
+        OnTokenValidated = async context =>
+        {
+            var userRepository = context.HttpContext.RequestServices.GetRequiredService<IApplicationUserManager>();
+            var claimsIdentity = context.Principal.Claims;
+            if (claimsIdentity.Count() == 0)
+                context.Fail("This token has no claims");
+            var securityStamp = claimsIdentity.FirstOrDefault(c => c.Type.Equals("SecurityStampClaimType"));
+            if (securityStamp is null)
+                context.Fail("This token has no security stamp");
+            var user = await userRepository.GetUserAsync(context.Principal);
+            if (user.SecurityStamp != securityStamp.Value)
+                context.Fail("Token security stamp is invalid");
+            if (!user.IsActive)
+                context.Fail("User is not active");
         }
     };
 })
@@ -181,6 +204,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapRazorPages();
 app.UseSession();
+app.AddSwaggerAndSwaggerUI();
 
 app.MapAreaControllerRoute(
 name: "AdminArea",
