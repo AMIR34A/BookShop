@@ -1,4 +1,5 @@
 ﻿using Asp.Versioning;
+using BookShop.Areas.API.Controllers;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Reflection;
@@ -19,6 +20,15 @@ public static class SwaggerConfigurationExtensions
             });
 
             setup.DescribeAllParametersInCamelCase();
+            setup.OperationFilter<RemoveVersionParameter>();
+            setup.DocumentFilter<SetVersionInPath>();
+
+            setup.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+            {
+                Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                Name = " Authorization",
+                In = ParameterLocation.Header
+            });
 
             setup.DocInclusionPredicate((apiName, apiDescription) =>
             {
