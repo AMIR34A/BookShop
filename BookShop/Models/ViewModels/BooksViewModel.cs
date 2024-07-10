@@ -82,6 +82,10 @@ namespace BookShop.Models.ViewModels
         public int[] CategoryID { get; set; }
         public bool RecentIsPublish { get; set; }
         public DateTime? PublishDate { get; set; }
+
+        [Required(ErrorMessage = "آپلود فایل کتاب الزامی است.")]
+        public IFormFile File { get; set; }
+        public string FileName { get; set; }
     }
 
     public class BooksIndexViewModel
