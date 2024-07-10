@@ -142,6 +142,7 @@ public class BooksRepository : IBooksRepository
                 LanguageId = viewModel.LanguageID,
                 IsPublished = viewModel.IsPublish,
                 Weight = viewModel.Weight,
+                File = viewModel.FileName,
                 PublishYear = viewModel.PublishYear,
                 PublisherId = viewModel.PublisherID,
                 Author_Books = viewModel.AuthorID.Select(author => new Author_Book { AuthorId = author }).ToList(),

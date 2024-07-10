@@ -18,9 +18,12 @@ namespace BookShop.Areas.Admin.Controllers
     public class BooksController : Controller
     {
         private readonly IUnitOfWork unitOfWork;
-        public BooksController(IUnitOfWork unitOfWork)
+        private readonly IWebHostEnvironment _webHostEnvironment;
+
+        public BooksController(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment)
         {
             this.unitOfWork = unitOfWork;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         [HttpGet]
@@ -129,6 +132,12 @@ namespace BookShop.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                var fileExtension = Path.GetExtension(viewModel.File.FileName);
+                var newFileName = string.Concat(Guid.NewGuid(), fileExtension);
+                var path = $"{_webHostEnvironment.WebRootPath}/BookFiles/{newFileName}";
+                using FileStream stream = new FileStream(path, FileMode.Create);
+                await viewModel.File.CopyToAsync(stream);
+                viewModel.FileName = newFileName;
                 if (await unitOfWork.BooksRepository.CreateBookAsync(viewModel))
                     return RedirectToAction("Index");
             }
