@@ -93,13 +93,19 @@ namespace BookShop.Models.ViewModels
         public int BookId { get; set; }
         [Display(Name = "عنوان")]
         public string Title { get; set; }
+        [Display(Name = "قیمت")]
         public int Price { get; set; }
+        [Display(Name = "تعداد")]
         public int Stock { get; set; }
+        [Display(Name = "شابک")]
         public string ISBN { get; set; }
+        [Display(Name = "وضعیت")]
         public bool? IsPublish { get; set; }
+        [Display(Name = "تاریخ انتشار")]
         public DateTime? PublishDate { get; set; }
         [Display(Name = "نویسندگان")]
         public string Authors { get; set; }
+        [Display(Name = "ناشران")]
         public string PublisherName { get; set; }
         [Display(Name = "مترجمان")]
         public string Translators { get; set; }
