@@ -135,6 +135,7 @@
                                 <th class="text-center">@Html.SortableHeaderFor(model=>model.Price,"Price")</th>
                                 <th class="text-center">@Html.SortableHeaderFor(model=>model.PublishDate,"PublishDate")</th>
                                 <th style="width:25px;">@Html.SortableHeaderFor(model=>model.IsPublish,"IsPublish")</th>
+                                <th class="text-center">فایل کتاب</th>
                                 <th>عملیات</th>
                             </tr>
                         </thead>
@@ -167,6 +168,9 @@
                                                 <label class="badge badge-info btn-block">پیش نویس</label>
                                             }
                                         }
+                                    </td>
+                                    <td class="text-center">
+                                        <a class="btn btn-info btn-icon btn-sm" asp-area="Admin" asp-controller="Books" asp-action="Download" asp-route-id="@item.BookId">دانلود</a>
                                     </td>
                                     <td class="text-center">
                                         <a href="/Admin/Books/Details/@item.BookId" class="btn btn-info btn-icon"><i class="fa fa-eye text-white"></i></a>

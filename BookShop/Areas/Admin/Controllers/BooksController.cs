@@ -235,6 +235,7 @@ namespace BookShop.Areas.Admin.Controllers
             return View(viewModel);
         }
 
+        public async Task<IActionResult> Download(int id)
         public async Task<IActionResult> SearchByISBN(string ISBN)
         {
             if (!string.IsNullOrEmpty(ISBN))
