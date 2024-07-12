@@ -236,6 +236,41 @@ namespace BookShop.Areas.Admin.Controllers
         }
 
         public async Task<IActionResult> Download(int id)
+        {
+            var book = await unitOfWork.RepositoryBase<Book>().FindByIdAsync(id);
+            if (book is null)
+                return NotFound();
+            var path = $"{_webHostEnvironment.WebRootPath}/BooksFile/{book.File}";
+            var memory = new MemoryStream() { Position = 0 };
+            using FileStream stream = new FileStream(path, FileMode.Open);
+            await stream.CopyToAsync(memory);
+
+            return File(memory, "pdf", book.File);
+        }
+
+        public string GetContentType(string path)
+        {
+            var meimeTypes = new Dictionary<string, string>
+            {
+                {".txt", "text/plain"},
+                {".pdf", "application/pdf"},
+                {".doc", "application/vnd.ms-word"},
+                {".docx", "application/vnd.ms-word"},
+                {".xls", "application/vnd.ms-excel"},
+                {".xlsx", "application/vnd.openxmlformatsofficedocument.spreadsheetml.sheet"},
+                {".png", "image/png"},
+                {".jpg", "image/jpeg"},
+                {".jpeg", "image/jpeg"},
+                {".gif", "image/gif"},
+                {".csv", "text/csv"},
+                {".zip","application/zip" },
+                {".rar","application/x-rar" }
+            };
+
+            var extension = Path.GetExtension(path).ToLowerInvariant();
+            return meimeTypes[extension];
+        }
+
         public async Task<IActionResult> SearchByISBN(string ISBN)
         {
             if (!string.IsNullOrEmpty(ISBN))
