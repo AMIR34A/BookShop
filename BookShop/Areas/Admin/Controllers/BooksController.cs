@@ -245,7 +245,7 @@ namespace BookShop.Areas.Admin.Controllers
             using FileStream stream = new FileStream(path, FileMode.Open);
             await stream.CopyToAsync(memory);
 
-            return File(memory, "pdf", book.File);
+            return File(memory, GetContentType(path), book.File);
         }
 
         public string GetContentType(string path)
