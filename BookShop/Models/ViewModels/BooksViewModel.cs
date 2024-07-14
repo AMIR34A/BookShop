@@ -46,7 +46,7 @@ namespace BookShop.Models.ViewModels
         [Display(Name = "موجودی")]
         public int Stock { get; set; }
         public string Base64Image { get; set; }
-        public byte[]? Image { get; set; }
+        public IFormFile? Image { get; set; }
 
         [Display(Name = "تعداد صفحات")]
         public int NumOfPages { get; set; }
