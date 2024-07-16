@@ -150,6 +150,13 @@ public class BooksRepository : IBooksRepository
                 Book_Categories = categories
             };
 
+            if (viewModel.Image is not null)
+            {
+                using MemoryStream memoryStream = new MemoryStream();
+                await viewModel.Image.CopyToAsync(memoryStream);
+                book.Image = memoryStream.ToArray();
+            }
+
             await _unitOfWork.RepositoryBase<Book>().CreateAsync(book);
             await _unitOfWork.SaveAsync();
             await transaction.CommitAsync();
