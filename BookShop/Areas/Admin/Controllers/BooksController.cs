@@ -240,17 +240,14 @@ namespace BookShop.Areas.Admin.Controllers
             var book = await unitOfWork.RepositoryBase<Book>().FindByIdAsync(id);
             if (book is null)
                 return NotFound();
-            var path = $"{_webHostEnvironment.WebRootPath}/BooksFile/{book.File}";
-            var memory = new MemoryStream() { Position = 0 };
-            using FileStream stream = new FileStream(path, FileMode.Open);
-            await stream.CopyToAsync(memory);
+            var path = string.Concat(_webHostEnvironment.WebRootPath, "\\BookFiles\\", book.File);
 
-            return File(memory, GetContentType(path), book.File);
+            return File(await System.IO.File.ReadAllBytesAsync(path), GetContentType(path), book.File);
         }
 
         public string GetContentType(string path)
         {
-            var meimeTypes = new Dictionary<string, string>
+            var mimeTypes = new Dictionary<string, string>
             {
                 {".txt", "text/plain"},
                 {".pdf", "application/pdf"},
@@ -268,7 +265,7 @@ namespace BookShop.Areas.Admin.Controllers
             };
 
             var extension = Path.GetExtension(path).ToLowerInvariant();
-            return meimeTypes[extension];
+            return mimeTypes[extension];
         }
 
         public async Task<IActionResult> SearchByISBN(string ISBN)
