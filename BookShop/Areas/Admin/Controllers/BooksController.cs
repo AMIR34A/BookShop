@@ -181,7 +181,8 @@ namespace BookShop.Areas.Admin.Controllers
                                  LanguageID = b.LanguageId,
                                  PublisherID = b.PublisherId,
                                  RecentIsPublish = b.IsPublished.Value,
-                                 PublishDate = b.PublishedTime
+                                 PublishDate = b.PublishedTime,
+                                 Image = book.Image is not null ? new FormFile(new MemoryStream(book.Image), 0, book.Image.Length, "name", "filename") : null
                              }).First();
 
             var categories = (from c in unitOfWork.BookShopContext.Book_Categories
@@ -266,6 +267,14 @@ namespace BookShop.Areas.Admin.Controllers
 
             var extension = Path.GetExtension(path).ToLowerInvariant();
             return mimeTypes[extension];
+        }
+
+        public async Task<IActionResult> GetBookImage(int id)
+        {
+            var book = await unitOfWork.RepositoryBase<Book>().FindByIdAsync(id);
+            if (book is null)
+                return NotFound();
+            return new FileStreamResult(new MemoryStream(book.Image), "image/png");
         }
 
         public async Task<IActionResult> SearchByISBN(string ISBN)
