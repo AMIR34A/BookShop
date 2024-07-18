@@ -45,7 +45,7 @@ namespace BookShop.Models.ViewModels
         [Required(ErrorMessage = "وارد نمودن {0} الزامی است.")]
         [Display(Name = "موجودی")]
         public int Stock { get; set; }
-        public string Base64Image { get; set; }
+        public string? Base64Image { get; set; }
         public IFormFile? Image { get; set; }
 
         [Display(Name = "تعداد صفحات")]
@@ -85,7 +85,7 @@ namespace BookShop.Models.ViewModels
 
         [Required(ErrorMessage = "آپلود فایل کتاب الزامی است.")]
         public IFormFile File { get; set; }
-        public string FileName { get; set; }
+        public string? FileName { get; set; }
     }
 
     public class BooksIndexViewModel
