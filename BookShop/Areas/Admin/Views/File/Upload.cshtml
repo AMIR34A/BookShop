@@ -1,0 +1,74 @@
+﻿
+@{
+    ViewData["Title"] = "Upload";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+<link href="~/lib/fileinput/css/fileinput.css" rel="stylesheet" />
+<link href="~/lib/fileinput/themes/explorer-fa5/theme.css" rel="stylesheet" />
+<script src="~/lib/fileinput/js/fileinput.js"></script>
+<script src="~/lib/fileinput/js/plugins/piexif.js"></script>
+<script src="~/lib/fileinput/js/plugins/sortable.js"></script>
+<script src="~/lib/fileinput/js/locales/es.js"></script>
+<script src="~/lib/fileinput/js/locales/fr.js"></script>
+<script src="~/lib/fileinput/themes/fa5/theme.js"></script>
+<script src="~/lib/fileinput/themes/explorer-fa4/theme.js"></script>
+<h1>Upload</h1>
+
+<div class="card">
+<div class="card-header bg-light">
+    آپلود چندین فایل
+</div>
+<div class="card-body">
+    @if (ViewBag.Alert != null)
+    {
+        <p class="alert alert-success">@ViewBag.Alert</p>
+    }
+
+    <form asp-action="Upload" enctype="multipart/form-data">
+        <div class="file-loading">
+            <input id="kv-explorer" name="files" type="file" multiple>
+        </div>
+    </form>
+</div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $("#kv-explorer").fileinput({
+            //'theme': 'fas',
+            'theme': 'explorer-fas',
+            overwriteInitial: false,
+            initialPreviewAsData: true,
+            //uploadUrl: "/Upload",
+            //uploadAsync: false,
+            maxFileCount: 5,
+            //minFileCount: 2,
+
+            maxFileSize: 1000,
+            maxFilesNum: 10,
+
+            allowedFileExtensions: ['jpg', 'png', 'gif'],
+            //allowedFileTypes: ['image', 'video', 'flash'],
+
+            //showUpload: false,
+            //showRemove: false,
+            //showPreview: false,
+            //initialPreview: [
+            //    "http://lorempixel.com/1920/1080/nature/1",
+            //    "http://lorempixel.com/1920/1080/nature/2",
+            //    "http://lorempixel.com/1920/1080/nature/3"
+            //],
+            //initialPreviewConfig: [
+            //    {caption: "nature-1.jpg", size: 329892, width: "120px", url: "{$url}", key: 1},
+            //    {caption: "nature-2.jpg", size: 872378, width: "120px", url: "{$url}", key: 2},
+            //    {caption: "nature-3.jpg", size: 632762, width: "120px", url: "{$url}", key: 3}
+            //]
+
+            //uploadExtraData: {
+            //    img_key: "1000",
+            //    img_keywords: "happy, places",
+            //}
+        });
+    });
+</script>

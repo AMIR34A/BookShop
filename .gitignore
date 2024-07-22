@@ -366,3 +366,4 @@ FodyWeavers.xsd
 /BookShop/BookShop.csproj
 /BookShop/Migrations/Identity/IdentityContextModelSnapshot.cs
 /BookShop/wwwroot/Files
+/BookShop/wwwroot/BookFiles
